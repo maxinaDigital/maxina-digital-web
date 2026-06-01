@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maxina Digital — Desarrollo Web & Apps · Aguascalientes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #f7f6f3;
+  --bg2:     #eeecea;
+  --surface: #ffffff;
+  --ink:     #16161a;
+  --ink2:    #5a5856;
+  --ink3:    #a09e9a;
+  --accent:  #1a3a6b;
+  --accent-light: #e8eef7;
+  --border:  rgba(22,22,26,0.09);
+  --border2: rgba(22,22,26,0.15);
+  --radius:  12px;
+  --radius-lg: 20px;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 60px;
+  height: 64px;
+  background: rgba(247,246,243,0.92);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 21px;
+  font-weight: 500;
+  color: var(--ink);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.nav-logo-mark {
+  width: 30px; height: 30px;
+  background: var(--accent);
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px; font-weight: 600; color: white;
+}
+
+.nav-links { display:flex; gap:36px; list-style:none; }
+.nav-links a {
+  font-size: 13px; font-weight: 400;
+  color: var(--ink2); text-decoration: none;
+  letter-spacing: 0.2px; transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--ink); }
+
+.nav-cta {
+  background: var(--ink) !important; color: white !important;
+  padding: 8px 20px; border-radius: 7px;
+  font-weight: 500 !important; font-size: 13px !important;
+  transition: background 0.2s !important;
+}
+.nav-cta:hover { background: var(--accent) !important; color:white !important; }
+
+/* ── HERO — single column, centered ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 140px 60px 100px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* subtle dot grid */
+.hero::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image: radial-gradient(circle, rgba(22,22,26,0.07) 1px, transparent 1px);
+  background-size: 36px 36px;
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 20%, transparent 75%);
+  pointer-events:none;
+}
+
+.hero-eyebrow {
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--ink3); margin-bottom: 28px;
+  opacity:0; animation: fadeUp 0.6s ease 0.1s forwards;
+}
+
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(44px, 5.5vw, 76px);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+  color: var(--ink);
+  max-width: 820px;
+  opacity:0; animation: fadeUp 0.7s ease 0.2s forwards;
+}
+.hero-title em { font-style:italic; color: var(--accent); }
+.hero-title strong { font-weight:500; }
+
+.hero-sub {
+  margin-top: 24px;
+  font-size: 16px; font-weight: 300;
+  color: var(--ink2); line-height: 1.8;
+  max-width: 540px;
+  opacity:0; animation: fadeUp 0.7s ease 0.35s forwards;
+}
+
+.hero-actions {
+  margin-top: 44px;
+  display: flex; gap: 18px; align-items: center;
+  justify-content: center;
+  opacity:0; animation: fadeUp 0.7s ease 0.5s forwards;
+}
+
+.btn-primary {
+  background: var(--ink); color: white;
+  padding: 13px 30px; border-radius: 8px;
+  font-size: 14px; font-weight: 500;
+  text-decoration: none; letter-spacing: 0.2px;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-primary:hover { background: var(--accent); transform: translateY(-1px); }
+
+.btn-text {
+  font-size: 13px; font-weight: 400;
+  color: var(--ink2); text-decoration: none;
+  display: flex; align-items: center; gap: 6px;
+  transition: color 0.2s;
+}
+.btn-text:hover { color: var(--ink); }
+.btn-text span { transition: transform 0.2s; }
+.btn-text:hover span { transform: translateX(4px); }
+
+/* ── HERO IMAGE STRIP ── */
+.hero-visual {
+  margin-top: 72px;
+  width: 100%; max-width: 1100px;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 12px;
+  opacity:0; animation: fadeUp 0.8s ease 0.65s forwards;
+}
+
+.hero-img-card {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.hero-img-card img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.hero-img-card:hover img { transform: scale(1.04); }
+
+.hero-img-card.tall { height: 320px; }
+.hero-img-card.short { height: 320px; }
+
+.hero-img-label {
+  position: absolute;
+  bottom: 16px; left: 16px;
+  background: rgba(247,246,243,0.92);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 11px; font-weight: 500;
+  color: var(--ink); letter-spacing: 0.3px;
+  z-index: 2;
+}
+
+/* ── STATS BAR ── */
+.stats-bar {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.stats-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center;
+  padding: 0 60px;
+}
+
+.stat-item {
+  flex: 1;
+  padding: 36px 0;
+  text-align: center;
+  border-right: 1px solid var(--border);
+}
+.stat-item:last-child { border-right: none; }
+
+.stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 38px; font-weight: 300;
+  color: var(--ink); line-height: 1;
+  letter-spacing: -1px;
+}
+.stat-num sup { font-size: 20px; color: var(--accent); font-weight:400; }
+
+.stat-label {
+  font-size: 12px; color: var(--ink3);
+  font-weight: 400; margin-top: 6px;
+  letter-spacing: 0.2px;
+}
+
+/* ── SECTIONS ── */
+.section {
+  padding: 96px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--ink3); margin-bottom: 12px;
+}
+
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(30px, 3vw, 44px);
+  font-weight: 300; letter-spacing: -0.3px;
+  line-height: 1.15; color: var(--ink);
+}
+.section-title em { font-style:italic; color: var(--accent); }
+
+.section-sub {
+  margin-top: 14px;
+  font-size: 15px; color: var(--ink2);
+  font-weight: 300; line-height: 1.8;
+  max-width: 460px;
+}
+
+/* ── SERVICIOS ── */
+.svc-grid {
+  margin-top: 60px;
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.svc {
+  background: var(--surface);
+  padding: 44px 36px;
+  transition: background 0.25s;
+  position: relative;
+}
+.svc:hover { background: #fafaf8; }
+
+/* top accent line on hover */
+.svc::before {
+  content:''; position:absolute;
+  top:0; left:0; right:0; height:2px;
+  background: var(--accent);
+  transform: scaleX(0); transform-origin:left;
+  transition: transform 0.35s ease;
+}
+.svc:hover::before { transform: scaleX(1); }
+
+.svc-num {
+  font-size: 11px; font-weight: 500;
+  color: var(--ink3); letter-spacing: 2px;
+  text-transform: uppercase; margin-bottom: 28px;
+}
+
+.svc-icon {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  background: var(--accent-light);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; margin-bottom: 20px;
+}
+
+.svc-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 23px; font-weight: 400;
+  color: var(--ink); margin-bottom: 12px;
+  letter-spacing: -0.2px; line-height: 1.2;
+}
+
+.svc-desc {
+  font-size: 14px; color: var(--ink2);
+  line-height: 1.75; font-weight: 300;
+}
+
+.svc-tags {
+  margin-top: 24px;
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.svc-tag {
+  font-size: 11px; font-weight: 400;
+  color: var(--ink3);
+  border: 1px solid var(--border2);
+  padding: 3px 10px; border-radius: 20px;
+}
+
+/* ── PORTAFOLIO ── */
+.port-grid {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 20px;
+}
+
+.port-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+.port-card:hover {
+  border-color: var(--border2);
+  box-shadow: 0 14px 40px rgba(22,22,26,0.07);
+  transform: translateY(-3px);
+}
+
+.port-visual {
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+}
+.port-visual img {
+  width:100%; height:100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+.port-card:hover .port-visual img { transform: scale(1.04); }
+
+.port-visual::after {
+  content:''; position:absolute; inset:0;
+  background: linear-gradient(180deg, transparent 50%, rgba(255,255,255,0.9) 100%);
+}
+
+.port-body { padding: 28px 32px 32px; }
+
+.port-sector {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 10px;
+}
+
+.port-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; font-weight: 400;
+  color: var(--ink); letter-spacing: -0.2px;
+  margin-bottom: 10px; line-height: 1.25;
+}
+
+.port-desc {
+  font-size: 13.5px; color: var(--ink2);
+  line-height: 1.75; font-weight: 300;
+}
+
+.port-pills {
+  margin-top: 18px;
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.port-pill {
+  font-size: 11px; font-weight: 400;
+  color: var(--ink3);
+  border: 1px solid var(--border2);
+  padding: 3px 10px; border-radius: 20px;
+}
+
+/* ── ALIADOS ── */
+#aliados { background: var(--bg2); max-width:100%; padding:0; }
+.aliados-in {
+  max-width:1200px; margin:0 auto;
+  padding: 96px 60px;
+}
+
+.ally-grid {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+
+.ally-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+.ally-card:hover { border-color: var(--border2); }
+.ally-card.main { border-color: rgba(26,58,107,0.2); }
+
+.ally-img {
+  height: 160px; overflow:hidden;
+  position:relative;
+}
+.ally-img img {
+  width:100%; height:100%;
+  object-fit:cover; display:block;
+  transition: transform 0.5s;
+}
+.ally-card:hover .ally-img img { transform: scale(1.04); }
+.ally-img::after {
+  content:''; position:absolute; inset:0;
+  background: linear-gradient(180deg, transparent 40%, var(--surface) 100%);
+}
+
+.ally-body { padding: 28px 32px 36px; }
+
+.ally-badge {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 8px;
+}
+
+.ally-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px; font-weight: 400;
+  color: var(--ink); margin-bottom: 12px;
+  letter-spacing: -0.2px;
+}
+
+.ally-desc {
+  font-size: 13.5px; color: var(--ink2);
+  line-height: 1.75; font-weight: 300;
+}
+
+.ally-items {
+  margin-top: 20px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.ally-item {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; color: var(--ink2); font-weight: 300;
+}
+.ally-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--accent); flex-shrink:0;
+}
+
+/* ── PROCESO ── */
+.proc-row {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.proc {
+  background: var(--surface);
+  padding: 40px 28px;
+  transition: background 0.2s;
+}
+.proc:hover { background: var(--bg); }
+
+.proc-num {
+  font-size: 11px; font-weight: 500;
+  color: var(--ink3); letter-spacing: 2px;
+  text-transform: uppercase; margin-bottom: 20px;
+}
+
+.proc-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; font-weight: 400;
+  color: var(--ink); margin-bottom: 10px;
+  letter-spacing: -0.2px;
+}
+
+.proc-desc {
+  font-size: 13px; color: var(--ink2);
+  line-height: 1.75; font-weight: 300;
+}
+
+/* ── CONTACTO ── */
+.contact-wrap { background: var(--ink); max-width:100%; }
+.contact-in {
+  max-width: 1200px; margin: 0 auto;
+  padding: 96px 60px;
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 80px; align-items: start;
+}
+
+.c-label {
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: rgba(255,255,255,0.3); margin-bottom: 16px;
+}
+
+.c-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(32px, 3vw, 46px);
+  font-weight: 300; color: white;
+  line-height: 1.15; letter-spacing: -0.3px;
+  margin-bottom: 20px;
+}
+.c-title em { font-style:italic; color: rgba(255,255,255,0.4); }
+
+.c-sub {
+  font-size: 14px; color: rgba(255,255,255,0.4);
+  font-weight: 300; line-height: 1.8; margin-bottom: 44px;
+}
+
+.c-item {
+  display: flex; align-items: flex-start;
+  gap: 14px; margin-bottom: 22px;
+}
+.c-icon {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; flex-shrink:0; margin-top:2px;
+}
+.c-item-lbl {
+  font-size: 10px; font-weight: 500;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 3px;
+}
+.c-item-val {
+  font-size: 14px; color: rgba(255,255,255,0.65);
+  font-weight: 300;
+}
+
+/* ── FORM ── */
+.form { display:flex; flex-direction:column; gap:14px; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.fg { display:flex; flex-direction:column; gap:6px; }
+.fg label {
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+}
+.fg input, .fg select, .fg textarea {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px; padding: 12px 16px;
+  color: rgba(255,255,255,0.8);
+  font-family:'Outfit',sans-serif; font-size:14px; font-weight:300;
+  outline:none; transition: border-color 0.2s;
+  -webkit-appearance:none;
+}
+.fg select option { background:#1a1a1a; color:white; }
+.fg input:focus, .fg select:focus, .fg textarea:focus { border-color: rgba(255,255,255,0.25); }
+.fg input::placeholder, .fg textarea::placeholder { color: rgba(255,255,255,0.18); }
+.fg textarea { resize:vertical; min-height:100px; }
+
+.form-btn {
+  margin-top:6px; background:white; color:var(--ink);
+  border:none; border-radius:8px;
+  padding:14px 32px;
+  font-family:'Outfit',sans-serif; font-size:14px; font-weight:500;
+  cursor:pointer; transition: background 0.2s, transform 0.15s;
+  align-self:flex-start; letter-spacing:0.2px;
+}
+.form-btn:hover { background:#e8e8e8; transform:translateY(-1px); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--ink);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding: 30px 60px;
+  display: flex; align-items:center; justify-content:space-between;
+}
+.footer-brand {
+  font-family:'Cormorant Garamond',serif;
+  font-size:18px; font-weight:400;
+  color:rgba(255,255,255,0.4);
+  display:flex; align-items:center; gap:10px;
+}
+.footer-copy { font-size:12px; color:rgba(255,255,255,0.22); }
+.footer-ally { font-size:12px; color:rgba(255,255,255,0.22); text-align:right; line-height:1.6; }
+
+hr { border:none; border-top:1px solid var(--border); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(18px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.reveal { opacity:0; transform:translateY(20px); transition: opacity 0.65s ease, transform 0.65s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.d1 { transition-delay:0.1s; }
+.d2 { transition-delay:0.18s; }
+.d3 { transition-delay:0.26s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width:960px){
+  nav { padding:0 20px; }
+  .nav-links { display:none; }
+  .hero { padding:100px 24px 80px; }
+  .hero-visual { grid-template-columns:1fr; }
+  .hero-img-card.tall, .hero-img-card.short { height:220px; }
+  .stats-inner { flex-wrap:wrap; padding:0 24px; }
+  .stat-item { flex:1 1 50%; border-right:none; border-bottom:1px solid var(--border); }
+  .section { padding:70px 24px; }
+  .svc-grid { grid-template-columns:1fr; }
+  .port-grid { grid-template-columns:1fr; }
+  .ally-grid { grid-template-columns:1fr; }
+  .proc-row { grid-template-columns:1fr 1fr; }
+  .contact-in { grid-template-columns:1fr; gap:48px; padding:70px 24px; }
+  .form-row { grid-template-columns:1fr; }
+  footer { flex-direction:column; gap:12px; text-align:center; padding:28px 24px; }
+  .footer-ally { text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-mark">M</div>
+    Maxina Digital
+  </a>
+  <ul class="nav-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#portafolio">Portafolio</a></li>
+    <li><a href="#aliados">Aliados</a></li>
+    <li><a href="#proceso">Proceso</a></li>
+    <li><a href="#contacto" class="nav-cta">Hablemos</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="hero-eyebrow">Aguascalientes · Centro de México</p>
+
+  <h1 class="hero-title">
+    Tecnología <em>inteligente</em><br>
+    para <strong>negocios reales.</strong>
+  </h1>
+
+  <p class="hero-sub">
+    Desarrollamos aplicaciones web y móviles para los sectores médico, automotriz, financiero y PyME. Soluciones modernas, código de calidad, resultados medibles.
+  </p>
+
+  <div class="hero-actions">
+    <a href="#contacto" class="btn-primary">Iniciar proyecto</a>
+    <a href="#portafolio" class="btn-text">Ver portafolio <span>→</span></a>
+  </div>
+
+  <!-- IMAGE STRIP -->
+  <div class="hero-visual">
+    <div class="hero-img-card tall">
+      <img src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80&auto=format&fit=crop" alt="IA y tecnología">
+      <span class="hero-img-label">Inteligencia Artificial</span>
+    </div>
+    <div class="hero-img-card short">
+      <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80&auto=format&fit=crop" alt="Dashboard digital">
+      <span class="hero-img-label">Dashboards</span>
+    </div>
+    <div class="hero-img-card short">
+      <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&q=80&auto=format&fit=crop" alt="Apps móviles">
+      <span class="hero-img-label">Apps Móviles</span>
+    </div>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-inner reveal">
+    <div class="stat-item">
+      <div class="stat-num">4<sup>+</sup></div>
+      <div class="stat-label">Sectores atendidos</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">100<sup>%</sup></div>
+      <div class="stat-label">Código a medida</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">&lt;24<sup>h</sup></div>
+      <div class="stat-label">Respuesta inicial</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">MX</div>
+      <div class="stat-label">Todo el país</div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICIOS -->
+<section id="servicios" class="section">
+  <p class="section-label reveal">Qué hacemos</p>
+  <h2 class="section-title reveal">Servicios <em>a la medida</em><br>de tu industria</h2>
+  <p class="section-sub reveal">Desde una landing page hasta un sistema empresarial completo — construimos exactamente lo que tu negocio necesita.</p>
+
+  <div class="svc-grid reveal d1">
+    <div class="svc">
+      <div class="svc-num">01 — Web</div>
+      <div class="svc-icon">🌐</div>
+      <div class="svc-name">Desarrollo Web</div>
+      <p class="svc-desc">Sitios institucionales, portales empresariales y plataformas interactivas con tecnología moderna. Optimizados para buscadores y enfocados en conversión de clientes.</p>
+      <div class="svc-tags">
+        <span class="svc-tag">React</span><span class="svc-tag">Next.js</span>
+        <span class="svc-tag">Node.js</span><span class="svc-tag">WordPress</span>
+        <span class="svc-tag">SEO</span>
+      </div>
+    </div>
+    <div class="svc">
+      <div class="svc-num">02 — Mobile</div>
+      <div class="svc-icon">📱</div>
+      <div class="svc-name">Aplicaciones Móviles</div>
+      <p class="svc-desc">Apps nativas y multiplataforma para iOS y Android. Desde sistemas de citas médicas hasta gestión de talleres automotrices y portales financieros.</p>
+      <div class="svc-tags">
+        <span class="svc-tag">React Native</span><span class="svc-tag">Flutter</span>
+        <span class="svc-tag">iOS</span><span class="svc-tag">Android</span>
+        <span class="svc-tag">APIs</span>
+      </div>
+    </div>
+    <div class="svc">
+      <div class="svc-num">03 — Sistemas</div>
+      <div class="svc-icon">⚙️</div>
+      <div class="svc-name">Sistemas a Medida</div>
+      <p class="svc-desc">ERP, CRM, control de inventario, facturación CFDI y automatización de procesos internos. Integraciones con SAT, bancos y sistemas existentes.</p>
+      <div class="svc-tags">
+        <span class="svc-tag">Bases de datos</span><span class="svc-tag">Cloud</span>
+        <span class="svc-tag">Integraciones</span><span class="svc-tag">Reportes</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- PORTAFOLIO -->
+<section id="portafolio" class="section">
+  <p class="section-label reveal">Casos de éxito</p>
+  <h2 class="section-title reveal">Portafolio <em>por sector</em></h2>
+  <p class="section-sub reveal">Soluciones reales para los sectores más exigentes de la industria mexicana.</p>
+
+  <div class="port-grid">
+
+    <div class="port-card reveal d1">
+      <div class="port-visual">
+        <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=80&auto=format&fit=crop" alt="Sector médico">
+      </div>
+      <div class="port-body">
+        <p class="port-sector">Sector Médico</p>
+        <h3 class="port-title">Sistema de Imagenología Clínica</h3>
+        <p class="port-desc">Plataforma integral para clínicas de diagnóstico. Gestión de expedientes, citas en línea, resultados digitales y panel administrativo con reportes en tiempo real.</p>
+        <div class="port-pills">
+          <span class="port-pill">Expediente digital</span>
+          <span class="port-pill">Citas online</span>
+          <span class="port-pill">WhatsApp</span>
+          <span class="port-pill">Reportes DICOM</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="port-card reveal d2">
+      <div class="port-visual">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80&auto=format&fit=crop" alt="Sector automotriz">
+      </div>
+      <div class="port-body">
+        <p class="port-sector">Sector Automotriz</p>
+        <h3 class="port-title">App de Gestión de Taller</h3>
+        <p class="port-desc">Sistema móvil para talleres y agencias. Control de órdenes de servicio, inventario de refacciones, historial de vehículos y notificaciones automáticas al cliente.</p>
+        <div class="port-pills">
+          <span class="port-pill">Control ODS</span>
+          <span class="port-pill">Inventario</span>
+          <span class="port-pill">Notificaciones push</span>
+          <span class="port-pill">Historial vehicular</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="port-card reveal d1">
+      <div class="port-visual">
+        <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80&auto=format&fit=crop" alt="Sector financiero">
+      </div>
+      <div class="port-body">
+        <p class="port-sector">Sector Financiero</p>
+        <h3 class="port-title">Dashboard de Gestión Financiera</h3>
+        <p class="port-desc">Plataforma web para empresas financieras y despachos contables. Visualización de carteras, control de créditos y reportes regulatorios automáticos.</p>
+        <div class="port-pills">
+          <span class="port-pill">Dashboards</span>
+          <span class="port-pill">Reportes SAT</span>
+          <span class="port-pill">Control de cartera</span>
+          <span class="port-pill">Alertas</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="port-card reveal d2">
+      <div class="port-visual">
+        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80&auto=format&fit=crop" alt="Sector PyME">
+      </div>
+      <div class="port-body">
+        <p class="port-sector">Sector PyME</p>
+        <h3 class="port-title">Suite Digital para PyMEs</h3>
+        <p class="port-desc">Paquete completo: sitio web profesional, punto de venta, catálogo digital con QR, facturación CFDI y gestión de presencia en redes sociales.</p>
+        <div class="port-pills">
+          <span class="port-pill">Sitio web</span>
+          <span class="port-pill">POS</span>
+          <span class="port-pill">CFDI</span>
+          <span class="port-pill">Catálogo QR</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ALIADOS -->
+<div id="aliados">
+  <div class="aliados-in">
+    <p class="section-label reveal">Red de aliados</p>
+    <h2 class="section-title reveal">Colaboramos con <em>los mejores</em></h2>
+    <p class="section-sub reveal">Trabajamos junto a líderes del sector para ofrecer soluciones digitales integrales.</p>
+
+    <div class="ally-grid reveal d1">
+
+      <div class="ally-card main">
+        <div class="ally-img">
+          <img src="https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=900&q=80&auto=format&fit=crop" alt="Canal 16 TV">
+        </div>
+        <div class="ally-body">
+          <p class="ally-badge">Aliado estratégico · Medios</p>
+          <h3 class="ally-name">Canal 16 Aguascalientes</h3>
+          <p class="ally-desc">Alianza exclusiva con el canal de mayor alcance en Aguascalientes. Ofrecemos paquetes integrados de presencia digital más difusión televisiva para que tu marca llegue a toda la ciudad.</p>
+          <div class="ally-items">
+            <div class="ally-item"><span class="ally-dot"></span>Semblanzas y Publi Reportajes</div>
+            <div class="ally-item"><span class="ally-dot"></span>Comerciales Tribuna 360</div>
+            <div class="ally-item"><span class="ally-dot"></span>Programas Especiales y Podcast TV</div>
+            <div class="ally-item"><span class="ally-dot"></span>Difusión en TV + Redes Sociales</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ally-card">
+        <div class="ally-img">
+          <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&q=80&auto=format&fit=crop" alt="Cloud infrastructure">
+        </div>
+        <div class="ally-body">
+          <p class="ally-badge">Infraestructura · Cloud</p>
+          <h3 class="ally-name">Vercel & GitHub</h3>
+          <p class="ally-desc">Infraestructura de clase mundial para cada proyecto que desarrollamos. CDN global, HTTPS automático y 99.99% uptime garantizado.</p>
+          <div class="ally-items">
+            <div class="ally-item"><span class="ally-dot"></span>Deploy automático desde GitHub</div>
+            <div class="ally-item"><span class="ally-dot"></span>CDN global ultrarrápido</div>
+            <div class="ally-item"><span class="ally-dot"></span>SSL y seguridad incluidos</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PROCESO -->
+<section id="proceso" class="section">
+  <p class="section-label reveal">Cómo trabajamos</p>
+  <h2 class="section-title reveal">Un proceso <em>claro,</em><br>sin sorpresas</h2>
+
+  <div class="proc-row reveal d1">
+    <div class="proc">
+      <div class="proc-num">01 — Diagnóstico</div>
+      <div class="proc-name">Entendemos tu negocio</div>
+      <p class="proc-desc">Reunión inicial para definir objetivos, usuarios, alcance y presupuesto. Sin tecnicismos — hablamos tu idioma.</p>
+    </div>
+    <div class="proc">
+      <div class="proc-num">02 — Diseño</div>
+      <div class="proc-name">Prototipamos primero</div>
+      <p class="proc-desc">Diseñamos la experiencia visual y funcional. Tú apruebas antes de que escribamos una línea de código.</p>
+    </div>
+    <div class="proc">
+      <div class="proc-num">03 — Desarrollo</div>
+      <div class="proc-name">Código de calidad</div>
+      <p class="proc-desc">Construimos con código limpio y escalable. Avances semanales para que siempre sepas cómo va tu proyecto.</p>
+    </div>
+    <div class="proc">
+      <div class="proc-num">04 — Lanzamiento</div>
+      <div class="proc-name">Publicamos y acompañamos</div>
+      <p class="proc-desc">Lanzamos, probamos y capacitamos a tu equipo. Soporte post-entrega incluido en todos los planes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<div id="contacto" class="contact-wrap">
+  <div class="contact-in">
+    <div>
+      <p class="c-label">Hablemos</p>
+      <h2 class="c-title">¿Tienes un proyecto<br><em>en mente?</em></h2>
+      <p class="c-sub">Cuéntanos qué necesitas. Respondemos en menos de 24 horas con una propuesta inicial sin costo.</p>
+      <div class="c-item">
+        <div class="c-icon">✉️</div>
+        <div>
+          <div class="c-item-lbl">Correo</div>
+          <div class="c-item-val">contacto@maxinadigital.com</div>
+        </div>
+      </div>
+      <div class="c-item">
+        <div class="c-icon">📍</div>
+        <div>
+          <div class="c-item-lbl">Ubicación</div>
+          <div class="c-item-val">Aguascalientes, México<br>
+            <span style="font-size:12px;color:rgba(255,255,255,0.28);">Centro de México · Todo el país</span>
+          </div>
+        </div>
+      </div>
+      <div class="c-item">
+        <div class="c-icon">⏱️</div>
+        <div>
+          <div class="c-item-lbl">Horario</div>
+          <div class="c-item-val">Lun – Vie · 9:00 am – 7:00 pm</div>
+        </div>
+      </div>
+    </div>
+
+    <form class="form" onsubmit="handleSubmit(event)">
+      <div class="form-row">
+        <div class="fg"><label>Nombre *</label><input type="text" placeholder="Tu nombre" required></div>
+        <div class="fg"><label>Empresa</label><input type="text" placeholder="Tu empresa"></div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>Correo *</label><input type="email" placeholder="correo@empresa.com" required></div>
+        <div class="fg"><label>WhatsApp</label><input type="tel" placeholder="+52 449 000 0000"></div>
+      </div>
+      <div class="fg">
+        <label>Sector</label>
+        <select>
+          <option value="">¿En qué sector está tu empresa?</option>
+          <option>Médico / Salud</option>
+          <option>Automotriz</option>
+          <option>Financiero</option>
+          <option>PyME / Comercio</option>
+          <option>Otro</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>¿Qué necesitas?</label>
+        <select>
+          <option value="">Selecciona un servicio</option>
+          <option>Sitio web profesional</option>
+          <option>Aplicación móvil</option>
+          <option>Sistema a medida</option>
+          <option>Paquete Web + Canal 16</option>
+          <option>Asesoría — aún no lo sé</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Cuéntanos más</label>
+        <textarea placeholder="Describe brevemente tu proyecto..."></textarea>
+      </div>
+      <button type="submit" class="form-btn">Enviar mensaje →</button>
+    </form>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <div class="nav-logo-mark">M</div>
+    Maxina Digital
+  </div>
+  <p class="footer-copy">© 2026 Maxina Digital · Aguascalientes, México</p>
+  <div class="footer-ally">
+    En alianza con Canal 16 Aguascalientes<br>
+    <span style="font-size:11px;">Fernando Ortega · Gestión de medios TV</span>
+  </div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.form-btn');
+  btn.textContent = '✓ Mensaje enviado';
+  btn.style.background = '#d1fae5'; btn.style.color = '#065f46';
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = 'Enviar mensaje →';
+    btn.style.background = ''; btn.style.color = '';
+    btn.disabled = false; e.target.reset();
+  }, 3500);
+}
+</script>
+</body>
+</html>
