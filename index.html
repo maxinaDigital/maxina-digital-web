@@ -52,23 +52,58 @@ nav {
 }
 
 .nav-logo {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 21px;
-  font-weight: 500;
-  color: var(--ink);
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 11px;
 }
 
-.nav-logo-mark {
-  width: 30px; height: 30px;
-  background: var(--accent);
-  border-radius: 7px;
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Outfit', sans-serif;
-  font-size: 14px; font-weight: 600; color: white;
+.nav-logo img { display: block; height: 44px; width: auto; }
+
+/* Hamburger button — hidden on desktop */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px; height: 36px;
+  background: none; border: none; cursor: pointer; padding: 4px;
+}
+.nav-hamburger span {
+  display: block; height: 2px; background: var(--ink);
+  border-radius: 2px; transition: all 0.25s ease;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile nav drawer */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  top: 64px; left: 0; right: 0;
+  background: rgba(247,246,243,0.98);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+  padding: 20px 24px 28px;
+  z-index: 99;
+  flex-direction: column;
+  gap: 4px;
+}
+.mobile-nav.open { display: flex; }
+.mobile-nav a {
+  font-size: 16px; font-weight: 400;
+  color: var(--ink2); text-decoration: none;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  transition: color 0.2s;
+}
+.mobile-nav a:hover { color: var(--ink); }
+.mobile-nav .nav-cta {
+  margin-top: 12px;
+  background: var(--ink); color: white;
+  padding: 13px 20px; border-radius: 8px;
+  font-weight: 500; text-align: center;
+  border-bottom: none;
 }
 
 .nav-links { display:flex; gap:36px; list-style:none; }
@@ -630,22 +665,65 @@ hr { border:none; border-top:1px solid var(--border); }
 
 /* ── RESPONSIVE ── */
 @media (max-width:960px){
+  /* Nav */
   nav { padding:0 20px; }
   .nav-links { display:none; }
-  .hero { padding:100px 24px 80px; }
-  .hero-visual { grid-template-columns:1fr; }
-  .hero-img-card.tall, .hero-img-card.short { height:220px; }
-  .stats-inner { flex-wrap:wrap; padding:0 24px; }
+  .nav-hamburger { display:flex; }
+  .nav-logo img { height:36px; }
+
+  /* Hero */
+  .hero { padding:100px 20px 60px; text-align:left; align-items:flex-start; }
+  .hero-title { font-size: clamp(34px, 8vw, 52px); }
+  .hero-actions { flex-direction:column; align-items:flex-start; gap:14px; }
+  .hero-visual { grid-template-columns:1fr; gap:10px; }
+  .hero-img-card.tall, .hero-img-card.short { height:200px; }
+
+  /* Stats */
+  .stats-inner { flex-wrap:wrap; padding:0 20px; }
   .stat-item { flex:1 1 50%; border-right:none; border-bottom:1px solid var(--border); }
-  .section { padding:70px 24px; }
-  .svc-grid { grid-template-columns:1fr; }
+  .stat-item:nth-child(odd) { border-right:1px solid var(--border); }
+
+  /* Sections */
+  .section { padding:60px 20px; }
+  .section-sub { max-width:100%; }
+
+  /* Servicios */
+  .svc-grid { grid-template-columns:1fr; border-radius:var(--radius-lg); }
+  .svc { border-radius:0; }
+  .svc:first-child { border-radius:var(--radius-lg) var(--radius-lg) 0 0; }
+  .svc:last-child { border-radius:0 0 var(--radius-lg) var(--radius-lg); }
+
+  /* Portafolio */
   .port-grid { grid-template-columns:1fr; }
+  .port-visual { height:180px; }
+
+  /* Aliados */
   .ally-grid { grid-template-columns:1fr; }
-  .proc-row { grid-template-columns:1fr 1fr; }
-  .contact-in { grid-template-columns:1fr; gap:48px; padding:70px 24px; }
+  .ally-img { height:140px; }
+
+  /* Proceso */
+  .proc-row { grid-template-columns:1fr; border-radius:var(--radius-lg); }
+  .proc { border-radius:0; }
+  .proc:first-child { border-radius:var(--radius-lg) var(--radius-lg) 0 0; }
+  .proc:last-child { border-radius:0 0 var(--radius-lg) var(--radius-lg); }
+
+  /* Contacto */
+  .contact-in { grid-template-columns:1fr; gap:44px; padding:60px 20px; }
   .form-row { grid-template-columns:1fr; }
-  footer { flex-direction:column; gap:12px; text-align:center; padding:28px 24px; }
+  .form-btn { width:100%; text-align:center; }
+
+  /* Footer */
+  footer { flex-direction:column; gap:14px; text-align:center; padding:28px 20px; }
   .footer-ally { text-align:center; }
+}
+
+@media (max-width:480px){
+  .hero-title { font-size:32px; }
+  .stat-item { flex:1 1 100%; border-right:none; }
+  .hero-img-card.tall, .hero-img-card.short { height:160px; }
+  .section { padding:48px 16px; }
+  .contact-in { padding:48px 16px; }
+  nav { padding:0 16px; }
 }
 </style>
 </head>
@@ -654,7 +732,7 @@ hr { border:none; border-top:1px solid var(--border); }
 <!-- NAV -->
 <nav>
   <a href="#" class="nav-logo">
-    <img src="maxina-digital-logo.svg" alt="Maxina Digital" height="38" style="display:block;">
+    <img src="maxina-digital-logo.svg" alt="Maxina Digital" height="44" style="display:block;">
   </a>
   <ul class="nav-links">
     <li><a href="#servicios">Servicios</a></li>
@@ -663,7 +741,19 @@ hr { border:none; border-top:1px solid var(--border); }
     <li><a href="#proceso">Proceso</a></li>
     <li><a href="#contacto" class="nav-cta">Hablemos</a></li>
   </ul>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE NAV DRAWER -->
+<div class="mobile-nav" id="mobile-nav">
+  <a href="#servicios" onclick="closeMobileNav()">Servicios</a>
+  <a href="#portafolio" onclick="closeMobileNav()">Portafolio</a>
+  <a href="#aliados" onclick="closeMobileNav()">Aliados</a>
+  <a href="#proceso" onclick="closeMobileNav()">Proceso</a>
+  <a href="#contacto" class="nav-cta" onclick="closeMobileNav()">Hablemos</a>
+</div>
 
 <!-- HERO -->
 <div class="hero">
@@ -1042,6 +1132,25 @@ function handleSubmit(e) {
     btn.disabled = false; e.target.reset();
   }, 3500);
 }
+
+const hamburger = document.getElementById('hamburger');
+const mobileNav = document.getElementById('mobile-nav');
+
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  mobileNav.classList.toggle('open');
+});
+
+function closeMobileNav() {
+  hamburger.classList.remove('open');
+  mobileNav.classList.remove('open');
+}
+
+document.addEventListener('click', (e) => {
+  if (!hamburger.contains(e.target) && !mobileNav.contains(e.target)) {
+    closeMobileNav();
+  }
+});
 </script>
 </body>
 </html>
