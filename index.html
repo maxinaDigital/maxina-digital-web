@@ -663,6 +663,229 @@ hr { border:none; border-top:1px solid var(--border); }
 .d2 { transition-delay:0.18s; }
 .d3 { transition-delay:0.26s; }
 
+/* ── ERP MODULES ── */
+.port-float-stats {
+  position: absolute;
+  bottom: 24px; right: 24px;
+  display: flex; gap: 12px;
+  z-index: 3;
+}
+
+.port-float-stat {
+  background: rgba(247,246,243,0.92);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 18px;
+  text-align: center;
+  min-width: 90px;
+}
+
+.port-float-num {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px; font-weight: 300;
+  color: var(--ink); line-height: 1;
+  letter-spacing: -1px;
+}
+
+.port-float-lbl {
+  display: block;
+  font-size: 10px; color: var(--ink3);
+  font-weight: 400; margin-top: 4px;
+  letter-spacing: 0.2px;
+}
+
+.port-erp-header {
+  padding: 36px 44px 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.port-erp-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px; font-style: italic; font-weight: 300;
+  color: var(--ink2); line-height: 1.5;
+  max-width: 340px; text-align: right;
+  border-right: 2px solid var(--accent);
+  padding-right: 20px;
+  flex-shrink: 0;
+}
+
+.port-erp-body {
+  padding: 20px 44px 0;
+}
+
+.port-modules {
+  padding: 36px 44px 44px;
+  border-top: 1px solid var(--border);
+  margin-top: 32px;
+}
+
+.port-module-title {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--ink3); margin-bottom: 24px;
+}
+
+.port-modules-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.port-module {
+  background: var(--bg);
+  padding: 24px 22px 28px;
+  transition: background 0.25s;
+  position: relative;
+}
+
+.port-module:hover { background: var(--surface); }
+
+.port-module::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: var(--accent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.port-module:hover::before { transform: scaleX(1); }
+
+.port-module-icon {
+  font-size: 24px; margin-bottom: 12px; display: block;
+}
+
+.port-module-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px; font-weight: 400;
+  color: var(--ink); margin-bottom: 10px;
+  line-height: 1.2; letter-spacing: -0.2px;
+}
+
+.port-module-desc {
+  font-size: 12.5px; color: var(--ink2);
+  line-height: 1.7; font-weight: 300;
+}
+
+.port-module-tags {
+  display: flex; flex-wrap: wrap; gap: 4px;
+  margin-top: 14px;
+}
+
+.port-module-tags span {
+  font-size: 10px; font-weight: 400;
+  color: var(--accent);
+  background: var(--accent-light);
+  border: 1px solid rgba(26,58,107,0.12);
+  padding: 2px 8px; border-radius: 20px;
+  letter-spacing: 0.2px;
+}
+
+/* ── PORTFOLIO FEATURED CARD ── */
+.port-card-featured {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.port-card-featured:hover {
+  border-color: var(--border2);
+  box-shadow: 0 16px 48px rgba(22,22,26,0.08);
+}
+
+.port-visual-wide {
+  height: 320px;
+  overflow: hidden;
+  position: relative;
+}
+.port-visual-wide img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  transition: transform 0.6s ease;
+}
+.port-card-featured:hover .port-visual-wide img { transform: scale(1.03); }
+
+.port-visual .port-visual-overlay,
+.port-visual-wide .port-visual-overlay {
+  position: absolute;
+  top: 16px; left: 16px;
+  z-index: 3;
+}
+
+.port-badge {
+  display: inline-block;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  background: var(--ink); color: white;
+  padding: 5px 12px; border-radius: 20px;
+}
+
+.port-body-featured {
+  padding: 40px 44px;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.port-title-lg {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px; font-weight: 400;
+  color: var(--ink); letter-spacing: -0.5px;
+  margin-bottom: 16px; line-height: 1.15;
+}
+
+.port-desc-lg {
+  font-size: 14.5px; color: var(--ink2);
+  line-height: 1.8; font-weight: 300;
+}
+
+.port-body-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 8px;
+}
+
+.port-metric {
+  padding: 20px 24px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  border-left: 3px solid var(--accent);
+}
+
+.port-metric-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 30px; font-weight: 300;
+  color: var(--ink); line-height: 1;
+  letter-spacing: -0.5px;
+}
+
+.port-metric-label {
+  font-size: 11px; color: var(--ink3);
+  font-weight: 400; margin-top: 4px;
+  letter-spacing: 0.2px;
+}
+
+/* Overlay on regular cards too */
+.port-visual { position: relative; }
+.port-visual::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(255,255,255,0.92) 100%);
+  pointer-events: none;
+}
+
 /* ── RESPONSIVE ── */
 @media (max-width:960px){
   /* Nav */
@@ -692,6 +915,21 @@ hr { border:none; border-top:1px solid var(--border); }
   .svc { border-radius:0; }
   .svc:first-child { border-radius:var(--radius-lg) var(--radius-lg) 0 0; }
   .svc:last-child { border-radius:0 0 var(--radius-lg) var(--radius-lg); }
+
+  /* ERP modules */
+  .port-modules-grid { grid-template-columns: repeat(2,1fr); }
+  .port-erp-header { flex-direction:column; gap:16px; padding:24px 20px 0; }
+  .port-erp-tagline { text-align:left; border-right:none; border-left:2px solid var(--accent); padding-right:0; padding-left:16px; max-width:100%; }
+  .port-erp-body { padding:16px 20px 0; }
+  .port-modules { padding:24px 20px 32px; }
+  .port-float-stats { display:none; }
+
+  /* Portafolio featured */
+  .port-visual-wide { height: 200px; }
+  .port-body-featured { grid-template-columns:1fr; gap:28px; padding:24px 20px 32px; }
+  .port-title-lg { font-size:24px; }
+  .port-body-right { gap:12px; }
+  .port-metric { padding:14px 16px; }
 
   /* Portafolio */
   .port-grid { grid-template-columns:1fr; }
@@ -724,6 +962,7 @@ hr { border:none; border-top:1px solid var(--border); }
   .section { padding:48px 16px; }
   .contact-in { padding:48px 16px; }
   nav { padding:0 16px; }
+  .port-modules-grid { grid-template-columns:1fr; }
 }
 </style>
 </head>
@@ -859,93 +1098,180 @@ hr { border:none; border-top:1px solid var(--border); }
 <!-- PORTAFOLIO -->
 <section id="portafolio" class="section">
   <p class="section-label reveal">Casos de éxito</p>
-  <h2 class="section-title reveal">Portafolio <em>por sector</em></h2>
-  <p class="section-sub reveal">Soluciones reales para los sectores más exigentes de la industria mexicana.</p>
+  <h2 class="section-title reveal">Sistemas que <em>mueven industrias</em></h2>
+  <p class="section-sub reveal">No construimos páginas — construimos plataformas que transforman la operación de empresas reales en resultados medibles.</p>
 
-  <div class="port-grid">
-
-    <div class="port-card reveal d1">
-      <div class="port-visual">
-        <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=80&auto=format&fit=crop" alt="Sector médico">
+  <!-- ══ CARD 1 — ERP HOSPITALITY & HEALTHCARE — FULL WIDTH ══ -->
+  <div class="port-card port-card-featured reveal" style="margin-top:56px;">
+    <div class="port-visual-wide">
+      <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1400&q=85&auto=format&fit=crop" alt="ERP Hospitality & Healthcare">
+      <div class="port-visual-overlay">
+        <span class="port-badge">ERP · Hospitalidad &amp; Salud</span>
       </div>
-      <div class="port-body">
-        <p class="port-sector">Sector Médico</p>
-        <h3 class="port-title">Sistema de Imagenología Clínica</h3>
-        <p class="port-desc">Plataforma integral para clínicas de diagnóstico. Gestión de expedientes, citas en línea, resultados digitales y panel administrativo con reportes en tiempo real.</p>
-        <div class="port-pills">
-          <span class="port-pill">Expediente digital</span>
-          <span class="port-pill">Citas online</span>
-          <span class="port-pill">WhatsApp</span>
-          <span class="port-pill">Reportes DICOM</span>
+      <!-- Stats flotantes sobre la imagen -->
+      <div class="port-float-stats">
+        <div class="port-float-stat">
+          <span class="port-float-num">100%</span>
+          <span class="port-float-lbl">Operación centralizada</span>
+        </div>
+        <div class="port-float-stat">
+          <span class="port-float-num">24/7</span>
+          <span class="port-float-lbl">Disponible en la nube</span>
+        </div>
+        <div class="port-float-stat">
+          <span class="port-float-num">∞</span>
+          <span class="port-float-lbl">Propiedades escalables</span>
         </div>
       </div>
     </div>
 
+    <!-- Descripción principal -->
+    <div class="port-erp-header">
+      <div>
+        <p class="port-sector">Hoteles · Hospitales &amp; Clínicas · Gestión Empresarial</p>
+        <h3 class="port-title-lg">ERP Hospitality &amp; Healthcare Suite</h3>
+      </div>
+      <p class="port-erp-tagline">"Una misma arquitectura de clase mundial para dos industrias que comparten un mismo estándar: la excelencia."</p>
+    </div>
+
+    <div class="port-erp-body">
+      <p class="port-desc-lg">Cuando un hotel o un hospital opera sin visibilidad total, pierde eficiencia operativa — y eso tiene un costo real cada día. Desarrollamos un ERP de alto rendimiento que unifica en una sola plataforma inteligente toda la operación: desde la reservación de una habitación o la admisión de un paciente, hasta el cierre contable del mes. En tiempo real. Desde cualquier dispositivo. Sin fricciones.</p>
+      <p class="port-desc-lg" style="margin-top:14px;">Porque la gestión de un hotel de lujo y la de un hospital privado comparten algo fundamental: la excelencia operativa determina la experiencia de quienes los eligen — y esa experiencia se construye con tecnología bien diseñada.</p>
+    </div>
+
+    <!-- Módulos horizontales -->
+    <div class="port-modules">
+      <div class="port-module-title">Módulos del sistema</div>
+      <div class="port-modules-grid">
+
+        <div class="port-module">
+          <div class="port-module-icon">👥</div>
+          <div class="port-module-name">Gestión de Personal</div>
+          <div class="port-module-desc">Control de nómina, expedientes de empleados, turnos, asistencia, vacaciones y evaluaciones de desempeño. RRHH sin papeleo.</div>
+          <div class="port-module-tags">
+            <span>RRHH</span><span>Nómina</span><span>Turnos</span><span>Asistencia</span>
+          </div>
+        </div>
+
+        <div class="port-module">
+          <div class="port-module-icon">🏨</div>
+          <div class="port-module-name">Gestión de Recursos</div>
+          <div class="port-module-desc">Control en tiempo real de habitaciones, camas clínicas, mesas de comedor y espacios. Ocupación, estado, mantenimiento y disponibilidad al instante.</div>
+          <div class="port-module-tags">
+            <span>Habitaciones</span><span>Camas</span><span>Mesas F&amp;B</span><span>Mantenimiento</span>
+          </div>
+        </div>
+
+        <div class="port-module">
+          <div class="port-module-icon">📦</div>
+          <div class="port-module-name">Gestión de Materiales</div>
+          <div class="port-module-desc">Inventario inteligente por lote, caducidades, puntos de reorden automáticos y trazabilidad de insumos de cocina, limpieza y clínicos.</div>
+          <div class="port-module-tags">
+            <span>Inventarios</span><span>Lotes</span><span>Caducidades</span><span>Trazabilidad</span>
+          </div>
+        </div>
+
+        <div class="port-module">
+          <div class="port-module-icon">🛒</div>
+          <div class="port-module-name">Gestión de Compras</div>
+          <div class="port-module-desc">Flujo completo de abastecimiento: solicitud de compra, autorización por niveles, generación de órdenes de compra, recepción y conciliación con proveedores.</div>
+          <div class="port-module-tags">
+            <span>Solicitudes</span><span>Autorización</span><span>POs</span><span>Recepciones</span>
+          </div>
+        </div>
+
+        <div class="port-module">
+          <div class="port-module-icon">💳</div>
+          <div class="port-module-name">Gestión de Cuentas</div>
+          <div class="port-module-desc">Facturación electrónica CFDI 4.0, cuentas por cobrar y pagar, descuentos y convenios, estados de cuenta y conciliación bancaria automatizada.</div>
+          <div class="port-module-tags">
+            <span>Facturación CFDI</span><span>Descuentos</span><span>CxC / CxP</span><span>Conciliación</span>
+          </div>
+        </div>
+
+        <div class="port-module">
+          <div class="port-module-icon">📊</div>
+          <div class="port-module-name">Business Intelligence</div>
+          <div class="port-module-desc">Dashboards ejecutivos en tiempo real, KPIs operativos y financieros, reportes de ocupación, RevPAR hotelero o índices clínicos. Decisiones basadas en datos.</div>
+          <div class="port-module-tags">
+            <span>Dashboards</span><span>KPIs</span><span>RevPAR</span><span>Reportes</span>
+          </div>
+        </div>
+
+        <div class="port-module">
+          <div class="port-module-icon">📅</div>
+          <div class="port-module-name">Reservaciones &amp; Admisiones</div>
+          <div class="port-module-desc">Motor de reservaciones hoteleras multicanal y módulo de admisión hospitalaria con expediente clínico digital, citas y seguimiento de paciente.</div>
+          <div class="port-module-tags">
+            <span>Reservaciones</span><span>Admisiones</span><span>Expediente digital</span><span>Citas</span>
+          </div>
+        </div>
+
+        <div class="port-module">
+          <div class="port-module-icon">🍽️</div>
+          <div class="port-module-name">Alimentos &amp; Bebidas</div>
+          <div class="port-module-desc">Gestión completa de restaurantes y cocinas: menús, comandas, control de costos, mermas, recetas estándar y punto de venta integrado al ERP.</div>
+          <div class="port-module-tags">
+            <span>Comandas</span><span>Menús</span><span>Costos F&amp;B</span><span>POS integrado</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CARDS 2 y 3 ══ -->
+  <div class="port-grid" style="margin-top:20px;">
+
+    <!-- CARD 2 — POS PyME -->
+    <div class="port-card reveal d1">
+      <div class="port-visual">
+        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=85&auto=format&fit=crop" alt="Punto de venta PyME">
+        <div class="port-visual-overlay">
+          <span class="port-badge">POS · PyME</span>
+        </div>
+      </div>
+      <div class="port-body">
+        <p class="port-sector">PyME · Comercio &amp; Servicios</p>
+        <h3 class="port-title">Sistema de Punto de Venta</h3>
+        <p class="port-desc">Las pequeñas y medianas empresas merecen tecnología de nivel enterprise. Desarrollamos un POS completo, ágil y sin complicaciones: venta rápida con lector de código de barras, control de inventario en tiempo real, facturación electrónica CFDI 4.0, corte de caja automatizado y dashboard de ventas con los indicadores que realmente importan al dueño del negocio.</p>
+        <p class="port-desc" style="margin-top:10px; font-style:italic; color:var(--accent);">Porque crecer no debería ser complicado.</p>
+        <div class="port-pills" style="margin-top:20px;">
+          <span class="port-pill">Venta rápida</span>
+          <span class="port-pill">CFDI 4.0</span>
+          <span class="port-pill">Inventario en tiempo real</span>
+          <span class="port-pill">Múltiples cajas</span>
+          <span class="port-pill">Corte de caja</span>
+          <span class="port-pill">Reportes de ventas</span>
+          <span class="port-pill">App móvil</span>
+          <span class="port-pill">Clientes &amp; Fidelidad</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 3 — Control de Calidad Automotriz -->
     <div class="port-card reveal d2">
       <div class="port-visual">
-        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80&auto=format&fit=crop" alt="Sector automotriz">
-      </div>
-      <div class="port-body">
-        <p class="port-sector">Sector Automotriz</p>
-        <h3 class="port-title">App de Gestión de Taller</h3>
-        <p class="port-desc">Sistema móvil para talleres y agencias. Control de órdenes de servicio, inventario de refacciones, historial de vehículos y notificaciones automáticas al cliente.</p>
-        <div class="port-pills">
-          <span class="port-pill">Control ODS</span>
-          <span class="port-pill">Inventario</span>
-          <span class="port-pill">Notificaciones push</span>
-          <span class="port-pill">Historial vehicular</span>
+        <img src="https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=800&q=85&auto=format&fit=crop" alt="Control de calidad manufactura automotriz">
+        <div class="port-visual-overlay">
+          <span class="port-badge">Manufactura · Automotriz</span>
         </div>
       </div>
-    </div>
-
-    <div class="port-card reveal d1">
-      <div class="port-visual">
-        <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80&auto=format&fit=crop" alt="Sector financiero">
-      </div>
       <div class="port-body">
-        <p class="port-sector">Sector Financiero</p>
-        <h3 class="port-title">Dashboard de Gestión Financiera</h3>
-        <p class="port-desc">Plataforma web para empresas financieras y despachos contables. Visualización de carteras, control de créditos y reportes regulatorios automáticos.</p>
-        <div class="port-pills">
-          <span class="port-pill">Dashboards</span>
-          <span class="port-pill">Reportes SAT</span>
-          <span class="port-pill">Control de cartera</span>
-          <span class="port-pill">Alertas</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="port-card reveal d2">
-      <div class="port-visual">
-        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80&auto=format&fit=crop" alt="Sector PyME">
-      </div>
-      <div class="port-body">
-        <p class="port-sector">Sector PyME</p>
-        <h3 class="port-title">Suite Digital para PyMEs</h3>
-        <p class="port-desc">Paquete completo: sitio web profesional, punto de venta, catálogo digital con QR, facturación CFDI y gestión de presencia en redes sociales.</p>
-        <div class="port-pills">
-          <span class="port-pill">Sitio web</span>
-          <span class="port-pill">POS</span>
-          <span class="port-pill">CFDI</span>
-          <span class="port-pill">Catálogo QR</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="port-card reveal d1">
-      <div class="port-visual">
-        <img src="https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=800&q=80&auto=format&fit=crop" alt="Manufactura automotriz">
-      </div>
-      <div class="port-body">
-        <p class="port-sector">Sector Automotriz · Manufactura</p>
+        <p class="port-sector">Manufactura · Industria Automotriz</p>
         <h3 class="port-title">Sistema de Control de Calidad</h3>
-        <p class="port-desc">Plataforma a medida para la gestión de parámetros de calidad en líneas de manufactura automotriz. Procesamiento y análisis de más de 100,000 registros diarios con alertas en tiempo real, trazabilidad por pieza y reportes de cumplimiento para auditorías.</p>
-        <div class="port-pills">
-          <span class="port-pill">+100k registros/día</span>
+        <p class="port-desc">En la manufactura automotriz, un defecto no detectado puede costar millones. Construimos una plataforma de alta performance capaz de capturar, procesar y analizar más de 100,000 registros de parámetros de calidad por día — directamente desde la línea de producción, sin interrumpir el flujo.</p>
+        <p class="port-desc" style="margin-top:10px;">Trazabilidad total por número de pieza, alertas instantáneas ante desviaciones de proceso, dashboards de cumplimiento para auditorías IATF y reportes históricos para ingeniería de calidad. Arquitectura robusta, construida para no fallar nunca.</p>
+        <p class="port-desc" style="margin-top:10px; font-style:italic; color:var(--accent);">Cero defectos comienza con datos perfectos.</p>
+        <div class="port-pills" style="margin-top:20px;">
+          <span class="port-pill">+100,000 registros/día</span>
           <span class="port-pill">Tiempo real</span>
-          <span class="port-pill">Trazabilidad</span>
-          <span class="port-pill">Sistema a medida</span>
-          <span class="port-pill">Reportes de auditoría</span>
+          <span class="port-pill">Trazabilidad por pieza</span>
+          <span class="port-pill">Alertas automáticas</span>
+          <span class="port-pill">Reportes IATF</span>
+          <span class="port-pill">SPC &amp; Cpk</span>
+          <span class="port-pill">Alta disponibilidad</span>
+          <span class="port-pill">Multi-línea</span>
         </div>
       </div>
     </div>
