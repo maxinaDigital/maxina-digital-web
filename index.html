@@ -1386,18 +1386,18 @@ hr { border:none; border-top:1px solid var(--border); }
       </div>
     </div>
 
-    <form class="form" onsubmit="handleSubmit(event)">
+    <form class="form" id="contact-form">
       <div class="form-row">
-        <div class="fg"><label>Nombre *</label><input type="text" placeholder="Tu nombre" required></div>
-        <div class="fg"><label>Empresa</label><input type="text" placeholder="Tu empresa"></div>
+        <div class="fg"><label>Nombre *</label><input type="text" name="nombre" placeholder="Tu nombre" required></div>
+        <div class="fg"><label>Empresa</label><input type="text" name="empresa" placeholder="Tu empresa"></div>
       </div>
       <div class="form-row">
-        <div class="fg"><label>Correo *</label><input type="email" placeholder="correo@empresa.com" required></div>
-        <div class="fg"><label>WhatsApp</label><input type="tel" placeholder="+52 449 000 0000"></div>
+        <div class="fg"><label>Correo *</label><input type="email" name="email" placeholder="correo@empresa.com" required></div>
+        <div class="fg"><label>WhatsApp</label><input type="tel" name="whatsapp" placeholder="+52 449 000 0000"></div>
       </div>
       <div class="fg">
         <label>Sector</label>
-        <select>
+        <select name="sector">
           <option value="">¿En qué sector está tu empresa?</option>
           <option>Médico / Salud</option>
           <option>Automotriz</option>
@@ -1408,20 +1408,24 @@ hr { border:none; border-top:1px solid var(--border); }
       </div>
       <div class="fg">
         <label>¿Qué necesitas?</label>
-        <select>
+        <select name="servicio">
           <option value="">Selecciona un servicio</option>
           <option>Sitio web profesional</option>
           <option>Aplicación móvil</option>
           <option>Sistema a medida</option>
+          <option>ERP Hospitality & Healthcare</option>
+          <option>Sistema de Control de Calidad</option>
           <option>Paquete Web + Canal 16</option>
           <option>Asesoría — aún no lo sé</option>
         </select>
       </div>
       <div class="fg">
         <label>Cuéntanos más</label>
-        <textarea placeholder="Describe brevemente tu proyecto..."></textarea>
+        <textarea name="mensaje" placeholder="Describe brevemente tu proyecto..."></textarea>
       </div>
-      <button type="submit" class="form-btn">Enviar mensaje →</button>
+      <!-- Estado del envío -->
+      <div id="form-status" style="display:none; font-size:13px; padding:12px 16px; border-radius:8px; margin-bottom:4px;"></div>
+      <button type="submit" class="form-btn" id="form-btn">Enviar mensaje →</button>
     </form>
   </div>
 </div>
@@ -1446,18 +1450,64 @@ const obs = new IntersectionObserver(entries => {
 }, { threshold: 0.08 });
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-function handleSubmit(e) {
+// ── FORMULARIO → FORMSPREE ──
+// IMPORTANTE: Reemplaza 'FORMSPREE_ID' con tu ID real de formspree.io
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xgoqgedo';
+
+const contactForm = document.getElementById('contact-form');
+const formBtn     = document.getElementById('form-btn');
+const formStatus  = document.getElementById('form-status');
+
+contactForm.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const btn = e.target.querySelector('.form-btn');
-  btn.textContent = '✓ Mensaje enviado';
-  btn.style.background = '#d1fae5'; btn.style.color = '#065f46';
-  btn.disabled = true;
-  setTimeout(() => {
-    btn.textContent = 'Enviar mensaje →';
-    btn.style.background = ''; btn.style.color = '';
-    btn.disabled = false; e.target.reset();
-  }, 3500);
-}
+
+  // Estado: enviando
+  formBtn.textContent = 'Enviando...';
+  formBtn.disabled = true;
+  formBtn.style.opacity = '0.7';
+  formStatus.style.display = 'none';
+
+  const data = new FormData(contactForm);
+
+  try {
+    const res = await fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    });
+
+    if (res.ok) {
+      // Éxito
+      formStatus.style.display = 'block';
+      formStatus.style.background = 'rgba(209,250,229,0.15)';
+      formStatus.style.border = '1px solid rgba(16,185,129,0.3)';
+      formStatus.style.color = '#6ee7b7';
+      formStatus.textContent = '✓ Mensaje enviado correctamente. Te contactaremos en menos de 24 horas.';
+      formBtn.textContent = '✓ Enviado';
+      formBtn.style.background = 'rgba(16,185,129,0.9)';
+      formBtn.style.opacity = '1';
+      contactForm.reset();
+      setTimeout(() => {
+        formBtn.textContent = 'Enviar mensaje →';
+        formBtn.style.background = '';
+        formBtn.disabled = false;
+        formStatus.style.display = 'none';
+      }, 5000);
+    } else {
+      throw new Error('Error en el servidor');
+    }
+  } catch (err) {
+    // Error
+    formStatus.style.display = 'block';
+    formStatus.style.background = 'rgba(254,202,202,0.1)';
+    formStatus.style.border = '1px solid rgba(239,68,68,0.3)';
+    formStatus.style.color = '#fca5a5';
+    formStatus.textContent = '✗ Ocurrió un error. Por favor escríbenos directamente a contacto@maxinadigital.com';
+    formBtn.textContent = 'Enviar mensaje →';
+    formBtn.style.opacity = '1';
+    formBtn.disabled = false;
+  }
+});
 
 const hamburger = document.getElementById('hamburger');
 const mobileNav = document.getElementById('mobile-nav');
