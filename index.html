@@ -18,8 +18,11 @@
   --border2:        rgba(255,255,255,0.13);
   --accent:         #4f9cf9;
   --accent2:        #3b82f6;
+  --accent3:        #8b5cf6;
+  --accent-cyan:    #22d3ee;
   --accent-bg:      rgba(79,156,249,0.08);
   --accent-border:  rgba(79,156,249,0.25);
+  --glow:           rgba(79,156,249,0.45);
   --ink:            #f1f5f9;
   --ink2:           rgba(241,245,249,0.55);
   --ink3:           rgba(241,245,249,0.28);
@@ -29,10 +32,10 @@
 }
 
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior:smooth; }
+html { scroll-behavior:smooth; background: var(--bg); }
 
 body {
-  background: var(--bg);
+  background: transparent;
   color: var(--ink);
   font-family: 'Outfit', sans-serif;
   font-size: 16px;
@@ -271,7 +274,7 @@ nav {
 .metric-num .unit { font-size: 14px; color: var(--accent); font-weight: 500; margin-left: 2px; }
 .metric-lbl { font-size: 11px; color: var(--ink3); margin-top: 6px; }
 .metric-bar { margin-top: 12px; height: 2px; background: var(--surface2); border-radius: 2px; }
-.metric-bar-fill { height: 2px; background: var(--accent); border-radius: 2px; opacity: 0.55; }
+.metric-bar-fill { height: 2px; background: linear-gradient(90deg, var(--accent), var(--accent-cyan)); border-radius: 2px; opacity: 0.7; transition: width 1.2s cubic-bezier(0.22,1,0.36,1); box-shadow: 0 0 8px var(--glow); }
 
 .status-row {
   padding: 10px 16px;
@@ -743,9 +746,172 @@ hr.divider { border: none; border-top: 1px solid var(--border); }
   .port-modules-grid { grid-template-columns: 1fr; }
   footer { padding: 20px 16px; }
 }
+
+/* ════════════════════════════════════════════
+   PREMIUM LAYER — aurora, grano, glow, spotlight
+   ════════════════════════════════════════════ */
+
+/* ── Aurora animada de fondo ── */
+.aurora {
+  position: fixed; inset: 0; z-index: -2;
+  overflow: hidden; pointer-events: none;
+}
+.aurora span {
+  position: absolute; display: block;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.55;
+  will-change: transform;
+}
+.aurora .a1 {
+  width: 60vw; height: 60vw; top: -18vw; right: -12vw;
+  background: radial-gradient(circle at 30% 30%, rgba(79,156,249,0.55), transparent 65%);
+  animation: drift1 22s ease-in-out infinite alternate;
+}
+.aurora .a2 {
+  width: 48vw; height: 48vw; bottom: -16vw; left: -10vw;
+  background: radial-gradient(circle at 40% 40%, rgba(139,92,246,0.42), transparent 65%);
+  animation: drift2 28s ease-in-out infinite alternate;
+}
+.aurora .a3 {
+  width: 40vw; height: 40vw; top: 35%; left: 38%;
+  background: radial-gradient(circle at 50% 50%, rgba(34,211,238,0.28), transparent 65%);
+  animation: drift3 25s ease-in-out infinite alternate;
+}
+@keyframes drift1 {
+  0%   { transform: translate(0,0) scale(1); }
+  100% { transform: translate(-8vw, 6vw) scale(1.18); }
+}
+@keyframes drift2 {
+  0%   { transform: translate(0,0) scale(1); }
+  100% { transform: translate(10vw, -5vw) scale(1.22); }
+}
+@keyframes drift3 {
+  0%   { transform: translate(0,0) scale(1); opacity: 0.18; }
+  100% { transform: translate(-12vw, -8vw) scale(0.85); opacity: 0.4; }
+}
+
+/* ── Grano cinematográfico ── */
+.grain {
+  position: fixed; inset: 0; z-index: -1;
+  pointer-events: none; opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── Barra de progreso de scroll ── */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 2px; width: 0%;
+  z-index: 200;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent), var(--accent3));
+  box-shadow: 0 0 12px var(--glow);
+  transition: width 0.1s linear;
+}
+
+/* ── Spotlight que sigue el cursor ── */
+.spotlight {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 30%),
+              rgba(79,156,249,0.08), transparent 70%);
+  opacity: 0; transition: opacity 0.4s ease;
+}
+body:hover .spotlight { opacity: 1; }
+
+/* asegura que el contenido quede por encima de las capas */
+nav, .hero, .tech-strip, section, .aliados-wrap, .contact-wrap, footer { position: relative; z-index: 1; }
+
+/* ── Título con gradiente animado + glow ── */
+.hero-title .accent {
+  background: linear-gradient(110deg, var(--accent-cyan), var(--accent), var(--accent3), var(--accent));
+  background-size: 300% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  animation: hue 8s ease infinite;
+  text-shadow: 0 0 60px var(--glow);
+}
+@keyframes hue {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+.section-title .accent, .c-title .accent {
+  background: linear-gradient(110deg, var(--accent), var(--accent3));
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+}
+
+/* ── Glassmorphism reforzado en paneles ── */
+.metrics-panel {
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  box-shadow: 0 24px 60px -24px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04) inset;
+  transition: transform 0.18s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+}
+.metrics-panel:hover {
+  box-shadow: 0 30px 80px -20px rgba(0,0,0,0.7), 0 0 40px -8px var(--glow), 0 0 0 1px var(--accent-border) inset;
+}
+
+/* ── Botón primario: glow + brillo deslizante ── */
+.btn-primary, .nav-cta, .form-btn {
+  position: relative; overflow: hidden;
+  box-shadow: 0 8px 24px -8px var(--glow);
+}
+.btn-primary::after, .form-btn::after {
+  content: ''; position: absolute; top: 0; left: -120%;
+  width: 60%; height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,0.35), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+}
+.btn-primary:hover::after, .form-btn:hover::after { left: 140%; }
+.btn-primary:hover, .form-btn:hover { box-shadow: 0 10px 30px -6px var(--glow); }
+
+/* ── Glow interactivo en tarjetas (spotlight local) ── */
+.svc, .port-card, .port-card-featured, .ally-card, .proc {
+  --cx: 50%; --cy: 50%;
+}
+.svc::after, .proc::after, .port-card::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(260px circle at var(--cx) var(--cy), rgba(79,156,249,0.10), transparent 60%);
+  opacity: 0; transition: opacity 0.35s ease; z-index: 0;
+}
+.svc:hover::after, .proc:hover::after, .port-card:hover::after { opacity: 1; }
+.svc > *, .proc > *, .port-card > * { position: relative; z-index: 1; }
+
+/* ── Bordes con glow al hover ── */
+.port-card:hover, .ally-card:hover { box-shadow: 0 0 0 1px var(--accent-border), 0 24px 50px -28px var(--glow); }
+
+/* ── Reveal mejorado con blur + stagger ── */
+.reveal { filter: blur(6px); }
+.reveal.visible { filter: blur(0); }
+
+/* ── Marquee con desvanecido en los bordes ── */
+.tech-strip {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+.marquee-item:hover { color: var(--accent); }
+
+/* ── Pulso del status badge ── */
+.status-badge { box-shadow: 0 0 12px -2px rgba(40,200,64,0.4); }
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora span, .hero-title .accent { animation: none !important; }
+  .reveal { filter: none; }
+}
 </style>
 </head>
 <body>
+
+<!-- CAPAS PREMIUM -->
+<div class="scroll-progress" id="scroll-progress"></div>
+<div class="aurora" aria-hidden="true">
+  <span class="a1"></span>
+  <span class="a2"></span>
+  <span class="a3"></span>
+</div>
+<div class="grain" aria-hidden="true"></div>
+<div class="spotlight" aria-hidden="true"></div>
 
 <!-- NAV -->
 <nav>
@@ -815,24 +981,24 @@ hr.divider { border: none; border-top: 1px solid var(--border); }
         </div>
         <div class="metrics-grid">
           <div class="metric-cell">
-            <div class="metric-num">100<span class="unit">k+</span></div>
+            <div class="metric-num"><span class="metric-count" data-count="100">0</span><span class="unit">k+</span></div>
             <div class="metric-lbl">Registros procesados / día</div>
-            <div class="metric-bar"><div class="metric-bar-fill" style="width:90%"></div></div>
+            <div class="metric-bar"><div class="metric-bar-fill" data-w="90" style="width:0%"></div></div>
           </div>
           <div class="metric-cell">
-            <div class="metric-num">4<span class="unit">+</span></div>
+            <div class="metric-num"><span class="metric-count" data-count="4">0</span><span class="unit">+</span></div>
             <div class="metric-lbl">Sectores atendidos</div>
-            <div class="metric-bar"><div class="metric-bar-fill" style="width:65%"></div></div>
+            <div class="metric-bar"><div class="metric-bar-fill" data-w="65" style="width:0%"></div></div>
           </div>
           <div class="metric-cell">
-            <div class="metric-num">&lt;24<span class="unit">h</span></div>
+            <div class="metric-num">&lt;<span class="metric-count" data-count="24">0</span><span class="unit">h</span></div>
             <div class="metric-lbl">Respuesta inicial</div>
-            <div class="metric-bar"><div class="metric-bar-fill" style="width:55%"></div></div>
+            <div class="metric-bar"><div class="metric-bar-fill" data-w="55" style="width:0%"></div></div>
           </div>
           <div class="metric-cell">
-            <div class="metric-num">3<span class="unit">+</span></div>
+            <div class="metric-num"><span class="metric-count" data-count="3">0</span><span class="unit">+</span></div>
             <div class="metric-lbl">Sistemas en producción</div>
-            <div class="metric-bar"><div class="metric-bar-fill" style="width:45%"></div></div>
+            <div class="metric-bar"><div class="metric-bar-fill" data-w="45" style="width:0%"></div></div>
           </div>
         </div>
         <div class="status-row">
@@ -1251,6 +1417,91 @@ const obs = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.07 });
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ── Barra de progreso de scroll ── */
+const progressBar = document.getElementById('scroll-progress');
+const onScroll = () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  progressBar.style.width = pct + '%';
+};
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+/* ── Spotlight global que sigue el cursor ── */
+if (!reduceMotion && window.matchMedia('(pointer: fine)').matches) {
+  const spot = document.querySelector('.spotlight');
+  window.addEventListener('pointermove', (e) => {
+    spot.style.setProperty('--mx', e.clientX + 'px');
+    spot.style.setProperty('--my', e.clientY + 'px');
+  });
+
+  /* ── Glow local en tarjetas ── */
+  document.querySelectorAll('.svc, .proc, .port-card').forEach(card => {
+    card.addEventListener('pointermove', (e) => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--cx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--cy', (e.clientY - r.top) + 'px');
+    });
+  });
+
+  /* ── Tilt 3D en el panel de métricas ── */
+  const panel = document.querySelector('.metrics-panel');
+  const tiltHost = document.querySelector('.hero-right');
+  if (panel && tiltHost) {
+    tiltHost.style.perspective = '1000px';
+    tiltHost.addEventListener('pointermove', (e) => {
+      const r = panel.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      panel.style.transform = `rotateY(${px * 7}deg) rotateX(${-py * 7}deg) translateZ(0)`;
+    });
+    tiltHost.addEventListener('pointerleave', () => { panel.style.transform = ''; });
+  }
+
+  /* ── Botones magnéticos ── */
+  document.querySelectorAll('.btn-primary, .nav-cta').forEach(btn => {
+    btn.addEventListener('pointermove', (e) => {
+      const r = btn.getBoundingClientRect();
+      const x = (e.clientX - r.left - r.width / 2) * 0.25;
+      const y = (e.clientY - r.top - r.height / 2) * 0.25;
+      btn.style.transform = `translate(${x}px, ${y}px)`;
+    });
+    btn.addEventListener('pointerleave', () => { btn.style.transform = ''; });
+  });
+}
+
+/* ── Count-up de métricas + llenado de barras ── */
+const countTargets = document.querySelectorAll('.metric-count');
+const animateCount = (el) => {
+  const target = parseInt(el.dataset.count, 10);
+  const dur = 1400; const start = performance.now();
+  const step = (now) => {
+    const p = Math.min((now - start) / dur, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(target * eased);
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+};
+const metricsPanel = document.querySelector('.metrics-panel');
+if (metricsPanel) {
+  const mObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      if (reduceMotion) {
+        countTargets.forEach(el => el.textContent = el.dataset.count);
+      } else {
+        countTargets.forEach(animateCount);
+      }
+      document.querySelectorAll('.metric-bar-fill').forEach(b => { b.style.width = b.dataset.w + '%'; });
+      mObs.disconnect();
+    });
+  }, { threshold: 0.4 });
+  mObs.observe(metricsPanel);
+}
 
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xgoqgedo';
 const contactForm = document.getElementById('contact-form');
