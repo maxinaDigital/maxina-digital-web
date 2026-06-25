@@ -1037,67 +1037,63 @@ body.landing-mode .mobile-landing-cta { display: block; }
   50%       { opacity: 1;   transform: scaleY(1)   translateY(0); }
 }
 
-/* ── Timeline de etapas ── */
-.journey-timeline {
-  display: flex;
-  flex-direction: column;
+/* ── Horizontal scroll zone ── */
+#journey-hscroll {
   position: relative;
+  z-index: 1;
+  /* height set dynamically by JS */
+}
+
+#journey-htrack {
+  height: 100vh;
+  overflow: hidden;
   z-index: 1;
 }
 
-.journey-stage {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: center;
-  min-height: 100vh;
-  padding: 100px 10% 80px;
-  max-width: 1300px;
-  margin: 0 auto;
-  width: 100%;
-  box-sizing: border-box;
+#journey-hinner {
+  display: flex;
+  flex-direction: row;
+  width: 300vw;
+  height: 100vh;
 }
 
-.journey-stage.stage-2 .stage-visual { order: 2; }
-.journey-stage.stage-2 .stage-content { order: 1; }
-
-/* ── Visuals (SVG) ── */
-.stage-visual {
+.journey-stage {
+  width: 100vw;
+  height: 100vh;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
   position: relative;
-  height: 360px;
+  overflow: hidden;
+}
+
+/* ── Stage text ── */
+.stage-content {
+  flex: 0 0 46%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 0 4% 0 8%;
+  position: relative;
+  z-index: 3;
+}
+
+/* ── Stage canvas (absolutely positioned, right side) ── */
+.stage-visual {
+  position: absolute;
+  right: 3vw;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  pointer-events: none;
 }
 
 .stage-canvas {
   display: block;
-  width: 280px;
-  height: 280px;
+  width: 460px;
+  height: 460px;
+  transform-origin: center center;
   will-change: transform, filter, opacity;
-}
-
-.stage-visual::before {
-  content: '';
-  position: absolute;
-  inset: -40px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(79,156,249,0.07), transparent 65%);
-  z-index: -1;
-  animation: pulse-glow 4s ease-in-out infinite;
-}
-
-@keyframes pulse-glow {
-  0%, 100% { opacity: 0.4; transform: scale(0.93); }
-  50%       { opacity: 1;   transform: scale(1.07); }
-}
-
-/* ── Texto de cada etapa ── */
-.stage-content {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  will-change: opacity, transform;
 }
 
 .stage-num {
@@ -1200,17 +1196,10 @@ body.landing-mode .mobile-landing-cta { display: block; }
 
 /* ── Responsividad ── */
 @media (max-width: 960px) {
-  .journey-stage {
-    grid-template-columns: 1fr;
-    gap: 40px;
-    min-height: auto;
-    padding: 80px 24px 60px;
-  }
-  .journey-stage.stage-2 .stage-visual { order: 1; }
-  .journey-stage.stage-2 .stage-content { order: 2; }
-  .stage-canvas { width: 200px; height: 200px; }
-  .stage-num    { font-size: 40px; }
-  .stage-visual { height: 240px; }
+  .stage-canvas  { width: 260px; height: 260px; }
+  .stage-content { flex: 0 0 52%; padding: 0 3% 0 5%; }
+  .stage-visual  { right: 1vw; }
+  .stage-num     { font-size: 40px; }
   .journey-intro { padding: 80px 24px 60px; }
   .journey-final { padding: 80px 24px 60px; }
 }
@@ -1218,7 +1207,7 @@ body.landing-mode .mobile-landing-cta { display: block; }
 @media (max-width: 480px) {
   .j-headline { letter-spacing: -1.5px; }
   .stage-num   { font-size: 32px; }
-  .stage-canvas { width: 160px; height: 160px; }
+  .stage-canvas { width: 180px; height: 180px; }
   .j-reveal-btn { padding: 15px 32px; font-size: 15px; }
 }
 </style>
@@ -1282,48 +1271,52 @@ body.landing-mode .mobile-landing-cta { display: block; }
     </div>
   </div>
 
-  <!-- TIMELINE -->
-  <div class="journey-timeline">
+  <!-- HORIZONTAL SCROLL ZONE -->
+  <div id="journey-hscroll">
+    <div id="journey-htrack">
+      <div id="journey-hinner">
 
-    <!-- ETAPA 1: ENTREVISTA -->
-    <div class="journey-stage stage-1">
-      <div class="stage-visual">
-        <canvas class="stage-canvas" id="stage-canvas-1" width="400" height="400"></canvas>
-      </div>
-      <div class="stage-content">
-        <div class="stage-num">01</div>
-        <h3 class="stage-title">Entrevista</h3>
-        <p class="stage-desc">Entendemos profundamente tu visión, objetivos y desafíos. Sin tecnicismos — hablamos tu idioma.</p>
-        <p class="stage-insight">📌 <strong>Lo clave:</strong> Una visión clara es el foundation de todo.</p>
+        <!-- ETAPA 1: ENTREVISTA -->
+        <div class="journey-stage stage-1">
+          <div class="stage-content">
+            <div class="stage-num">01</div>
+            <h3 class="stage-title">Entrevista</h3>
+            <p class="stage-desc">Entendemos profundamente tu visión, objetivos y desafíos. Sin tecnicismos — hablamos tu idioma.</p>
+            <p class="stage-insight">📌 <strong>Lo clave:</strong> Una visión clara es el foundation de todo.</p>
+          </div>
+          <div class="stage-visual">
+            <canvas class="stage-canvas" id="stage-canvas-1" width="500" height="500"></canvas>
+          </div>
+        </div>
+
+        <!-- ETAPA 2: PROTOTIPO -->
+        <div class="journey-stage stage-2">
+          <div class="stage-content">
+            <div class="stage-num">02</div>
+            <h3 class="stage-title">Prototipo</h3>
+            <p class="stage-desc">Diseñamos y prototipamos la solución. Tú ves exactamente cómo lucirá y funciona, antes de código.</p>
+            <p class="stage-insight">📌 <strong>Lo clave:</strong> Los detalles visuales guían la arquitectura técnica.</p>
+          </div>
+          <div class="stage-visual">
+            <canvas class="stage-canvas" id="stage-canvas-2" width="500" height="500"></canvas>
+          </div>
+        </div>
+
+        <!-- ETAPA 3: OFERTA -->
+        <div class="journey-stage stage-3">
+          <div class="stage-content">
+            <div class="stage-num">03</div>
+            <h3 class="stage-title">Oferta</h3>
+            <p class="stage-desc">Te presentamos una propuesta personalizada, clara y sin sorpresas. Presupuesto justo, valor real.</p>
+            <p class="stage-insight">📌 <strong>Lo clave:</strong> Inversión transparente = confianza total.</p>
+          </div>
+          <div class="stage-visual">
+            <canvas class="stage-canvas" id="stage-canvas-3" width="500" height="500"></canvas>
+          </div>
+        </div>
+
       </div>
     </div>
-
-    <!-- ETAPA 2: PROTOTIPO -->
-    <div class="journey-stage stage-2">
-      <div class="stage-visual">
-        <canvas class="stage-canvas" id="stage-canvas-2" width="400" height="400"></canvas>
-      </div>
-      <div class="stage-content">
-        <div class="stage-num">02</div>
-        <h3 class="stage-title">Prototipo</h3>
-        <p class="stage-desc">Diseñamos y prototipamos la solución. Tú ves exactamente cómo lucirá y funciona, antes de código.</p>
-        <p class="stage-insight">📌 <strong>Lo clave:</strong> Los detalles visuales guían la arquitectura técnica.</p>
-      </div>
-    </div>
-
-    <!-- ETAPA 3: OFERTA -->
-    <div class="journey-stage stage-3">
-      <div class="stage-visual">
-        <canvas class="stage-canvas" id="stage-canvas-3" width="400" height="400"></canvas>
-      </div>
-      <div class="stage-content">
-        <div class="stage-num">03</div>
-        <h3 class="stage-title">Oferta</h3>
-        <p class="stage-desc">Te presentamos una propuesta personalizada, clara y sin sorpresas. Presupuesto justo, valor real.</p>
-        <p class="stage-insight">📌 <strong>Lo clave:</strong> Inversión transparente = confianza total.</p>
-      </div>
-    </div>
-
   </div>
 
   <!-- CTA FINAL: revela el sitio completo -->
@@ -2096,7 +2089,7 @@ function revealSite() {
 });
 
 /* ═══════════════════════════════════════════════════════════════
-   FRACTAL PARTICLE SYSTEM — Journey stages
+   FRACTAL PARTICLE SYSTEM v2 — Horizontal journey
    ═══════════════════════════════════════════════════════════════ */
 (function () {
 
@@ -2106,144 +2099,159 @@ function revealSite() {
     while (i > 0) { f /= base; r += f * (i % base); i = Math.floor(i / base); }
     return r;
   }
-
   function ptLine(x1, y1, x2, y2, n) {
     const pts = [];
-    for (let i = 0; i <= n; i++) {
-      const t = i / n;
-      pts.push({ x: x1 + (x2 - x1) * t, y: y1 + (y2 - y1) * t });
-    }
+    for (let i = 0; i <= n; i++) { const t = i / n; pts.push({ x: x1+(x2-x1)*t, y: y1+(y2-y1)*t }); }
     return pts;
   }
-
   function ptCircle(cx, cy, r, n) {
     const pts = [];
-    for (let i = 0; i < n; i++) {
-      const a = (i / n) * Math.PI * 2;
-      pts.push({ x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r });
-    }
+    for (let i = 0; i < n; i++) { const a = (i/n)*Math.PI*2; pts.push({ x: cx+Math.cos(a)*r, y: cy+Math.sin(a)*r }); }
     return pts;
   }
-
   function ptRect(x, y, w, h, n) {
-    const pts = [];
-    const perim = 2 * (w + h);
+    const pts = [], perim = 2*(w+h);
     for (let i = 0; i < n; i++) {
-      const t = (i / n) * perim;
-      if (t < w)           pts.push({ x: x + t,            y });
-      else if (t < w + h)  pts.push({ x: x + w,            y: y + t - w });
-      else if (t < 2*w+h)  pts.push({ x: x + w - (t-w-h),  y: y + h });
-      else                 pts.push({ x,                    y: y + h - (t - 2*w - h) });
+      const t = (i/n)*perim;
+      if (t < w)          pts.push({ x: x+t,           y });
+      else if (t < w+h)   pts.push({ x: x+w,           y: y+t-w });
+      else if (t < 2*w+h) pts.push({ x: x+w-(t-w-h),   y: y+h });
+      else                pts.push({ x,                 y: y+h-(t-2*w-h) });
     }
     return pts;
   }
 
-  /* ── Stage 1: Neural Network (Entrevista / Discovery) ───────── */
-  function shapeNetwork(W, H) {
+  /* ── Stage 1: Brain + Pencil (Entrevista) ──────────────────── */
+  function shapeBrainPencil(W, H) {
     const pts = [];
-    const cx = W * 0.50, cy = H * 0.48;
-    const R  = W * 0.31;
+    const cx = W * 0.46, cy = H * 0.45;
 
-    pts.push(...ptCircle(cx, cy, 22, 36));
-    pts.push(...ptCircle(cx, cy, 10, 18));
-
-    const N = 6;
-    const nodes = Array.from({ length: N }, (_, i) => ({
-      x: cx + Math.cos((i / N) * Math.PI * 2 - Math.PI / 2) * R,
-      y: cy + Math.sin((i / N) * Math.PI * 2 - Math.PI / 2) * R,
-    }));
-
-    nodes.forEach(n => {
-      pts.push(...ptCircle(n.x, n.y, 14, 22));
-      pts.push(...ptCircle(n.x, n.y,  6, 10));
-      pts.push(...ptLine(cx, cy, n.x, n.y, 18));
-    });
-
-    for (let i = 0; i < N; i++) {
-      pts.push(...ptLine(nodes[i].x, nodes[i].y, nodes[(i + 2) % N].x, nodes[(i + 2) % N].y, 12));
-    }
-
-    nodes.forEach((n, i) => {
-      if (i % 2 === 0) {
-        const a = (i / N) * Math.PI * 2 + Math.PI / 6;
-        const sx = n.x + Math.cos(a) * 42;
-        const sy = n.y + Math.sin(a) * 42;
-        pts.push(...ptCircle(sx, sy, 7, 10));
-        pts.push(...ptLine(n.x, n.y, sx, sy, 10));
+    // Two bumpy lobes
+    function lobe(lx, ly, rx, ry, n, bmp, bf) {
+      for (let i = 0; i < n; i++) {
+        const a = (i/n)*Math.PI*2;
+        const b = 1 + bmp*Math.sin(a*bf) + bmp*0.5*Math.sin(a*(bf+4));
+        pts.push({ x: lx+Math.cos(a)*rx*b, y: ly+Math.sin(a)*ry*b });
       }
-    });
+    }
+    lobe(cx - W*0.115, cy, W*0.205, H*0.27, 64, 0.12, 7);
+    lobe(cx + W*0.115, cy, W*0.205, H*0.27, 64, 0.12, 8);
+
+    // Sulci (horizontal wavy lines across brain mass)
+    for (let row = -4; row <= 4; row++) {
+      const baseY = cy + row * H * 0.050;
+      const hw    = W * 0.285 * Math.sqrt(Math.max(0, 1 - Math.pow(row/5.5, 2)));
+      for (let i = 0; i <= 30; i++) {
+        const t = i/30;
+        pts.push({ x: cx - hw + t*hw*2, y: baseY + Math.sin(t*Math.PI*6 + row)*H*0.015 });
+      }
+    }
+
+    // Center fissure
+    pts.push(...ptLine(cx, cy - H*0.25, cx, cy + H*0.15, 18));
+    // Brain stem
+    pts.push(...ptRect(cx - W*0.038, cy + H*0.20, W*0.076, H*0.065, 16));
+
+    // Pencil (right side)
+    const pCx = W*0.84, pTop = H*0.09;
+    const pW  = W*0.052, pH = H*0.62;
+    pts.push(...ptRect(pCx - pW/2, pTop + pH*0.08, pW, pH*0.72, 28));          // body
+    pts.push(...ptRect(pCx - pW/2 + 1, pTop, pW - 2, pH*0.07, 10));             // eraser
+    pts.push(...ptRect(pCx - pW/2, pTop + pH*0.07, pW, pH*0.045, 10));          // metal band
+    [0.22, 0.42, 0.62, 0.80].forEach(t =>
+      pts.push(...ptLine(pCx - pW/2, pTop + pH*(0.08 + t*0.65), pCx + pW/2, pTop + pH*(0.08 + t*0.65), 4)));
+    const tipY = pTop + pH*0.80;
+    pts.push(...ptLine(pCx - pW/2, tipY, pCx, tipY + pH*0.13, 12));
+    pts.push(...ptLine(pCx + pW/2, tipY, pCx, tipY + pH*0.13, 12));
+    pts.push(...ptCircle(pCx, tipY + pH*0.135, 2.5, 6));
 
     return pts;
   }
 
-  /* ── Stage 2: Browser Wireframe (Prototipo / Design) ────────── */
-  function shapeWireframe(W, H) {
+  /* ── Stage 2: Documents + Checkmark (Prototipo) ────────────── */
+  function shapeDocuments(W, H) {
     const pts = [];
-    const mx = W * 0.07, my = H * 0.06;
-    const mw = W * 0.86, mh = H * 0.87;
+    const dW = W*0.46, dH = H*0.73;
 
-    pts.push(...ptRect(mx, my, mw, mh, 72));
-    pts.push(...ptRect(mx, my, mw, mh * 0.09, 28));
-
-    [0, 1, 2].forEach(i => pts.push(...ptCircle(mx + 12 + i * 14, my + mh * 0.045, 4.5, 10)));
-    pts.push(...ptRect(mx + 55, my + mh * 0.022, mw * 0.48, mh * 0.052, 18));
-
-    pts.push(...ptRect(mx + 6, my + mh * 0.11, mw - 12, mh * 0.22, 30));
-    [0.155, 0.20, 0.245].forEach((ry, i) => {
-      const lw = (0.70 - i * 0.09) * (mw - 18);
-      for (let t = 0; t < lw; t += 9) pts.push({ x: mx + 15 + t, y: my + mh * ry });
-    });
-
-    const cw = (mw - 24) / 3 - 4;
-    for (let i = 0; i < 3; i++) {
-      const cx2 = mx + 8 + i * (cw + 6);
-      const cy2 = my + mh * 0.36;
-      pts.push(...ptRect(cx2, cy2, cw, mh * 0.18, 18));
-      pts.push(...ptCircle(cx2 + cw / 2, cy2 + mh * 0.07, cw * 0.12, 8));
+    function doc(dx, dy, lines) {
+      pts.push(...ptRect(dx, dy, dW, dH, 44));
+      for (let i = 0; i < lines; i++) {
+        const ly = dy + dH*0.16 + i*dH*0.10;
+        pts.push(...ptLine(dx + dW*0.08, ly, dx + dW*(0.85 - (i%3)*0.10), ly, 9));
+      }
     }
+    doc(W*0.38, H*0.10, 7); // back
+    doc(W*0.27, H*0.07, 7); // middle
 
-    [0.60, 0.67, 0.74, 0.81].forEach((ry, i) => {
-      const lw = (0.85 - i * 0.06) * (mw - 18);
-      for (let t = 0; t < lw; t += 9) pts.push({ x: mx + 12 + t, y: my + mh * ry });
+    // Front document (detailed)
+    const fx = W*0.13, fy = H*0.09;
+    pts.push(...ptRect(fx, fy, dW, dH, 54));
+    pts.push(...ptRect(fx + dW*0.06, fy + dH*0.06, dW*0.88, dH*0.11, 18)); // header
+    [0.24, 0.33, 0.41, 0.50, 0.58].forEach((ry, i) => {
+      const lw = (0.78 - (i%3)*0.09) * dW;
+      pts.push(...ptLine(fx + dW*0.06, fy + dH*ry, fx + dW*0.06 + lw, fy + dH*ry, 11));
     });
+    // Signature line + squiggle
+    const sigY = fy + dH*0.70;
+    pts.push(...ptLine(fx + dW*0.06, sigY, fx + dW*0.54, sigY, 16));
+    for (let i = 0; i < 22; i++) {
+      const t = i/21;
+      pts.push({ x: fx + dW*0.06 + t*dW*0.43, y: sigY - 8 + Math.sin(t*Math.PI*7)*7 });
+    }
+    // Checkmark in circle
+    const ckCx = fx + dW*0.76, ckCy = fy + dH*0.67, ckR = H*0.115;
+    pts.push(...ptCircle(ckCx, ckCy, ckR, 34));
+    pts.push(...ptCircle(ckCx, ckCy, ckR*0.82, 28));
+    pts.push(...ptLine(ckCx - ckR*0.50, ckCy + ckR*0.05, ckCx - ckR*0.08, ckCy + ckR*0.52, 14));
+    pts.push(...ptLine(ckCx - ckR*0.08, ckCy + ckR*0.52, ckCx + ckR*0.58, ckCy - ckR*0.44, 20));
 
     return pts;
   }
 
-  /* ── Stage 3: Rocket Launch (Oferta / Deliver) ──────────────── */
-  function shapeRocket(W, H) {
+  /* ── Stage 3: Wallet + Dollar + Happy Face (Oferta) ─────────── */
+  function shapeWalletDollar(W, H) {
     const pts = [];
-    const cx = W * 0.50, bY = H * 0.67;
-    const bW = W * 0.19, bH = H * 0.38;
 
-    pts.push(...ptRect(cx - bW / 2, bY - bH, bW, bH, 42));
-    pts.push(...ptCircle(cx, bY - bH * 0.60, bW * 0.25, 18));
-    pts.push(...ptCircle(cx, bY - bH * 0.60, bW * 0.13, 10));
+    // Wallet
+    const wx = W*0.24, wy = H*0.31, wW = W*0.44, wH = H*0.38;
+    pts.push(...ptRect(wx, wy, wW, wH, 56));
+    pts.push(...ptRect(wx, wy, wW, wH*0.17, 20));             // clasp flap
+    pts.push(...ptCircle(wx + wW*0.5, wy + wH*0.085, wW*0.065, 14)); // clasp button
+    [0.34, 0.54, 0.73].forEach(ry =>
+      pts.push(...ptLine(wx + wW*0.08, wy + wH*ry, wx + wW*0.50, wy + wH*ry, 14)));
+    pts.push(...ptRect(wx + wW*0.58, wy + wH*0.30, wW*0.30, wH*0.52, 22)); // coin pocket
 
-    const noseH = bW * 1.6;
-    pts.push(...ptLine(cx - bW / 2, bY - bH, cx, bY - bH - noseH, 16));
-    pts.push(...ptLine(cx + bW / 2, bY - bH, cx, bY - bH - noseH, 16));
-    for (let t = 0.1; t < 1; t += 0.12) {
-      const hw = bW * (1 - t) / 2;
-      pts.push({ x: cx - hw, y: bY - bH - t * noseH });
-      pts.push({ x: cx + hw, y: bY - bH - t * noseH });
+    // Dollar sign $
+    const dCx = W*0.80, dCy = H*0.33, dR = H*0.175;
+    for (let i = 0; i < 28; i++) { // top arc
+      const a = Math.PI*1.55 + (i/27)*Math.PI*1.75;
+      pts.push({ x: dCx + Math.cos(a)*dR*0.85, y: dCy - dR*0.27 + Math.sin(a)*dR*0.70 });
     }
+    for (let i = 0; i < 28; i++) { // bottom arc
+      const a = -Math.PI*0.25 + (i/27)*Math.PI*1.75;
+      pts.push({ x: dCx + Math.cos(a)*dR*0.85, y: dCy + dR*0.27 + Math.sin(a)*dR*0.70 });
+    }
+    pts.push(...ptLine(dCx, dCy - dR*1.05, dCx, dCy - dR*0.28, 12));
+    pts.push(...ptLine(dCx, dCy + dR*0.28, dCx, dCy + dR*1.05, 12));
 
-    pts.push(...ptLine(cx - bW / 2, bY - bH * 0.25, cx - bW * 1.1, bY, 12));
-    pts.push(...ptLine(cx - bW / 2, bY,              cx - bW * 1.1, bY, 8));
-    pts.push(...ptLine(cx + bW / 2, bY - bH * 0.25, cx + bW * 1.1, bY, 12));
-    pts.push(...ptLine(cx + bW / 2, bY,              cx + bW * 1.1, bY, 8));
+    // Arrow: $ → wallet
+    const arSx = dCx - dR*0.92, arSy = dCy + dR*0.88;
+    const arEx = wx + wW*0.83,   arEy = wy + wH*0.09;
+    pts.push(...ptLine(arSx, arSy, arEx, arEy, 16));
+    pts.push(...ptLine(arEx - 8, arEy + 12, arEx, arEy, 6));
+    pts.push(...ptLine(arEx + 8, arEy + 8,  arEx, arEy, 6));
 
-    pts.push(...ptCircle(cx, bY + H * 0.09, bW * 0.24, 20));
-    pts.push(...ptCircle(cx, bY + H * 0.16, bW * 0.15, 14));
-    pts.push(...ptCircle(cx, bY + H * 0.22, bW * 0.09, 10));
-
-    [[0.07,0.07],[0.88,0.06],[0.13,0.30],[0.84,0.24],
-     [0.05,0.52],[0.93,0.50],[0.18,0.74],[0.81,0.78],
-     [0.46,0.04],[0.60,0.09],[0.24,0.14],[0.76,0.13]].forEach(([sx, sy]) => {
-      pts.push({ x: sx * W, y: sy * H });
-      pts.push({ x: sx * W + 1, y: sy * H });
-    });
+    // Happy face
+    const fCx = W*0.75, fCy = H*0.77, fR = H*0.125;
+    pts.push(...ptCircle(fCx, fCy, fR, 38));
+    pts.push(...ptCircle(fCx - fR*0.36, fCy - fR*0.27, fR*0.08, 8)); // left eye
+    pts.push(...ptCircle(fCx + fR*0.36, fCy - fR*0.27, fR*0.08, 8)); // right eye
+    for (let i = 0; i < 22; i++) { // smile
+      const a = Math.PI*0.09 + (i/21)*Math.PI*0.82;
+      pts.push({ x: fCx + Math.cos(a)*fR*0.62, y: fCy + Math.sin(a)*fR*0.62 });
+    }
+    pts.push(...ptCircle(fCx - fR*0.60, fCy + fR*0.18, fR*0.11, 8)); // left cheek
+    pts.push(...ptCircle(fCx + fR*0.60, fCy + fR*0.18, fR*0.11, 8)); // right cheek
 
     return pts;
   }
@@ -2253,150 +2261,135 @@ function revealSite() {
     constructor(id, shapeFn, colorFrom, colorTo) {
       this.canvas = document.getElementById(id);
       if (!this.canvas) return;
-      this.ctx = this.canvas.getContext('2d');
-      this.W = this.canvas.width;
-      this.H = this.canvas.height;
+      this.ctx       = this.canvas.getContext('2d');
+      this.W         = this.canvas.width;
+      this.H         = this.canvas.height;
       this.colorFrom = colorFrom;
       this.colorTo   = colorTo;
       this._progress = 0;
-
-      const targets = shapeFn(this.W, this.H);
+      const targets  = shapeFn(this.W, this.H);
       this.particles = targets.map((t, i) => ({
-        sx:    halton(i + 1, 2) * this.W,
-        sy:    halton(i + 1, 3) * this.H,
-        tx:    t.x,
-        ty:    t.y,
-        size:  0.9 + (i % 7) * 0.15,
-        phase: i * 2.399,
+        sx: halton(i+1,2)*this.W, sy: halton(i+1,3)*this.H,
+        tx: t.x, ty: t.y,
+        size: 0.9 + (i%7)*0.16, phase: i*2.399,
       }));
     }
-
     draw(progress, time) {
       if (!this.canvas) return;
       const ctx = this.ctx;
       ctx.clearRect(0, 0, this.W, this.H);
-
-      const p = Math.pow(Math.min(Math.max(progress, 0), 1), 0.65);
-      const [fr, fg, fb] = this.colorFrom;
-      const [tr, tg, tb] = this.colorTo;
-
+      const p  = Math.pow(Math.min(Math.max(progress, 0), 1), 0.65);
+      const [fr,fg,fb] = this.colorFrom, [tr,tg,tb] = this.colorTo;
       this.particles.forEach(pt => {
-        const turb = (1 - p) * 20;
-        const nx = Math.sin(time * 0.001  + pt.phase) * turb;
-        const ny = Math.cos(time * 0.0009 + pt.phase * 0.7) * turb;
-
-        const x = pt.sx + (pt.tx - pt.sx) * p + nx;
-        const y = pt.sy + (pt.ty - pt.sy) * p + ny;
-
-        const size  = pt.size * (1 + (1 - p) * 3.5);
-        const alpha = 0.15 + p * 0.85;
-        const r = Math.round(fr + (tr - fr) * p);
-        const g = Math.round(fg + (tg - fg) * p);
-        const b = Math.round(fb + (tb - fb) * p);
-
-        ctx.fillStyle = `rgb(${r},${g},${b})`;
-        ctx.globalAlpha = alpha * 0.22;
-        ctx.beginPath();
-        ctx.arc(x, y, size * 4, 0, Math.PI * 2);
-        ctx.fill();
-
+        const turb = (1 - p) * 22;
+        const x = pt.sx + (pt.tx - pt.sx)*p + Math.sin(time*0.001  + pt.phase)*turb;
+        const y = pt.sy + (pt.ty - pt.sy)*p + Math.cos(time*0.0009 + pt.phase*0.7)*turb;
+        const size  = pt.size * (1 + (1-p)*3.5);
+        const alpha = 0.15 + p*0.85;
+        const ri = Math.round(fr+(tr-fr)*p), gi = Math.round(fg+(tg-fg)*p), bi = Math.round(fb+(tb-fb)*p);
+        ctx.fillStyle = `rgb(${ri},${gi},${bi})`;
+        ctx.globalAlpha = alpha*0.22;
+        ctx.beginPath(); ctx.arc(x, y, size*4, 0, Math.PI*2); ctx.fill();
         ctx.globalAlpha = alpha;
-        ctx.beginPath();
-        ctx.arc(x, y, size, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.beginPath(); ctx.arc(x, y, size,   0, Math.PI*2); ctx.fill();
       });
-
       ctx.globalAlpha = 1;
     }
   }
 
   /* ── Instances ──────────────────────────────────────────────── */
-  const s1 = new FractalStage('stage-canvas-1', shapeNetwork,   [60, 80,145], [79,156,249]);
-  const s2 = new FractalStage('stage-canvas-2', shapeWireframe, [38, 92,122], [34,211,238]);
-  const s3 = new FractalStage('stage-canvas-3', shapeRocket,    [82, 58,145], [139, 92,246]);
-  const stages = [s1, s2, s3];
+  const s1 = new FractalStage('stage-canvas-1', shapeBrainPencil,  [60, 80,145], [79,156,249]);
+  const s2 = new FractalStage('stage-canvas-2', shapeDocuments,    [38, 92,122], [34,211,238]);
+  const s3 = new FractalStage('stage-canvas-3', shapeWalletDollar, [82, 58,145], [139, 92,246]);
+  const fractalStages = [s1, s2, s3];
 
-  /* ── Background ambient particles (#journey-particles) ─────── */
+  /* ── Background ambient particles ──────────────────────────── */
   const bgCanvas = document.getElementById('journey-particles');
   const bgCtx    = bgCanvas ? bgCanvas.getContext('2d') : null;
-
-  function resizeBg() {
-    if (bgCanvas) { bgCanvas.width = window.innerWidth; bgCanvas.height = window.innerHeight; }
-  }
+  function resizeBg() { if (bgCanvas) { bgCanvas.width = innerWidth; bgCanvas.height = innerHeight; } }
   resizeBg();
   window.addEventListener('resize', resizeBg, { passive: true });
-
-  const bgCount = window.innerWidth < 768 ? 28 : 52;
-  const bgPts   = Array.from({ length: bgCount }, () => ({
-    x:     Math.random() * (bgCanvas ? bgCanvas.width  : 1920),
-    y:     Math.random() * (bgCanvas ? bgCanvas.height : 1080),
-    vx:    (Math.random() - 0.5) * 0.42,
-    vy:    (Math.random() - 0.5) * 0.42,
-    r:     Math.random() * 1.3 + 0.3,
-    life:  Math.random(),
-    decay: Math.random() * 0.004 + 0.0015,
+  const bgPts = Array.from({ length: innerWidth < 768 ? 28 : 52 }, () => ({
+    x: Math.random()*(bgCanvas?bgCanvas.width:1920), y: Math.random()*(bgCanvas?bgCanvas.height:1080),
+    vx: (Math.random()-0.5)*0.42, vy: (Math.random()-0.5)*0.42,
+    r: Math.random()*1.3+0.3, life: Math.random(), decay: Math.random()*0.004+0.0015,
   }));
-
   function drawBg() {
-    if (!bgCtx || !bgCanvas) return;
-    bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+    if (!bgCtx||!bgCanvas) return;
+    bgCtx.clearRect(0,0,bgCanvas.width,bgCanvas.height);
     bgPts.forEach(p => {
       p.life -= p.decay;
-      if (p.life <= 0) {
-        p.x = Math.random() * bgCanvas.width;
-        p.y = Math.random() * bgCanvas.height;
-        p.life = 1;
-        p.decay = Math.random() * 0.004 + 0.0015;
-      }
-      p.x += p.vx;
-      p.y += p.vy;
-      bgCtx.fillStyle = `rgba(79,156,249,${p.life * 0.48})`;
-      bgCtx.beginPath();
-      bgCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      bgCtx.fill();
+      if (p.life <= 0) { p.x=Math.random()*bgCanvas.width; p.y=Math.random()*bgCanvas.height; p.life=1; p.decay=Math.random()*0.004+0.0015; }
+      p.x+=p.vx; p.y+=p.vy;
+      bgCtx.fillStyle=`rgba(79,156,249,${p.life*0.48})`; bgCtx.beginPath(); bgCtx.arc(p.x,p.y,p.r,0,Math.PI*2); bgCtx.fill();
     });
   }
 
   /* ── RAF loop ───────────────────────────────────────────────── */
   let rafId = null, T = 0;
-  function loop(ts) {
-    T = ts;
-    stages.forEach(s => s.draw(s._progress, T));
-    drawBg();
-    rafId = requestAnimationFrame(loop);
-  }
+  function loop(ts) { T = ts; fractalStages.forEach(s => s.draw(s._progress, T)); drawBg(); rafId = requestAnimationFrame(loop); }
 
-  /* ── GSAP ScrollTrigger bindings ────────────────────────────── */
+  /* ── Set scroll height = horizontal travel distance ─────────── */
+  const hscroll = document.getElementById('journey-hscroll');
+  const hinner  = document.getElementById('journey-hinner');
+  function setHScrollHeight() {
+    if (hscroll) hscroll.style.height = (innerWidth * 2 + innerHeight) + 'px';
+  }
+  setHScrollHeight();
+
+  /* ── GSAP horizontal scroll ─────────────────────────────────── */
   if (window.gsap && window.ScrollTrigger && !reduceMotion) {
     gsap.registerPlugin(ScrollTrigger);
 
-    stages.forEach(s => {
-      if (s.canvas) gsap.set(s.canvas, { filter: 'blur(24px)', opacity: 0.15 });
+    // Initial state: all canvases tiny + blurred
+    fractalStages.forEach(s => {
+      if (s.canvas) { s.canvas.style.filter='blur(24px)'; s.canvas.style.opacity='0.05'; s.canvas.style.transform='scale(0.18)'; }
     });
 
-    function bindStage(selector, stageObj) {
-      const prog = { v: 0 };
-      gsap.to(prog, {
-        v: 1, ease: 'none',
-        onUpdate() { stageObj._progress = prog.v; },
-        scrollTrigger: { trigger: selector, start: 'top 72%', end: 'bottom 28%', scrub: 1.5 },
-      });
-      if (stageObj.canvas) {
-        gsap.to(stageObj.canvas, {
-          filter: 'blur(0px)', opacity: 1, ease: 'none',
-          scrollTrigger: { trigger: selector, start: 'top 78%', end: 'center 42%', scrub: 1.5 },
-        });
-      }
-    }
+    if (hscroll && hinner) {
+      ScrollTrigger.create({
+        trigger:             hscroll,
+        start:               'top top',
+        end:                 () => '+=' + innerWidth * 2,
+        pin:                 '#journey-htrack',
+        anticipatePin:       1,
+        scrub:               1.2,
+        invalidateOnRefresh: true,
+        onUpdate(self) {
+          const p = self.progress;
+          // Horizontal translate
+          hinner.style.transform = `translateX(${(-p * innerWidth * 2).toFixed(1)}px)`;
 
-    bindStage('.stage-1', s1);
-    bindStage('.stage-2', s2);
-    bindStage('.stage-3', s3);
+          // Per-stage canvas expansion + text fade
+          fractalStages.forEach((stageObj, i) => {
+            const center = (i + 0.5) / 3;
+            const sp     = Math.max(0, 1 - Math.abs(p - center) / (1/6));
+            stageObj._progress = sp;
+            if (stageObj.canvas) {
+              stageObj.canvas.style.filter    = `blur(${((1-sp)*22).toFixed(1)}px)`;
+              stageObj.canvas.style.transform = `scale(${(0.18 + sp*1.18).toFixed(3)})`;
+              stageObj.canvas.style.opacity   = (0.05 + sp*0.95).toFixed(3);
+            }
+            const txt = document.querySelector(`.stage-${i+1} .stage-content`);
+            if (txt) txt.style.opacity = Math.max(0.08, 1 - sp*0.88).toFixed(3);
+          });
+        },
+      });
+
+      window.addEventListener('resize', () => {
+        setHScrollHeight();
+        ScrollTrigger.refresh();
+      }, { passive: true });
+    }
   } else {
-    stages.forEach(s => { s._progress = 1; });
+    // No GSAP: show all shapes fully formed
+    fractalStages.forEach(s => {
+      s._progress = 1;
+      if (s.canvas) { s.canvas.style.filter='blur(0px)'; s.canvas.style.opacity='1'; s.canvas.style.transform='scale(1.36)'; }
+    });
   }
 
-  /* ── Pause RAF when journey not in viewport ─────────────────── */
+  /* ── Pause RAF when journey not visible ─────────────────────── */
   const journeyEl = document.querySelector('#journey');
   const visObs = new IntersectionObserver(entries => {
     if (entries[0].isIntersecting) { if (!rafId) rafId = requestAnimationFrame(loop); }
