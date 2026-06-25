@@ -2089,81 +2089,84 @@ function revealSite() {
 });
 
 /* ═══════════════════════════════════════════════════════════════
-   FRACTAL PARTICLE SYSTEM v2 — Horizontal journey
+   FRACTAL PARTICLE SYSTEM v3 — Horizontal journey
    ═══════════════════════════════════════════════════════════════ */
 (function () {
 
-  /* ── Point helpers ─────────────────────────────────────────── */
-  function halton(idx, base) {
-    let f = 1, r = 0, i = idx;
-    while (i > 0) { f /= base; r += f * (i % base); i = Math.floor(i / base); }
-    return r;
-  }
-  function ptLine(x1, y1, x2, y2, n) {
-    const pts = [];
-    for (let i = 0; i <= n; i++) { const t = i / n; pts.push({ x: x1+(x2-x1)*t, y: y1+(y2-y1)*t }); }
-    return pts;
-  }
-  function ptCircle(cx, cy, r, n) {
-    const pts = [];
-    for (let i = 0; i < n; i++) { const a = (i/n)*Math.PI*2; pts.push({ x: cx+Math.cos(a)*r, y: cy+Math.sin(a)*r }); }
-    return pts;
-  }
-  function ptRect(x, y, w, h, n) {
-    const pts = [], perim = 2*(w+h);
-    for (let i = 0; i < n; i++) {
-      const t = (i/n)*perim;
-      if (t < w)          pts.push({ x: x+t,           y });
-      else if (t < w+h)   pts.push({ x: x+w,           y: y+t-w });
-      else if (t < 2*w+h) pts.push({ x: x+w-(t-w-h),   y: y+h });
-      else                pts.push({ x,                 y: y+h-(t-2*w-h) });
+  /* ── Geometry helpers ──────────────────────────────────────── */
+  function addLine(pts, x1, y1, x2, y2, n) {
+    for (let i = 0; i <= n; i++) {
+      const t = i / n;
+      pts.push({ x: x1 + (x2-x1)*t, y: y1 + (y2-y1)*t });
     }
-    return pts;
+  }
+  function addCircle(pts, cx, cy, r, n) {
+    for (let i = 0; i < n; i++) {
+      const a = (i / n) * Math.PI * 2;
+      pts.push({ x: cx + Math.cos(a)*r, y: cy + Math.sin(a)*r });
+    }
+  }
+  function addRect(pts, x, y, w, h, n) {
+    const perim = 2 * (w + h);
+    for (let i = 0; i < n; i++) {
+      const t = (i / n) * perim;
+      if      (t < w)        pts.push({ x: x + t,           y });
+      else if (t < w + h)    pts.push({ x: x + w,           y: y + (t - w) });
+      else if (t < 2*w + h)  pts.push({ x: x + w - (t-w-h), y: y + h });
+      else                   pts.push({ x,                   y: y + h - (t - 2*w - h) });
+    }
+  }
+  function addArc(pts, cx, cy, r, a0, a1, n) {
+    for (let i = 0; i <= n; i++) {
+      const a = a0 + (a1 - a0) * (i / n);
+      pts.push({ x: cx + Math.cos(a)*r, y: cy + Math.sin(a)*r });
+    }
   }
 
   /* ── Stage 1: Brain + Pencil (Entrevista) ──────────────────── */
   function shapeBrainPencil(W, H) {
     const pts = [];
-    const cx = W * 0.46, cy = H * 0.45;
+    const bCx = W*0.42, bCy = H*0.46;
 
     // Two bumpy lobes
-    function lobe(lx, ly, rx, ry, n, bmp, bf) {
-      for (let i = 0; i < n; i++) {
-        const a = (i/n)*Math.PI*2;
-        const b = 1 + bmp*Math.sin(a*bf) + bmp*0.5*Math.sin(a*(bf+4));
-        pts.push({ x: lx+Math.cos(a)*rx*b, y: ly+Math.sin(a)*ry*b });
+    for (let k = 0; k < 2; k++) {
+      const lx = bCx + (k === 0 ? -W*0.105 : W*0.105);
+      const bf = k === 0 ? 7 : 8;
+      for (let i = 0; i < 90; i++) {
+        const a = (i / 90) * Math.PI * 2;
+        const b = 1 + 0.13*Math.sin(a*bf) + 0.065*Math.sin(a*(bf+3));
+        pts.push({ x: lx + Math.cos(a)*W*0.195*b, y: bCy + Math.sin(a)*H*0.265*b });
       }
     }
-    lobe(cx - W*0.115, cy, W*0.205, H*0.27, 64, 0.12, 7);
-    lobe(cx + W*0.115, cy, W*0.205, H*0.27, 64, 0.12, 8);
-
-    // Sulci (horizontal wavy lines across brain mass)
-    for (let row = -4; row <= 4; row++) {
-      const baseY = cy + row * H * 0.050;
-      const hw    = W * 0.285 * Math.sqrt(Math.max(0, 1 - Math.pow(row/5.5, 2)));
+    // Sulci (horizontal wavy folds inside brain)
+    for (let r = -3; r <= 3; r++) {
+      const ry = bCy + r * H*0.074;
+      const hw = W*0.27 * Math.sqrt(Math.max(0, 1 - (r/4.5)**2));
       for (let i = 0; i <= 30; i++) {
-        const t = i/30;
-        pts.push({ x: cx - hw + t*hw*2, y: baseY + Math.sin(t*Math.PI*6 + row)*H*0.015 });
+        const t = i / 30;
+        pts.push({ x: bCx - hw + t*hw*2, y: ry + Math.sin(t*Math.PI*5 + r)*H*0.013 });
       }
     }
-
     // Center fissure
-    pts.push(...ptLine(cx, cy - H*0.25, cx, cy + H*0.15, 18));
+    for (let i = 0; i <= 24; i++) {
+      const t = i / 24;
+      pts.push({ x: bCx + Math.sin(t*Math.PI*2)*2.5, y: bCy - H*0.245 + t*H*0.46 });
+    }
     // Brain stem
-    pts.push(...ptRect(cx - W*0.038, cy + H*0.20, W*0.076, H*0.065, 16));
+    addRect(pts, bCx - W*0.038, bCy + H*0.22, W*0.076, H*0.07, 18);
 
-    // Pencil (right side)
-    const pCx = W*0.84, pTop = H*0.09;
-    const pW  = W*0.052, pH = H*0.62;
-    pts.push(...ptRect(pCx - pW/2, pTop + pH*0.08, pW, pH*0.72, 28));          // body
-    pts.push(...ptRect(pCx - pW/2 + 1, pTop, pW - 2, pH*0.07, 10));             // eraser
-    pts.push(...ptRect(pCx - pW/2, pTop + pH*0.07, pW, pH*0.045, 10));          // metal band
-    [0.22, 0.42, 0.62, 0.80].forEach(t =>
-      pts.push(...ptLine(pCx - pW/2, pTop + pH*(0.08 + t*0.65), pCx + pW/2, pTop + pH*(0.08 + t*0.65), 4)));
+    // Pencil (vertical, right side)
+    const pX = W*0.836, pTop = H*0.10, pW = W*0.054, pH = H*0.72;
+    addRect(pts, pX - pW/2, pTop + pH*0.08, pW, pH*0.72, 34);
+    addRect(pts, pX - pW/2 + 1, pTop, pW - 2, pH*0.07, 12);
+    addRect(pts, pX - pW/2, pTop + pH*0.07, pW, pH*0.04, 10);
+    [0.20, 0.38, 0.56, 0.73].forEach(t =>
+      addLine(pts, pX - pW/2, pTop + pH*(0.08 + t*0.70), pX + pW/2, pTop + pH*(0.08 + t*0.70), 5)
+    );
     const tipY = pTop + pH*0.80;
-    pts.push(...ptLine(pCx - pW/2, tipY, pCx, tipY + pH*0.13, 12));
-    pts.push(...ptLine(pCx + pW/2, tipY, pCx, tipY + pH*0.13, 12));
-    pts.push(...ptCircle(pCx, tipY + pH*0.135, 2.5, 6));
+    addLine(pts, pX - pW/2, tipY, pX, tipY + pH*0.14, 14);
+    addLine(pts, pX + pW/2, tipY, pX, tipY + pH*0.14, 14);
+    addCircle(pts, pX, tipY + pH*0.147, 2.5, 6);
 
     return pts;
   }
@@ -2171,39 +2174,32 @@ function revealSite() {
   /* ── Stage 2: Documents + Checkmark (Prototipo) ────────────── */
   function shapeDocuments(W, H) {
     const pts = [];
-    const dW = W*0.46, dH = H*0.73;
+    const dW = W*0.47, dH = H*0.77;
 
-    function doc(dx, dy, lines) {
-      pts.push(...ptRect(dx, dy, dW, dH, 44));
-      for (let i = 0; i < lines; i++) {
-        const ly = dy + dH*0.16 + i*dH*0.10;
-        pts.push(...ptLine(dx + dW*0.08, ly, dx + dW*(0.85 - (i%3)*0.10), ly, 9));
-      }
-    }
-    doc(W*0.38, H*0.10, 7); // back
-    doc(W*0.27, H*0.07, 7); // middle
+    // Background docs
+    addRect(pts, W*0.34, H*0.07, dW, dH, 38);
+    addRect(pts, W*0.21, H*0.05, dW, dH, 40);
 
     // Front document (detailed)
-    const fx = W*0.13, fy = H*0.09;
-    pts.push(...ptRect(fx, fy, dW, dH, 54));
-    pts.push(...ptRect(fx + dW*0.06, fy + dH*0.06, dW*0.88, dH*0.11, 18)); // header
-    [0.24, 0.33, 0.41, 0.50, 0.58].forEach((ry, i) => {
-      const lw = (0.78 - (i%3)*0.09) * dW;
-      pts.push(...ptLine(fx + dW*0.06, fy + dH*ry, fx + dW*0.06 + lw, fy + dH*ry, 11));
+    const fx = W*0.065, fy = H*0.055;
+    addRect(pts, fx, fy, dW, dH, 56);
+    addRect(pts, fx + dW*0.07, fy + dH*0.055, dW*0.86, dH*0.10, 20);
+    [0.22, 0.30, 0.37, 0.44, 0.51, 0.58].forEach((ry, i) => {
+      addLine(pts, fx + dW*0.07, fy + dH*ry, fx + dW*(0.85 - (i%3)*0.08), fy + dH*ry, 12);
     });
-    // Signature line + squiggle
-    const sigY = fy + dH*0.70;
-    pts.push(...ptLine(fx + dW*0.06, sigY, fx + dW*0.54, sigY, 16));
-    for (let i = 0; i < 22; i++) {
-      const t = i/21;
-      pts.push({ x: fx + dW*0.06 + t*dW*0.43, y: sigY - 8 + Math.sin(t*Math.PI*7)*7 });
+    // Signature squiggle
+    const sigY = fy + dH*0.72;
+    addLine(pts, fx + dW*0.07, sigY, fx + dW*0.58, sigY, 18);
+    for (let i = 0; i < 26; i++) {
+      const t = i / 25;
+      pts.push({ x: fx + dW*0.07 + t*dW*0.46, y: sigY - 8 + Math.sin(t*Math.PI*8)*7 });
     }
-    // Checkmark in circle
-    const ckCx = fx + dW*0.76, ckCy = fy + dH*0.67, ckR = H*0.115;
-    pts.push(...ptCircle(ckCx, ckCy, ckR, 34));
-    pts.push(...ptCircle(ckCx, ckCy, ckR*0.82, 28));
-    pts.push(...ptLine(ckCx - ckR*0.50, ckCy + ckR*0.05, ckCx - ckR*0.08, ckCy + ckR*0.52, 14));
-    pts.push(...ptLine(ckCx - ckR*0.08, ckCy + ckR*0.52, ckCx + ckR*0.58, ckCy - ckR*0.44, 20));
+    // Big checkmark circle (overlaps right side)
+    const ckCx = W*0.795, ckCy = H*0.55, ckR = H*0.165;
+    addCircle(pts, ckCx, ckCy, ckR, 44);
+    addCircle(pts, ckCx, ckCy, ckR*0.82, 36);
+    addLine(pts, ckCx - ckR*0.50, ckCy + ckR*0.07, ckCx - ckR*0.07, ckCy + ckR*0.53, 16);
+    addLine(pts, ckCx - ckR*0.07, ckCy + ckR*0.53, ckCx + ckR*0.57, ckCy - ckR*0.43, 22);
 
     return pts;
   }
@@ -2212,51 +2208,43 @@ function revealSite() {
   function shapeWalletDollar(W, H) {
     const pts = [];
 
-    // Wallet
-    const wx = W*0.24, wy = H*0.31, wW = W*0.44, wH = H*0.38;
-    pts.push(...ptRect(wx, wy, wW, wH, 56));
-    pts.push(...ptRect(wx, wy, wW, wH*0.17, 20));             // clasp flap
-    pts.push(...ptCircle(wx + wW*0.5, wy + wH*0.085, wW*0.065, 14)); // clasp button
+    // Wallet (center-left, lower half)
+    const wx = W*0.075, wy = H*0.385, wW = W*0.485, wH = H*0.42;
+    addRect(pts, wx, wy, wW, wH, 62);
+    addRect(pts, wx, wy, wW, wH*0.17, 22);
+    addCircle(pts, wx + wW*0.5, wy + wH*0.085, wW*0.062, 16);
     [0.34, 0.54, 0.73].forEach(ry =>
-      pts.push(...ptLine(wx + wW*0.08, wy + wH*ry, wx + wW*0.50, wy + wH*ry, 14)));
-    pts.push(...ptRect(wx + wW*0.58, wy + wH*0.30, wW*0.30, wH*0.52, 22)); // coin pocket
+      addLine(pts, wx + wW*0.08, wy + wH*ry, wx + wW*0.52, wy + wH*ry, 14)
+    );
+    addRect(pts, wx + wW*0.60, wy + wH*0.30, wW*0.30, wH*0.53, 24);
 
-    // Dollar sign $
-    const dCx = W*0.80, dCy = H*0.33, dR = H*0.175;
-    for (let i = 0; i < 28; i++) { // top arc
-      const a = Math.PI*1.55 + (i/27)*Math.PI*1.75;
-      pts.push({ x: dCx + Math.cos(a)*dR*0.85, y: dCy - dR*0.27 + Math.sin(a)*dR*0.70 });
-    }
-    for (let i = 0; i < 28; i++) { // bottom arc
-      const a = -Math.PI*0.25 + (i/27)*Math.PI*1.75;
-      pts.push({ x: dCx + Math.cos(a)*dR*0.85, y: dCy + dR*0.27 + Math.sin(a)*dR*0.70 });
-    }
-    pts.push(...ptLine(dCx, dCy - dR*1.05, dCx, dCy - dR*0.28, 12));
-    pts.push(...ptLine(dCx, dCy + dR*0.28, dCx, dCy + dR*1.05, 12));
+    // Dollar sign (upper right)
+    const dCx = W*0.78, dCy = H*0.255, dR = H*0.19;
+    addArc(pts, dCx, dCy - dR*0.27, dR*0.80, Math.PI*1.45, Math.PI*1.45 + Math.PI*1.80, 32);
+    addArc(pts, dCx, dCy + dR*0.27, dR*0.80, -Math.PI*0.35, -Math.PI*0.35 + Math.PI*1.80, 32);
+    addLine(pts, dCx, dCy - dR*1.07, dCx, dCy - dR*0.27, 12);
+    addLine(pts, dCx, dCy + dR*0.27, dCx, dCy + dR*1.07, 12);
 
-    // Arrow: $ → wallet
-    const arSx = dCx - dR*0.92, arSy = dCy + dR*0.88;
-    const arEx = wx + wW*0.83,   arEy = wy + wH*0.09;
-    pts.push(...ptLine(arSx, arSy, arEx, arEy, 16));
-    pts.push(...ptLine(arEx - 8, arEy + 12, arEx, arEy, 6));
-    pts.push(...ptLine(arEx + 8, arEy + 8,  arEx, arEy, 6));
+    // Arrow: dollar → wallet
+    const arSx = dCx - dR*0.95, arSy = dCy + dR*0.92;
+    const arEx = wx + wW*0.82,   arEy = wy + wH*0.09;
+    addLine(pts, arSx, arSy, arEx, arEy, 18);
+    addLine(pts, arEx - 10, arEy + 14, arEx, arEy, 6);
+    addLine(pts, arEx + 8,  arEy + 10, arEx, arEy, 6);
 
-    // Happy face
-    const fCx = W*0.75, fCy = H*0.77, fR = H*0.125;
-    pts.push(...ptCircle(fCx, fCy, fR, 38));
-    pts.push(...ptCircle(fCx - fR*0.36, fCy - fR*0.27, fR*0.08, 8)); // left eye
-    pts.push(...ptCircle(fCx + fR*0.36, fCy - fR*0.27, fR*0.08, 8)); // right eye
-    for (let i = 0; i < 22; i++) { // smile
-      const a = Math.PI*0.09 + (i/21)*Math.PI*0.82;
-      pts.push({ x: fCx + Math.cos(a)*fR*0.62, y: fCy + Math.sin(a)*fR*0.62 });
-    }
-    pts.push(...ptCircle(fCx - fR*0.60, fCy + fR*0.18, fR*0.11, 8)); // left cheek
-    pts.push(...ptCircle(fCx + fR*0.60, fCy + fR*0.18, fR*0.11, 8)); // right cheek
+    // Happy face (lower right)
+    const fCx = W*0.785, fCy = H*0.795, fR = H*0.15;
+    addCircle(pts, fCx, fCy, fR, 44);
+    addCircle(pts, fCx - fR*0.37, fCy - fR*0.29, fR*0.095, 9);
+    addCircle(pts, fCx + fR*0.37, fCy - fR*0.29, fR*0.095, 9);
+    addArc(pts, fCx, fCy + fR*0.05, fR*0.60, Math.PI*0.12, Math.PI*0.88, 22);
+    addCircle(pts, fCx - fR*0.60, fCy + fR*0.20, fR*0.12, 8);
+    addCircle(pts, fCx + fR*0.60, fCy + fR*0.20, fR*0.12, 8);
 
     return pts;
   }
 
-  /* ── FractalStage class ──────────────────────────────────────── */
+  /* ── FractalStage class ─────────────────────────────────────── */
   class FractalStage {
     constructor(id, shapeFn, colorFrom, colorTo) {
       this.canvas = document.getElementById(id);
@@ -2269,38 +2257,61 @@ function revealSite() {
       this._progress = 0;
       const targets  = shapeFn(this.W, this.H);
       this.particles = targets.map((t, i) => ({
-        sx: halton(i+1,2)*this.W, sy: halton(i+1,3)*this.H,
-        tx: t.x, ty: t.y,
-        size: 0.9 + (i%7)*0.16, phase: i*2.399,
+        sx:    Math.random() * this.W,
+        sy:    Math.random() * this.H,
+        tx:    t.x, ty: t.y,
+        size:  1.4 + (i % 5) * 0.40,
+        phase: (i * 2.399) % (Math.PI * 2),
       }));
     }
+
     draw(progress, time) {
       if (!this.canvas) return;
       const ctx = this.ctx;
       ctx.clearRect(0, 0, this.W, this.H);
-      const p  = Math.pow(Math.min(Math.max(progress, 0), 1), 0.65);
+
+      const p = Math.pow(Math.min(Math.max(progress, 0), 1), 0.65);
       const [fr,fg,fb] = this.colorFrom, [tr,tg,tb] = this.colorTo;
-      this.particles.forEach(pt => {
-        const turb = (1 - p) * 22;
-        const x = pt.sx + (pt.tx - pt.sx)*p + Math.sin(time*0.001  + pt.phase)*turb;
-        const y = pt.sy + (pt.ty - pt.sy)*p + Math.cos(time*0.0009 + pt.phase*0.7)*turb;
-        const size  = pt.size * (1 + (1-p)*3.5);
-        const alpha = 0.15 + p*0.85;
-        const ri = Math.round(fr+(tr-fr)*p), gi = Math.round(fg+(tg-fg)*p), bi = Math.round(fb+(tb-fb)*p);
-        ctx.fillStyle = `rgb(${ri},${gi},${bi})`;
-        ctx.globalAlpha = alpha*0.22;
-        ctx.beginPath(); ctx.arc(x, y, size*4, 0, Math.PI*2); ctx.fill();
-        ctx.globalAlpha = alpha;
-        ctx.beginPath(); ctx.arc(x, y, size,   0, Math.PI*2); ctx.fill();
+      const ri   = Math.round(fr + (tr-fr)*p);
+      const gi   = Math.round(fg + (tg-fg)*p);
+      const bi   = Math.round(fb + (tb-fb)*p);
+      const turb = Math.pow(1 - p, 2.5) * 90;
+      const hMul = 4.5 - p * 2.5;   // halo radius shrinks as shape forms
+      const cMul = 0.45 + p * 0.60; // core radius grows
+
+      // Cache computed positions (avoids double trig)
+      const pos = this.particles.map(pt => ({
+        x: pt.sx + (pt.tx - pt.sx)*p + Math.sin(time*0.0011 + pt.phase)*turb,
+        y: pt.sy + (pt.ty - pt.sy)*p + Math.cos(time*0.0009 + pt.phase*0.73)*turb,
+        s: pt.size,
+      }));
+
+      // Pass 1: soft glow halo (batched — single fill call)
+      ctx.fillStyle = `rgba(${ri},${gi},${bi},${(0.028 + p*0.052).toFixed(3)})`;
+      ctx.beginPath();
+      pos.forEach(q => {
+        const r = q.s * hMul;
+        ctx.moveTo(q.x + r, q.y);
+        ctx.arc(q.x, q.y, r, 0, Math.PI*2);
       });
-      ctx.globalAlpha = 1;
+      ctx.fill();
+
+      // Pass 2: sharp core (batched — single fill call)
+      ctx.fillStyle = `rgba(${ri},${gi},${bi},${(0.25 + p*0.75).toFixed(3)})`;
+      ctx.beginPath();
+      pos.forEach(q => {
+        const r = Math.max(0.8, q.s * cMul);
+        ctx.moveTo(q.x + r, q.y);
+        ctx.arc(q.x, q.y, r, 0, Math.PI*2);
+      });
+      ctx.fill();
     }
   }
 
   /* ── Instances ──────────────────────────────────────────────── */
-  const s1 = new FractalStage('stage-canvas-1', shapeBrainPencil,  [60, 80,145], [79,156,249]);
-  const s2 = new FractalStage('stage-canvas-2', shapeDocuments,    [38, 92,122], [34,211,238]);
-  const s3 = new FractalStage('stage-canvas-3', shapeWalletDollar, [82, 58,145], [139, 92,246]);
+  const s1 = new FractalStage('stage-canvas-1', shapeBrainPencil,  [45, 62, 140], [79, 156, 249]);
+  const s2 = new FractalStage('stage-canvas-2', shapeDocuments,    [28, 85, 118], [34, 211, 238]);
+  const s3 = new FractalStage('stage-canvas-3', shapeWalletDollar, [72, 42, 140], [139, 92, 246]);
   const fractalStages = [s1, s2, s3];
 
   /* ── Background ambient particles ──────────────────────────── */
@@ -2332,10 +2343,10 @@ function revealSite() {
   const hscroll = document.getElementById('journey-hscroll');
   const hinner  = document.getElementById('journey-hinner');
 
+  /* ── Stage progress: text and canvas fade together ──────────── */
   function applyStageProgress(p) {
     fractalStages.forEach((stageObj, i) => {
-      // Each stage is fully formed (sp=1) while its panel fills the viewport.
-      // Transitions in/out over 1/6 of total scroll on each side.
+      // sp=1 while stage panel occupies the viewport; ramps on enter/exit
       const enter = i / 3, exit = (i + 1) / 3, tw = 1 / 6;
       let sp;
       if      (p < enter) sp = Math.max(0, (p - (enter - tw)) / tw);
@@ -2344,22 +2355,20 @@ function revealSite() {
 
       stageObj._progress = sp;
       if (stageObj.canvas) {
-        stageObj.canvas.style.filter    = `blur(${((1 - sp) * 20).toFixed(1)}px)`;
-        stageObj.canvas.style.transform = `scale(${(0.12 + sp * 0.88).toFixed(3)})`;
-        stageObj.canvas.style.opacity   = (0.05 + sp * 0.95).toFixed(3);
+        stageObj.canvas.style.filter    = `blur(${((1 - sp) * 16).toFixed(1)}px)`;
+        stageObj.canvas.style.transform = `scale(${(0.15 + sp * 0.85).toFixed(3)})`;
+        stageObj.canvas.style.opacity   = (0.08 + sp * 0.92).toFixed(3);
       }
+      // Text fades WITH the canvas (not against it)
       const txt = document.querySelector(`.stage-${i + 1} .stage-content`);
-      if (txt) txt.style.opacity = Math.max(0.1, 1 - sp * 0.82).toFixed(3);
+      if (txt) txt.style.opacity = Math.max(0.05, sp).toFixed(3);
     });
   }
 
   /* ── GSAP horizontal scroll ─────────────────────────────────── */
   if (window.gsap && window.ScrollTrigger && !reduceMotion) {
     gsap.registerPlugin(ScrollTrigger);
-
-    // Stage 1 starts fully formed (it's already visible); others hidden
     applyStageProgress(0);
-
     if (hscroll && hinner) {
       ScrollTrigger.create({
         trigger:             hscroll,
@@ -2375,16 +2384,14 @@ function revealSite() {
           applyStageProgress(p);
         },
       });
-
       window.addEventListener('resize', () => ScrollTrigger.refresh(), { passive: true });
     }
   } else {
-    // No GSAP: show all shapes fully formed
-    applyStageProgress(0); // shows stage 1 formed
     fractalStages.forEach(s => {
       s._progress = 1;
       if (s.canvas) { s.canvas.style.filter='blur(0px)'; s.canvas.style.opacity='1'; s.canvas.style.transform='scale(1.0)'; }
     });
+    document.querySelectorAll('.stage-content').forEach(t => t.style.opacity = '1');
   }
 
   /* ── Pause RAF when journey not visible ─────────────────────── */
