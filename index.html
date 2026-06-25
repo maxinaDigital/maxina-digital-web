@@ -2329,22 +2329,36 @@ function revealSite() {
   let rafId = null, T = 0;
   function loop(ts) { T = ts; fractalStages.forEach(s => s.draw(s._progress, T)); drawBg(); rafId = requestAnimationFrame(loop); }
 
-  /* ── Set scroll height = horizontal travel distance ─────────── */
   const hscroll = document.getElementById('journey-hscroll');
   const hinner  = document.getElementById('journey-hinner');
-  function setHScrollHeight() {
-    if (hscroll) hscroll.style.height = (innerWidth * 2 + innerHeight) + 'px';
+
+  function applyStageProgress(p) {
+    fractalStages.forEach((stageObj, i) => {
+      // Each stage is fully formed (sp=1) while its panel fills the viewport.
+      // Transitions in/out over 1/6 of total scroll on each side.
+      const enter = i / 3, exit = (i + 1) / 3, tw = 1 / 6;
+      let sp;
+      if      (p < enter) sp = Math.max(0, (p - (enter - tw)) / tw);
+      else if (p <= exit)  sp = 1;
+      else                 sp = Math.max(0, 1 - (p - exit) / tw);
+
+      stageObj._progress = sp;
+      if (stageObj.canvas) {
+        stageObj.canvas.style.filter    = `blur(${((1 - sp) * 20).toFixed(1)}px)`;
+        stageObj.canvas.style.transform = `scale(${(0.12 + sp * 0.88).toFixed(3)})`;
+        stageObj.canvas.style.opacity   = (0.05 + sp * 0.95).toFixed(3);
+      }
+      const txt = document.querySelector(`.stage-${i + 1} .stage-content`);
+      if (txt) txt.style.opacity = Math.max(0.1, 1 - sp * 0.82).toFixed(3);
+    });
   }
-  setHScrollHeight();
 
   /* ── GSAP horizontal scroll ─────────────────────────────────── */
   if (window.gsap && window.ScrollTrigger && !reduceMotion) {
     gsap.registerPlugin(ScrollTrigger);
 
-    // Initial state: all canvases tiny + blurred
-    fractalStages.forEach(s => {
-      if (s.canvas) { s.canvas.style.filter='blur(24px)'; s.canvas.style.opacity='0.05'; s.canvas.style.transform='scale(0.18)'; }
-    });
+    // Stage 1 starts fully formed (it's already visible); others hidden
+    applyStageProgress(0);
 
     if (hscroll && hinner) {
       ScrollTrigger.create({
@@ -2357,35 +2371,19 @@ function revealSite() {
         invalidateOnRefresh: true,
         onUpdate(self) {
           const p = self.progress;
-          // Horizontal translate
           hinner.style.transform = `translateX(${(-p * innerWidth * 2).toFixed(1)}px)`;
-
-          // Per-stage canvas expansion + text fade
-          fractalStages.forEach((stageObj, i) => {
-            const center = (i + 0.5) / 3;
-            const sp     = Math.max(0, 1 - Math.abs(p - center) / (1/6));
-            stageObj._progress = sp;
-            if (stageObj.canvas) {
-              stageObj.canvas.style.filter    = `blur(${((1-sp)*22).toFixed(1)}px)`;
-              stageObj.canvas.style.transform = `scale(${(0.18 + sp*1.18).toFixed(3)})`;
-              stageObj.canvas.style.opacity   = (0.05 + sp*0.95).toFixed(3);
-            }
-            const txt = document.querySelector(`.stage-${i+1} .stage-content`);
-            if (txt) txt.style.opacity = Math.max(0.08, 1 - sp*0.88).toFixed(3);
-          });
+          applyStageProgress(p);
         },
       });
 
-      window.addEventListener('resize', () => {
-        setHScrollHeight();
-        ScrollTrigger.refresh();
-      }, { passive: true });
+      window.addEventListener('resize', () => ScrollTrigger.refresh(), { passive: true });
     }
   } else {
     // No GSAP: show all shapes fully formed
+    applyStageProgress(0); // shows stage 1 formed
     fractalStages.forEach(s => {
       s._progress = 1;
-      if (s.canvas) { s.canvas.style.filter='blur(0px)'; s.canvas.style.opacity='1'; s.canvas.style.transform='scale(1.36)'; }
+      if (s.canvas) { s.canvas.style.filter='blur(0px)'; s.canvas.style.opacity='1'; s.canvas.style.transform='scale(1.0)'; }
     });
   }
 
