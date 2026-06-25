@@ -899,7 +899,331 @@ nav, .hero, .tech-strip, section, .aliados-wrap, .contact-wrap, footer { positio
   .aurora span, .hero-title .accent { animation: none !important; }
   .reveal { filter: none; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   SITE DETAILS — oculto hasta revelar
+   ═══════════════════════════════════════════════════════════════ */
+
+#site-details {
+  display: none;
+}
+#site-details.revealed {
+  display: block;
+  animation: siteReveal 0.9s ease both;
+}
+@keyframes siteReveal {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   NAV — modo landing vs. modo completo
+   ═══════════════════════════════════════════════════════════════ */
+
+.nav--landing .nav-links--full { display: none; }
+
+.nav-landing-cta {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 7px;
+  font-weight: 500;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-family: inherit;
+}
+.nav-landing-cta:hover { background: var(--accent2); }
+nav:not(.nav--landing) .nav-landing-cta { display: none; }
+
+/* Mobile nav: landing mode oculta links de sección, muestra botón descubrir */
+body.landing-mode .mobile-site-link  { display: none; }
+body.landing-mode .mobile-landing-cta { display: block; }
+.mobile-landing-cta {
+  display: none;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 15px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   JOURNEY SECTION — Experiencia landing inmersiva
+   ═══════════════════════════════════════════════════════════════ */
+
+.journey-section {
+  position: relative;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.journey-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.25;
+}
+
+/* ── Pantalla de intro (viewport completo) ── */
+.journey-intro {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 100px 60px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+.journey-intro-inner { max-width: 720px; }
+
+.j-eyebrow {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  opacity: 0.85;
+}
+
+.j-headline {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(44px, 8vw, 88px);
+  font-weight: 700;
+  letter-spacing: -3px;
+  line-height: 1.0;
+  margin-bottom: 20px;
+  color: var(--ink);
+}
+
+.j-sub {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink3);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 70px;
+}
+
+.j-scroll-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  color: var(--ink3);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-family: var(--mono);
+}
+
+.j-scroll-arrow {
+  width: 1px;
+  height: 64px;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+  animation: scrollPulse 2.2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.2; transform: scaleY(0.6) translateY(-10px); }
+  50%       { opacity: 1;   transform: scaleY(1)   translateY(0); }
+}
+
+/* ── Timeline de etapas ── */
+.journey-timeline {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
+.journey-stage {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  min-height: 100vh;
+  padding: 100px 10% 80px;
+  max-width: 1300px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.journey-stage.stage-2 .stage-visual { order: 2; }
+.journey-stage.stage-2 .stage-content { order: 1; }
+
+/* ── Visuals (SVG) ── */
+.stage-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 360px;
+}
+
+.stage-canvas {
+  display: block;
+  width: 280px;
+  height: 280px;
+  will-change: transform, filter, opacity;
+}
+
+.stage-visual::before {
+  content: '';
+  position: absolute;
+  inset: -40px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(79,156,249,0.07), transparent 65%);
+  z-index: -1;
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.4; transform: scale(0.93); }
+  50%       { opacity: 1;   transform: scale(1.07); }
+}
+
+/* ── Texto de cada etapa ── */
+.stage-content {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  will-change: opacity, transform;
+}
+
+.stage-num {
+  font-family: var(--mono);
+  font-size: 56px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 0.9;
+  margin-bottom: 4px;
+  opacity: 0.55;
+}
+
+.stage-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(28px, 3.5vw, 40px);
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -1px;
+  line-height: 1.1;
+}
+
+.stage-desc {
+  font-size: 16px;
+  color: var(--ink2);
+  line-height: 1.85;
+  font-weight: 300;
+  max-width: 460px;
+}
+
+.stage-insight {
+  font-size: 14px;
+  color: var(--accent);
+  line-height: 1.7;
+  background: rgba(79,156,249,0.05);
+  border-left: 2px solid var(--accent);
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-top: 4px;
+  font-weight: 400;
+}
+
+/* ── CTA Final — pantalla de revelación ── */
+.journey-final {
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 100px 60px 80px;
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--border);
+}
+
+.journey-final-inner { max-width: 640px; }
+
+.j-final-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(32px, 5vw, 60px);
+  font-weight: 700;
+  letter-spacing: -2px;
+  line-height: 1.08;
+  color: var(--ink);
+  margin: 20px 0 18px;
+}
+
+.j-final-sub {
+  font-size: 16px;
+  color: var(--ink2);
+  line-height: 1.75;
+  margin-bottom: 44px;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.j-reveal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 44px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.25s, box-shadow 0.3s;
+  letter-spacing: 0.1px;
+  font-family: inherit;
+}
+.j-reveal-btn:hover {
+  background: var(--accent2);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px -10px rgba(79,156,249,0.55);
+}
+.j-reveal-arrow { font-size: 22px; transition: transform 0.25s; display: inline-block; }
+.j-reveal-btn:hover .j-reveal-arrow { transform: translateX(5px); }
+
+/* ── Responsividad ── */
+@media (max-width: 960px) {
+  .journey-stage {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    min-height: auto;
+    padding: 80px 24px 60px;
+  }
+  .journey-stage.stage-2 .stage-visual { order: 1; }
+  .journey-stage.stage-2 .stage-content { order: 2; }
+  .stage-canvas { width: 200px; height: 200px; }
+  .stage-num    { font-size: 40px; }
+  .stage-visual { height: 240px; }
+  .journey-intro { padding: 80px 24px 60px; }
+  .journey-final { padding: 80px 24px 60px; }
+}
+
+@media (max-width: 480px) {
+  .j-headline { letter-spacing: -1.5px; }
+  .stage-num   { font-size: 32px; }
+  .stage-canvas { width: 160px; height: 160px; }
+  .j-reveal-btn { padding: 15px 32px; font-size: 15px; }
+}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 </head>
 <body>
 
@@ -914,17 +1238,18 @@ nav, .hero, .tech-strip, section, .aliados-wrap, .contact-wrap, footer { positio
 <div class="spotlight" aria-hidden="true"></div>
 
 <!-- NAV -->
-<nav>
+<nav id="main-nav" class="nav--landing">
   <a href="#" class="nav-logo">
     <img src="maxina-digital-logo-dark.svg" alt="Maxina Digital" height="36">
   </a>
-  <ul class="nav-links">
+  <ul class="nav-links nav-links--full">
     <li><a href="#servicios">Servicios</a></li>
     <li><a href="#portafolio">Portafolio</a></li>
     <li><a href="#aliados">Aliados</a></li>
     <li><a href="#proceso">Proceso</a></li>
     <li><a href="#contacto" class="nav-cta">Hablemos</a></li>
   </ul>
+  <button class="nav-landing-cta" id="nav-reveal-btn">Conocer más</button>
   <button class="nav-hamburger" id="hamburger" aria-label="Menú">
     <span></span><span></span><span></span>
   </button>
@@ -932,12 +1257,92 @@ nav, .hero, .tech-strip, section, .aliados-wrap, .contact-wrap, footer { positio
 
 <!-- MOBILE NAV -->
 <div class="mobile-nav" id="mobile-nav">
-  <a href="#servicios" onclick="closeMobileNav()">Servicios</a>
-  <a href="#portafolio" onclick="closeMobileNav()">Portafolio</a>
-  <a href="#aliados" onclick="closeMobileNav()">Aliados</a>
-  <a href="#proceso" onclick="closeMobileNav()">Proceso</a>
-  <a href="#contacto" class="nav-cta" onclick="closeMobileNav()">Hablemos</a>
+  <a href="#servicios" class="mobile-site-link" onclick="closeMobileNav()">Servicios</a>
+  <a href="#portafolio" class="mobile-site-link" onclick="closeMobileNav()">Portafolio</a>
+  <a href="#aliados" class="mobile-site-link" onclick="closeMobileNav()">Aliados</a>
+  <a href="#proceso" class="mobile-site-link" onclick="closeMobileNav()">Proceso</a>
+  <a href="#contacto" class="nav-cta mobile-site-link" onclick="closeMobileNav()">Hablemos</a>
+  <button class="nav-cta mobile-landing-cta" id="mobile-reveal-btn" onclick="closeMobileNav()">Conocer más</button>
 </div>
+
+<!-- JOURNEY LANDING — Experiencia Inmersiva -->
+<section id="journey" class="journey-section">
+  <canvas id="journey-particles" class="journey-canvas"></canvas>
+
+  <!-- INTRO SCREEN: full viewport -->
+  <div class="journey-intro">
+    <div class="journey-intro-inner">
+      <p class="j-eyebrow">// Maxina Digital · Aguascalientes</p>
+      <h1 class="j-headline">Software que <span class="accent">transforma</span><br>negocios reales</h1>
+      <p class="j-sub">Sistemas a medida · Apps · Web · IA</p>
+      <div class="j-scroll-hint" aria-hidden="true">
+        <span>Descubre el proceso</span>
+        <div class="j-scroll-arrow"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="journey-timeline">
+
+    <!-- ETAPA 1: ENTREVISTA -->
+    <div class="journey-stage stage-1">
+      <div class="stage-visual">
+        <canvas class="stage-canvas" id="stage-canvas-1" width="400" height="400"></canvas>
+      </div>
+      <div class="stage-content">
+        <div class="stage-num">01</div>
+        <h3 class="stage-title">Entrevista</h3>
+        <p class="stage-desc">Entendemos profundamente tu visión, objetivos y desafíos. Sin tecnicismos — hablamos tu idioma.</p>
+        <p class="stage-insight">📌 <strong>Lo clave:</strong> Una visión clara es el foundation de todo.</p>
+      </div>
+    </div>
+
+    <!-- ETAPA 2: PROTOTIPO -->
+    <div class="journey-stage stage-2">
+      <div class="stage-visual">
+        <canvas class="stage-canvas" id="stage-canvas-2" width="400" height="400"></canvas>
+      </div>
+      <div class="stage-content">
+        <div class="stage-num">02</div>
+        <h3 class="stage-title">Prototipo</h3>
+        <p class="stage-desc">Diseñamos y prototipamos la solución. Tú ves exactamente cómo lucirá y funciona, antes de código.</p>
+        <p class="stage-insight">📌 <strong>Lo clave:</strong> Los detalles visuales guían la arquitectura técnica.</p>
+      </div>
+    </div>
+
+    <!-- ETAPA 3: OFERTA -->
+    <div class="journey-stage stage-3">
+      <div class="stage-visual">
+        <canvas class="stage-canvas" id="stage-canvas-3" width="400" height="400"></canvas>
+      </div>
+      <div class="stage-content">
+        <div class="stage-num">03</div>
+        <h3 class="stage-title">Oferta</h3>
+        <p class="stage-desc">Te presentamos una propuesta personalizada, clara y sin sorpresas. Presupuesto justo, valor real.</p>
+        <p class="stage-insight">📌 <strong>Lo clave:</strong> Inversión transparente = confianza total.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CTA FINAL: revela el sitio completo -->
+  <div class="journey-final">
+    <div class="journey-final-inner">
+      <p class="j-eyebrow">// proceso probado · resultados reales</p>
+      <h2 class="j-final-title">¿Listo para empezar<br>tu <span class="accent">transformación</span>?</h2>
+      <p class="j-final-sub">Explora nuestros servicios, portafolio y cómo trabajamos contigo.</p>
+      <button id="reveal-site" class="j-reveal-btn">
+        Descubrir Maxina Digital
+        <span class="j-reveal-arrow">→</span>
+      </button>
+    </div>
+  </div>
+
+</section>
+
+<!-- SITE DETAILS — visible tras el botón "Descubrir" -->
+<div id="site-details">
 
 <!-- HERO -->
 <div class="hero">
@@ -1323,6 +1728,123 @@ nav, .hero, .tech-strip, section, .aliados-wrap, .contact-wrap, footer { positio
   </div>
 </section>
 
+<!-- (journey movida al inicio — ver arriba) -->
+<div style="display:none"><div class="journey-timeline">
+
+      <!-- ETAPA 1: ENTREVISTA -->
+      <div class="journey-stage stage-1">
+        <div class="stage-visual">
+          <svg class="stage-svg sphere-svg" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <radialGradient id="sphereGrad" cx="40%" cy="40%">
+                <stop offset="0%"   stop-color="rgba(79,156,249,0.8)"/>
+                <stop offset="70%"  stop-color="rgba(79,156,249,0.2)"/>
+                <stop offset="100%" stop-color="rgba(79,156,249,0)"/>
+              </radialGradient>
+              <filter id="sphereGlow" x="-30%" y="-30%" width="160%" height="160%">
+                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <circle class="sphere-outer" cx="100" cy="100" r="90" fill="none" stroke="rgba(79,156,249,0.25)" stroke-width="1"/>
+            <circle class="sphere-mid"   cx="100" cy="100" r="65" fill="none" stroke="rgba(79,156,249,0.5)"  stroke-width="1.5" opacity="0"/>
+            <circle class="sphere-core"  cx="100" cy="100" r="38" fill="url(#sphereGrad)" opacity="0" filter="url(#sphereGlow)"/>
+            <line class="energy-line" x1="100" y1="18" x2="100" y2="52"  stroke="rgba(34,211,238,0.7)" stroke-width="1.5" stroke-dasharray="34" stroke-dashoffset="34"/>
+            <line class="energy-line" x1="182" y1="100" x2="148" y2="100" stroke="rgba(34,211,238,0.7)" stroke-width="1.5" stroke-dasharray="34" stroke-dashoffset="34"/>
+            <line class="energy-line" x1="100" y1="182" x2="100" y2="148" stroke="rgba(34,211,238,0.7)" stroke-width="1.5" stroke-dasharray="34" stroke-dashoffset="34"/>
+            <line class="energy-line" x1="18"  y1="100" x2="52"  y2="100" stroke="rgba(34,211,238,0.7)" stroke-width="1.5" stroke-dasharray="34" stroke-dashoffset="34"/>
+          </svg>
+        </div>
+        <div class="stage-content">
+          <div class="stage-num">01</div>
+          <h3 class="stage-title">Entrevista</h3>
+          <p class="stage-desc">Entendemos profundamente tu visión, objetivos y desafíos. Sin tecnicismos — hablamos tu idioma.</p>
+          <p class="stage-insight">📌 <strong>Lo clave:</strong> Una visión clara es el foundation de todo.</p>
+        </div>
+      </div>
+
+      <!-- ETAPA 2: PROTOTIPO -->
+      <div class="journey-stage stage-2">
+        <div class="stage-visual">
+          <svg class="stage-svg wireframe-svg" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <filter id="wireframeGlow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <!-- Cara frontal -->
+            <line class="wireframe-line wf-line-1" x1="55" y1="65"  x2="135" y2="65"  stroke="rgba(79,156,249,0.5)"  stroke-width="1.5" opacity="0"/>
+            <line class="wireframe-line wf-line-2" x1="135" y1="65" x2="135" y2="145" stroke="rgba(79,156,249,0.5)"  stroke-width="1.5" opacity="0"/>
+            <line class="wireframe-line wf-line-3" x1="135" y1="145" x2="55" y2="145" stroke="rgba(79,156,249,0.5)"  stroke-width="1.5" opacity="0"/>
+            <line class="wireframe-line wf-line-4" x1="55" y1="145"  x2="55" y2="65"  stroke="rgba(79,156,249,0.5)"  stroke-width="1.5" opacity="0"/>
+            <!-- Cara trasera -->
+            <line class="wireframe-line wf-line-5" x1="75" y1="45"  x2="155" y2="45"  stroke="rgba(34,211,238,0.6)" stroke-width="1.5" opacity="0" filter="url(#wireframeGlow)"/>
+            <line class="wireframe-line wf-line-6" x1="155" y1="45" x2="155" y2="125" stroke="rgba(34,211,238,0.6)" stroke-width="1.5" opacity="0" filter="url(#wireframeGlow)"/>
+            <line class="wireframe-line wf-line-7" x1="155" y1="125" x2="75" y2="125" stroke="rgba(34,211,238,0.6)" stroke-width="1.5" opacity="0" filter="url(#wireframeGlow)"/>
+            <line class="wireframe-line wf-line-8" x1="75" y1="125"  x2="75" y2="45"  stroke="rgba(34,211,238,0.6)" stroke-width="1.5" opacity="0" filter="url(#wireframeGlow)"/>
+            <!-- Aristas de profundidad -->
+            <line class="wireframe-line wf-line-9"  x1="55" y1="65"   x2="75" y2="45"   stroke="rgba(34,211,238,0.4)" stroke-width="1.5" opacity="0"/>
+            <line class="wireframe-line wf-line-10" x1="135" y1="65"  x2="155" y2="45"  stroke="rgba(34,211,238,0.4)" stroke-width="1.5" opacity="0"/>
+            <line class="wireframe-line wf-line-11" x1="135" y1="145" x2="155" y2="125" stroke="rgba(34,211,238,0.4)" stroke-width="1.5" opacity="0"/>
+            <line class="wireframe-line wf-line-12" x1="55" y1="145"  x2="75" y2="125"  stroke="rgba(34,211,238,0.4)" stroke-width="1.5" opacity="0"/>
+            <!-- Nodos en vértices -->
+            <circle class="wf-node" cx="55"  cy="65"  r="2.5" fill="rgba(79,156,249,0.8)"  opacity="0"/>
+            <circle class="wf-node" cx="135" cy="65"  r="2.5" fill="rgba(79,156,249,0.8)"  opacity="0"/>
+            <circle class="wf-node" cx="135" cy="145" r="2.5" fill="rgba(79,156,249,0.8)"  opacity="0"/>
+            <circle class="wf-node" cx="55"  cy="145" r="2.5" fill="rgba(79,156,249,0.8)"  opacity="0"/>
+            <circle class="wf-node" cx="75"  cy="45"  r="2.5" fill="rgba(34,211,238,0.9)"  opacity="0"/>
+            <circle class="wf-node" cx="155" cy="45"  r="2.5" fill="rgba(34,211,238,0.9)"  opacity="0"/>
+            <circle class="wf-node" cx="155" cy="125" r="2.5" fill="rgba(34,211,238,0.9)"  opacity="0"/>
+            <circle class="wf-node" cx="75"  cy="125" r="2.5" fill="rgba(34,211,238,0.9)"  opacity="0"/>
+          </svg>
+        </div>
+        <div class="stage-content">
+          <div class="stage-num">02</div>
+          <h3 class="stage-title">Prototipo</h3>
+          <p class="stage-desc">Diseñamos y prototipamos la solución. Tú ves exactamente cómo lucirá y funciona, antes de código.</p>
+          <p class="stage-insight">📌 <strong>Lo clave:</strong> Los detalles visuales guían la arquitectura técnica.</p>
+        </div>
+      </div>
+
+      <!-- ETAPA 3: OFERTA -->
+      <div class="journey-stage stage-3">
+        <div class="stage-visual">
+          <svg class="stage-svg card-svg" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%"   stop-color="rgba(79,156,249,0.18)"/>
+                <stop offset="50%"  stop-color="rgba(34,211,238,0.10)"/>
+                <stop offset="100%" stop-color="rgba(139,92,246,0.14)"/>
+              </linearGradient>
+              <filter id="cardGlow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <rect class="card-spine" x="95"  y="38" width="10"  height="124" fill="rgba(79,156,249,0.5)"  opacity="0"/>
+            <rect class="card-left"  x="48"  y="38" width="47"  height="124" fill="url(#cardGrad)" stroke="rgba(34,211,238,0.25)" stroke-width="1" opacity="0.4"/>
+            <rect class="card-right" x="105" y="38" width="47"  height="124" fill="url(#cardGrad)" stroke="rgba(34,211,238,0.55)" stroke-width="1.5" opacity="1"   filter="url(#cardGlow)"/>
+            <line class="card-detail" x1="112" y1="58"  x2="147" y2="58"  stroke="rgba(34,211,238,0.45)" stroke-width="1"   opacity="0"/>
+            <line class="card-detail" x1="112" y1="72"  x2="147" y2="72"  stroke="rgba(34,211,238,0.35)" stroke-width="1"   opacity="0"/>
+            <line class="card-detail" x1="112" y1="86"  x2="138" y2="86"  stroke="rgba(34,211,238,0.3)"  stroke-width="1"   opacity="0"/>
+            <line class="card-detail" x1="112" y1="106" x2="144" y2="106" stroke="rgba(79,156,249,0.3)"  stroke-width="0.8" opacity="0"/>
+            <line class="card-detail" x1="112" y1="118" x2="140" y2="118" stroke="rgba(79,156,249,0.3)"  stroke-width="0.8" opacity="0"/>
+            <ellipse class="card-gloss" cx="126" cy="72" rx="8" ry="12" fill="rgba(255,255,255,0.12)" opacity="0"/>
+          </svg>
+        </div>
+        <div class="stage-content">
+          <div class="stage-num">03</div>
+          <h3 class="stage-title">Oferta</h3>
+          <p class="stage-desc">Te presentamos una propuesta personalizada, clara y sin sorpresas. Presupuesto justo, valor real.</p>
+          <p class="stage-insight">📌 <strong>Lo clave:</strong> Inversión transparente = confianza total.</p>
+          <a href="#contacto" class="stage-cta">Solicitar presupuesto →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
 <!-- CONTACTO -->
 <div id="contacto" class="contact-wrap">
   <div class="contact-in">
@@ -1409,6 +1931,8 @@ nav, .hero, .tech-strip, section, .aliados-wrap, .contact-wrap, footer { positio
     <span style="font-size:11px;">Fernando Ortega · Gestión de medios TV</span>
   </div>
 </footer>
+
+</div><!-- /#site-details -->
 
 <script>
 const obs = new IntersectionObserver(entries => {
@@ -1548,6 +2072,339 @@ contactForm.addEventListener('submit', async (e) => {
     formBtn.disabled = false;
   }
 });
+
+/* ═══════════════════════════════════════════════════════════════
+   REVELACIÓN DEL SITIO
+   ═══════════════════════════════════════════════════════════════ */
+// Activar modo landing al inicio
+document.body.classList.add('landing-mode');
+
+function revealSite() {
+  const siteDetails = document.getElementById('site-details');
+  document.body.classList.remove('landing-mode');
+  document.getElementById('main-nav').classList.remove('nav--landing');
+  siteDetails.classList.add('revealed');
+
+  requestAnimationFrame(() => {
+    siteDetails.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+}
+
+['reveal-site', 'nav-reveal-btn', 'mobile-reveal-btn'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('click', revealSite);
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   FRACTAL PARTICLE SYSTEM — Journey stages
+   ═══════════════════════════════════════════════════════════════ */
+(function () {
+
+  /* ── Point helpers ─────────────────────────────────────────── */
+  function halton(idx, base) {
+    let f = 1, r = 0, i = idx;
+    while (i > 0) { f /= base; r += f * (i % base); i = Math.floor(i / base); }
+    return r;
+  }
+
+  function ptLine(x1, y1, x2, y2, n) {
+    const pts = [];
+    for (let i = 0; i <= n; i++) {
+      const t = i / n;
+      pts.push({ x: x1 + (x2 - x1) * t, y: y1 + (y2 - y1) * t });
+    }
+    return pts;
+  }
+
+  function ptCircle(cx, cy, r, n) {
+    const pts = [];
+    for (let i = 0; i < n; i++) {
+      const a = (i / n) * Math.PI * 2;
+      pts.push({ x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r });
+    }
+    return pts;
+  }
+
+  function ptRect(x, y, w, h, n) {
+    const pts = [];
+    const perim = 2 * (w + h);
+    for (let i = 0; i < n; i++) {
+      const t = (i / n) * perim;
+      if (t < w)           pts.push({ x: x + t,            y });
+      else if (t < w + h)  pts.push({ x: x + w,            y: y + t - w });
+      else if (t < 2*w+h)  pts.push({ x: x + w - (t-w-h),  y: y + h });
+      else                 pts.push({ x,                    y: y + h - (t - 2*w - h) });
+    }
+    return pts;
+  }
+
+  /* ── Stage 1: Neural Network (Entrevista / Discovery) ───────── */
+  function shapeNetwork(W, H) {
+    const pts = [];
+    const cx = W * 0.50, cy = H * 0.48;
+    const R  = W * 0.31;
+
+    pts.push(...ptCircle(cx, cy, 22, 36));
+    pts.push(...ptCircle(cx, cy, 10, 18));
+
+    const N = 6;
+    const nodes = Array.from({ length: N }, (_, i) => ({
+      x: cx + Math.cos((i / N) * Math.PI * 2 - Math.PI / 2) * R,
+      y: cy + Math.sin((i / N) * Math.PI * 2 - Math.PI / 2) * R,
+    }));
+
+    nodes.forEach(n => {
+      pts.push(...ptCircle(n.x, n.y, 14, 22));
+      pts.push(...ptCircle(n.x, n.y,  6, 10));
+      pts.push(...ptLine(cx, cy, n.x, n.y, 18));
+    });
+
+    for (let i = 0; i < N; i++) {
+      pts.push(...ptLine(nodes[i].x, nodes[i].y, nodes[(i + 2) % N].x, nodes[(i + 2) % N].y, 12));
+    }
+
+    nodes.forEach((n, i) => {
+      if (i % 2 === 0) {
+        const a = (i / N) * Math.PI * 2 + Math.PI / 6;
+        const sx = n.x + Math.cos(a) * 42;
+        const sy = n.y + Math.sin(a) * 42;
+        pts.push(...ptCircle(sx, sy, 7, 10));
+        pts.push(...ptLine(n.x, n.y, sx, sy, 10));
+      }
+    });
+
+    return pts;
+  }
+
+  /* ── Stage 2: Browser Wireframe (Prototipo / Design) ────────── */
+  function shapeWireframe(W, H) {
+    const pts = [];
+    const mx = W * 0.07, my = H * 0.06;
+    const mw = W * 0.86, mh = H * 0.87;
+
+    pts.push(...ptRect(mx, my, mw, mh, 72));
+    pts.push(...ptRect(mx, my, mw, mh * 0.09, 28));
+
+    [0, 1, 2].forEach(i => pts.push(...ptCircle(mx + 12 + i * 14, my + mh * 0.045, 4.5, 10)));
+    pts.push(...ptRect(mx + 55, my + mh * 0.022, mw * 0.48, mh * 0.052, 18));
+
+    pts.push(...ptRect(mx + 6, my + mh * 0.11, mw - 12, mh * 0.22, 30));
+    [0.155, 0.20, 0.245].forEach((ry, i) => {
+      const lw = (0.70 - i * 0.09) * (mw - 18);
+      for (let t = 0; t < lw; t += 9) pts.push({ x: mx + 15 + t, y: my + mh * ry });
+    });
+
+    const cw = (mw - 24) / 3 - 4;
+    for (let i = 0; i < 3; i++) {
+      const cx2 = mx + 8 + i * (cw + 6);
+      const cy2 = my + mh * 0.36;
+      pts.push(...ptRect(cx2, cy2, cw, mh * 0.18, 18));
+      pts.push(...ptCircle(cx2 + cw / 2, cy2 + mh * 0.07, cw * 0.12, 8));
+    }
+
+    [0.60, 0.67, 0.74, 0.81].forEach((ry, i) => {
+      const lw = (0.85 - i * 0.06) * (mw - 18);
+      for (let t = 0; t < lw; t += 9) pts.push({ x: mx + 12 + t, y: my + mh * ry });
+    });
+
+    return pts;
+  }
+
+  /* ── Stage 3: Rocket Launch (Oferta / Deliver) ──────────────── */
+  function shapeRocket(W, H) {
+    const pts = [];
+    const cx = W * 0.50, bY = H * 0.67;
+    const bW = W * 0.19, bH = H * 0.38;
+
+    pts.push(...ptRect(cx - bW / 2, bY - bH, bW, bH, 42));
+    pts.push(...ptCircle(cx, bY - bH * 0.60, bW * 0.25, 18));
+    pts.push(...ptCircle(cx, bY - bH * 0.60, bW * 0.13, 10));
+
+    const noseH = bW * 1.6;
+    pts.push(...ptLine(cx - bW / 2, bY - bH, cx, bY - bH - noseH, 16));
+    pts.push(...ptLine(cx + bW / 2, bY - bH, cx, bY - bH - noseH, 16));
+    for (let t = 0.1; t < 1; t += 0.12) {
+      const hw = bW * (1 - t) / 2;
+      pts.push({ x: cx - hw, y: bY - bH - t * noseH });
+      pts.push({ x: cx + hw, y: bY - bH - t * noseH });
+    }
+
+    pts.push(...ptLine(cx - bW / 2, bY - bH * 0.25, cx - bW * 1.1, bY, 12));
+    pts.push(...ptLine(cx - bW / 2, bY,              cx - bW * 1.1, bY, 8));
+    pts.push(...ptLine(cx + bW / 2, bY - bH * 0.25, cx + bW * 1.1, bY, 12));
+    pts.push(...ptLine(cx + bW / 2, bY,              cx + bW * 1.1, bY, 8));
+
+    pts.push(...ptCircle(cx, bY + H * 0.09, bW * 0.24, 20));
+    pts.push(...ptCircle(cx, bY + H * 0.16, bW * 0.15, 14));
+    pts.push(...ptCircle(cx, bY + H * 0.22, bW * 0.09, 10));
+
+    [[0.07,0.07],[0.88,0.06],[0.13,0.30],[0.84,0.24],
+     [0.05,0.52],[0.93,0.50],[0.18,0.74],[0.81,0.78],
+     [0.46,0.04],[0.60,0.09],[0.24,0.14],[0.76,0.13]].forEach(([sx, sy]) => {
+      pts.push({ x: sx * W, y: sy * H });
+      pts.push({ x: sx * W + 1, y: sy * H });
+    });
+
+    return pts;
+  }
+
+  /* ── FractalStage class ──────────────────────────────────────── */
+  class FractalStage {
+    constructor(id, shapeFn, colorFrom, colorTo) {
+      this.canvas = document.getElementById(id);
+      if (!this.canvas) return;
+      this.ctx = this.canvas.getContext('2d');
+      this.W = this.canvas.width;
+      this.H = this.canvas.height;
+      this.colorFrom = colorFrom;
+      this.colorTo   = colorTo;
+      this._progress = 0;
+
+      const targets = shapeFn(this.W, this.H);
+      this.particles = targets.map((t, i) => ({
+        sx:    halton(i + 1, 2) * this.W,
+        sy:    halton(i + 1, 3) * this.H,
+        tx:    t.x,
+        ty:    t.y,
+        size:  0.9 + (i % 7) * 0.15,
+        phase: i * 2.399,
+      }));
+    }
+
+    draw(progress, time) {
+      if (!this.canvas) return;
+      const ctx = this.ctx;
+      ctx.clearRect(0, 0, this.W, this.H);
+
+      const p = Math.pow(Math.min(Math.max(progress, 0), 1), 0.65);
+      const [fr, fg, fb] = this.colorFrom;
+      const [tr, tg, tb] = this.colorTo;
+
+      this.particles.forEach(pt => {
+        const turb = (1 - p) * 20;
+        const nx = Math.sin(time * 0.001  + pt.phase) * turb;
+        const ny = Math.cos(time * 0.0009 + pt.phase * 0.7) * turb;
+
+        const x = pt.sx + (pt.tx - pt.sx) * p + nx;
+        const y = pt.sy + (pt.ty - pt.sy) * p + ny;
+
+        const size  = pt.size * (1 + (1 - p) * 3.5);
+        const alpha = 0.15 + p * 0.85;
+        const r = Math.round(fr + (tr - fr) * p);
+        const g = Math.round(fg + (tg - fg) * p);
+        const b = Math.round(fb + (tb - fb) * p);
+
+        ctx.fillStyle = `rgb(${r},${g},${b})`;
+        ctx.globalAlpha = alpha * 0.22;
+        ctx.beginPath();
+        ctx.arc(x, y, size * 4, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.globalAlpha = alpha;
+        ctx.beginPath();
+        ctx.arc(x, y, size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  /* ── Instances ──────────────────────────────────────────────── */
+  const s1 = new FractalStage('stage-canvas-1', shapeNetwork,   [60, 80,145], [79,156,249]);
+  const s2 = new FractalStage('stage-canvas-2', shapeWireframe, [38, 92,122], [34,211,238]);
+  const s3 = new FractalStage('stage-canvas-3', shapeRocket,    [82, 58,145], [139, 92,246]);
+  const stages = [s1, s2, s3];
+
+  /* ── Background ambient particles (#journey-particles) ─────── */
+  const bgCanvas = document.getElementById('journey-particles');
+  const bgCtx    = bgCanvas ? bgCanvas.getContext('2d') : null;
+
+  function resizeBg() {
+    if (bgCanvas) { bgCanvas.width = window.innerWidth; bgCanvas.height = window.innerHeight; }
+  }
+  resizeBg();
+  window.addEventListener('resize', resizeBg, { passive: true });
+
+  const bgCount = window.innerWidth < 768 ? 28 : 52;
+  const bgPts   = Array.from({ length: bgCount }, () => ({
+    x:     Math.random() * (bgCanvas ? bgCanvas.width  : 1920),
+    y:     Math.random() * (bgCanvas ? bgCanvas.height : 1080),
+    vx:    (Math.random() - 0.5) * 0.42,
+    vy:    (Math.random() - 0.5) * 0.42,
+    r:     Math.random() * 1.3 + 0.3,
+    life:  Math.random(),
+    decay: Math.random() * 0.004 + 0.0015,
+  }));
+
+  function drawBg() {
+    if (!bgCtx || !bgCanvas) return;
+    bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+    bgPts.forEach(p => {
+      p.life -= p.decay;
+      if (p.life <= 0) {
+        p.x = Math.random() * bgCanvas.width;
+        p.y = Math.random() * bgCanvas.height;
+        p.life = 1;
+        p.decay = Math.random() * 0.004 + 0.0015;
+      }
+      p.x += p.vx;
+      p.y += p.vy;
+      bgCtx.fillStyle = `rgba(79,156,249,${p.life * 0.48})`;
+      bgCtx.beginPath();
+      bgCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      bgCtx.fill();
+    });
+  }
+
+  /* ── RAF loop ───────────────────────────────────────────────── */
+  let rafId = null, T = 0;
+  function loop(ts) {
+    T = ts;
+    stages.forEach(s => s.draw(s._progress, T));
+    drawBg();
+    rafId = requestAnimationFrame(loop);
+  }
+
+  /* ── GSAP ScrollTrigger bindings ────────────────────────────── */
+  if (window.gsap && window.ScrollTrigger && !reduceMotion) {
+    gsap.registerPlugin(ScrollTrigger);
+
+    stages.forEach(s => {
+      if (s.canvas) gsap.set(s.canvas, { filter: 'blur(24px)', opacity: 0.15 });
+    });
+
+    function bindStage(selector, stageObj) {
+      const prog = { v: 0 };
+      gsap.to(prog, {
+        v: 1, ease: 'none',
+        onUpdate() { stageObj._progress = prog.v; },
+        scrollTrigger: { trigger: selector, start: 'top 72%', end: 'bottom 28%', scrub: 1.5 },
+      });
+      if (stageObj.canvas) {
+        gsap.to(stageObj.canvas, {
+          filter: 'blur(0px)', opacity: 1, ease: 'none',
+          scrollTrigger: { trigger: selector, start: 'top 78%', end: 'center 42%', scrub: 1.5 },
+        });
+      }
+    }
+
+    bindStage('.stage-1', s1);
+    bindStage('.stage-2', s2);
+    bindStage('.stage-3', s3);
+  } else {
+    stages.forEach(s => { s._progress = 1; });
+  }
+
+  /* ── Pause RAF when journey not in viewport ─────────────────── */
+  const journeyEl = document.querySelector('#journey');
+  const visObs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) { if (!rafId) rafId = requestAnimationFrame(loop); }
+    else { cancelAnimationFrame(rafId); rafId = null; }
+  }, { threshold: 0.05 });
+  if (journeyEl) visObs.observe(journeyEl);
+
+})();
 
 const hamburger = document.getElementById('hamburger');
 const mobileNav = document.getElementById('mobile-nav');
