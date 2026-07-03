@@ -78,63 +78,72 @@ const stages: Stage[] = [
 // well-tested snapping engine, no custom wheel/touch/lock JavaScript.
 // Each stage is a normal full-height section; ScrollReveal fades its
 // content in as it snaps into view.
+//
+// No per-section tint overlay here on purpose — the fixed-position Aurora
+// and Background3D layers already provide continuous ambient color across
+// the whole page, so every stage's background reads as one seamless
+// surface instead of a visible seam at each section boundary.
 export const ProcessStages = () => (
   <>
-    {stages.map((stage, index) => (
-      <section
-        key={stage.number}
-        className="snap-section relative h-screen w-full overflow-hidden flex items-center"
-      >
-        <div
-          className={`absolute inset-0 ${
-            index % 2 === 0
-              ? 'bg-gradient-to-br from-blue-600/10 via-transparent to-transparent'
-              : 'bg-gradient-to-br from-cyan-400/10 via-transparent to-transparent'
-          }`}
-        />
+    {stages.map((stage, index) => {
+      const nextHref = index < stages.length - 1 ? `#etapa-${stages[index + 1].number}` : '#cta';
+      return (
+        <section
+          key={stage.number}
+          id={`etapa-${stage.number}`}
+          className="snap-section relative h-screen w-full overflow-hidden flex items-center"
+        >
+          <ScrollReveal className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-16">
+            <div className="flex flex-col md:flex-row items-center gap-10 md:gap-20">
+              {/* Animation */}
+              <div className="w-64 h-64 sm:w-80 sm:h-80 lg:w-[420px] lg:h-[420px] flex-shrink-0">
+                <ProcessStageAnimation stage={stage.number} />
+              </div>
 
-        <ScrollReveal className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-16">
-          <div className="flex flex-col md:flex-row items-center gap-10 md:gap-20">
-            {/* Animation */}
-            <div className="w-64 h-64 sm:w-80 sm:h-80 lg:w-[420px] lg:h-[420px] flex-shrink-0">
-              <ProcessStageAnimation stage={stage.number} />
+              {/* Content */}
+              <div className="flex-1 text-center md:text-left">
+                <div className="flex items-center justify-center md:justify-start gap-4 mb-4">
+                  <span className="font-mono text-sm md:text-base text-cyan-accent font-semibold tracking-widest uppercase">
+                    Etapa {String(stage.number).padStart(2, '0')} / {String(stages.length).padStart(2, '0')}
+                  </span>
+                </div>
+
+                <h3 className="font-display text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 leading-[1.1]">
+                  <span className="mr-3">{stage.emoji}</span>
+                  {stage.title}
+                </h3>
+
+                <div className="space-y-3 max-w-xl mx-auto md:mx-0">
+                  {stage.description.map((desc, i) => (
+                    <p key={i} className="text-lg sm:text-xl lg:text-2xl text-gray-primary leading-relaxed">
+                      {desc}
+                    </p>
+                  ))}
+                </div>
+
+                <div className="mt-8 flex justify-center md:justify-start gap-2">
+                  {stages.map((_, i) => (
+                    <div
+                      key={i}
+                      className={`h-1.5 rounded-full transition-all duration-500 ${
+                        i === index ? 'w-10 bg-cyan-accent' : 'w-1.5 bg-blue-primary/40'
+                      }`}
+                    />
+                  ))}
+                </div>
+
+                <a
+                  href={nextHref}
+                  className="mt-8 inline-flex items-center gap-2 font-outfit font-semibold text-sm uppercase tracking-wider text-cyan-accent border-2 border-cyan-accent rounded px-8 py-3 transition-all duration-300 hover:bg-cyan-accent hover:text-navy hover:shadow-glow"
+                >
+                  {index < stages.length - 1 ? 'Siguiente etapa' : 'Conocer más'}
+                  <span aria-hidden="true">↓</span>
+                </a>
+              </div>
             </div>
-
-            {/* Content */}
-            <div className="flex-1 text-center md:text-left">
-              <div className="flex items-center justify-center md:justify-start gap-4 mb-4">
-                <span className="font-mono text-sm md:text-base text-cyan-accent font-semibold tracking-widest uppercase">
-                  Etapa {String(stage.number).padStart(2, '0')} / {String(stages.length).padStart(2, '0')}
-                </span>
-              </div>
-
-              <h3 className="font-display text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 leading-[1.1]">
-                <span className="mr-3">{stage.emoji}</span>
-                {stage.title}
-              </h3>
-
-              <div className="space-y-3 max-w-xl mx-auto md:mx-0">
-                {stage.description.map((desc, i) => (
-                  <p key={i} className="text-lg sm:text-xl lg:text-2xl text-gray-primary leading-relaxed">
-                    {desc}
-                  </p>
-                ))}
-              </div>
-
-              <div className="mt-8 flex justify-center md:justify-start gap-2">
-                {stages.map((_, i) => (
-                  <div
-                    key={i}
-                    className={`h-1.5 rounded-full transition-all duration-500 ${
-                      i === index ? 'w-10 bg-cyan-accent' : 'w-1.5 bg-blue-primary/40'
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-        </ScrollReveal>
-      </section>
-    ))}
+          </ScrollReveal>
+        </section>
+      );
+    })}
   </>
 );

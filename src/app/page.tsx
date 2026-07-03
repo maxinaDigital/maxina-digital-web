@@ -1,5 +1,4 @@
 import { Background3D } from '@/components/Background3D';
-import { Button } from '@/components/UI/Button';
 import { ProcessStages } from '@/components/ProcessStages';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { GlassTiltPanel } from '@/components/GlassTiltPanel';
@@ -63,9 +62,12 @@ export default function Home() {
 
           {/* CTA Button */}
           <ScrollReveal delay={1.4}>
-            <Button size="lg" className="inline-block">
+            <a
+              href="#proceso"
+              className="font-outfit font-semibold transition-all duration-300 rounded bg-blue-600 hover:bg-transparent text-white hover:text-cyan-400 border-2 border-blue-600 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(0,188,212,0.4)] px-12 py-5 text-base uppercase tracking-widest inline-block"
+            >
               Conocer Nuestro Proceso
-            </Button>
+            </a>
           </ScrollReveal>
         </div>
 
@@ -79,7 +81,7 @@ export default function Home() {
       </section>
 
       {/* Process Intro */}
-      <section className="snap-section relative z-10 h-screen flex items-center justify-center px-4 md:px-8">
+      <section id="proceso" className="snap-section relative z-10 h-screen flex items-center justify-center px-4 md:px-8">
         <ScrollReveal>
           <div className="text-center max-w-3xl mx-auto">
             <h3 className="font-display text-5xl md:text-6xl font-bold mb-6">
@@ -103,7 +105,7 @@ export default function Home() {
       <ProcessStages />
 
       {/* CTA Section */}
-      <section className="snap-section relative z-10 py-20 px-4 md:px-8 max-w-6xl mx-auto mt-20 min-h-screen flex items-center justify-center">
+      <section id="cta" className="snap-section relative z-10 py-20 px-4 md:px-8 max-w-6xl mx-auto mt-20 min-h-screen flex items-center justify-center">
         <ScrollReveal>
           <GlassTiltPanel className="bg-gradient-to-r from-blue-600/5 to-cyan-400/5 border border-blue-600 rounded-lg p-12 text-center">
             <h4 className="font-display text-3xl font-bold mb-6">
