@@ -3,6 +3,11 @@
 // NOTE: All 6 animations mount simultaneously (for the crossfade scroll effect),
 // so every class/keyframe name is prefixed per-stage (s1-, s2', etc.) to avoid
 // global CSS collisions between the inline <style> blocks.
+//
+// Every "reveal" keyframe below is a 4-stop loop (appear -> hold -> fade out
+// -> hidden) driven with `infinite`, rather than a 2-stop from/to driven with
+// `forwards` — so each stage's animation keeps replaying instead of running
+// once and freezing on its final frame.
 
 // Rounds trig-derived coordinates so server/client renders stringify identically
 // (raw Math.cos/sin float output can differ in the last digit between engines,
@@ -13,7 +18,12 @@ const Stage1Animation = () => (
   <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
     <defs>
       <style>{`
-        @keyframes s1-line { from { stroke-dashoffset: 90; opacity: 0; } to { stroke-dashoffset: 0; opacity: 1; } }
+        @keyframes s1-line {
+          0% { stroke-dashoffset: 90; opacity: 0; }
+          16% { stroke-dashoffset: 0; opacity: 1; }
+          82% { stroke-dashoffset: 0; opacity: 1; }
+          100% { stroke-dashoffset: 90; opacity: 0; }
+        }
         @keyframes s1-hexPulse {
           0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0px #00BCD4); }
           50% { transform: scale(1.06); filter: drop-shadow(0 0 24px #00BCD4); }
@@ -27,11 +37,11 @@ const Stage1Animation = () => (
         @keyframes s1-float2 { 0%,100% { transform: translateY(0); opacity: .4;} 50% { transform: translateY(12px); opacity: .9;} }
         @keyframes s1-float3 { 0%,100% { transform: translateY(0); opacity: .5;} 50% { transform: translateY(-10px); opacity: 1;} }
         @keyframes s1-float4 { 0%,100% { transform: translateY(0); opacity: .4;} 50% { transform: translateY(10px); opacity: .9;} }
-        .s1-l0 { animation: s1-line 0.7s ease-out 0.1s forwards; stroke-dasharray: 90; }
-        .s1-l1 { animation: s1-line 0.7s ease-out 0.35s forwards; stroke-dasharray: 90; }
-        .s1-l2 { animation: s1-line 0.7s ease-out 0.6s forwards; stroke-dasharray: 90; }
-        .s1-l3 { animation: s1-line 0.7s ease-out 0.85s forwards; stroke-dasharray: 90; }
-        .s1-l4 { animation: s1-line 0.7s ease-out 1.1s forwards; stroke-dasharray: 90; }
+        .s1-l0 { animation: s1-line 4.5s ease-in-out 0.1s infinite; }
+        .s1-l1 { animation: s1-line 4.5s ease-in-out 0.35s infinite; }
+        .s1-l2 { animation: s1-line 4.5s ease-in-out 0.6s infinite; }
+        .s1-l3 { animation: s1-line 4.5s ease-in-out 0.85s infinite; }
+        .s1-l4 { animation: s1-line 4.5s ease-in-out 1.1s infinite; }
         .s1-hex { animation: s1-hexPulse 3s ease-in-out infinite; transform-origin: 160px 160px; }
         .s1-core { animation: s1-coreGlow 3s ease-in-out infinite; }
         .s1-p1 { animation: s1-float1 4s ease-in-out infinite; }
@@ -74,14 +84,24 @@ const Stage2Animation = () => (
   <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
     <defs>
       <style>{`
-        @keyframes s2-node { from { r: 0; opacity: 0; } to { opacity: 1; } }
-        @keyframes s2-line { from { stroke-dashoffset: 140; } to { stroke-dashoffset: 0; } }
+        @keyframes s2-node {
+          0% { r: 0; opacity: 0; }
+          12% { opacity: 1; }
+          85% { opacity: 1; }
+          100% { r: 0; opacity: 0; }
+        }
+        @keyframes s2-line {
+          0% { stroke-dashoffset: 140; opacity: 1; }
+          15% { stroke-dashoffset: 0; opacity: 1; }
+          85% { stroke-dashoffset: 0; opacity: 1; }
+          100% { stroke-dashoffset: 140; opacity: 0; }
+        }
         @keyframes s2-glow { 0%,100% { filter: drop-shadow(0 0 0px #00BCD4);} 50% { filter: drop-shadow(0 0 18px #00BCD4);} }
         @keyframes s2-drift { 0%,100% { transform: translate(0,0);} 50% { transform: translate(6px,-8px);} }
         .s2-net { animation: s2-glow 3.4s ease-in-out infinite; }
         .s2-drift { animation: s2-drift 6s ease-in-out infinite; }
-        ${[0,1,2,3,4,5].map(i => `.s2-node${i} { animation: s2-node 0.5s ease-out ${0.15 * i + 0.1}s forwards; }`).join('\n')}
-        ${[0,1,2,3,4,5].map(i => `.s2-edge${i} { animation: s2-line 0.6s ease-out ${0.15 * i + 0.3}s forwards; stroke-dasharray: 140; }`).join('\n')}
+        ${[0,1,2,3,4,5].map(i => `.s2-node${i} { animation: s2-node 4s ease-in-out ${0.15 * i + 0.1}s infinite; }`).join('\n')}
+        ${[0,1,2,3,4,5].map(i => `.s2-edge${i} { animation: s2-line 4s ease-in-out ${0.15 * i + 0.3}s infinite; stroke-dasharray: 140; }`).join('\n')}
       `}</style>
       <filter id="s2glow"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
     </defs>
@@ -116,22 +136,47 @@ const Stage3Animation = () => (
   <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
     <defs>
       <style>{`
-        @keyframes s3-scale { from { transform: scale(0) translateY(24px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
-        @keyframes s3-color { 0% { fill: #3d4a58; } 100% { fill: rgba(0,102,204,0.18); } }
-        @keyframes s3-stroke { 0% { stroke: #3d4a58; } 100% { stroke: #00BCD4; } }
-        @keyframes s3-border { from { stroke-dashoffset: 140; opacity: 0;} to { stroke-dashoffset: 0; opacity: 1;} }
-        @keyframes s3-lineGrow { from { width: 0; opacity: 0;} to { opacity: 1;} }
+        @keyframes s3-scale {
+          0% { transform: scale(0) translateY(24px); opacity: 0; }
+          10% { transform: scale(1) translateY(0); opacity: 1; }
+          80% { transform: scale(1) translateY(0); opacity: 1; }
+          100% { transform: scale(0) translateY(24px); opacity: 0; }
+        }
+        @keyframes s3-color {
+          0% { fill: #3d4a58; }
+          20% { fill: rgba(0,102,204,0.18); }
+          80% { fill: rgba(0,102,204,0.18); }
+          100% { fill: #3d4a58; }
+        }
+        @keyframes s3-stroke {
+          0% { stroke: #3d4a58; }
+          20% { stroke: #00BCD4; }
+          80% { stroke: #00BCD4; }
+          100% { stroke: #3d4a58; }
+        }
+        @keyframes s3-border {
+          0% { stroke-dashoffset: 140; opacity: 0; }
+          12% { stroke-dashoffset: 0; opacity: 1; }
+          80% { stroke-dashoffset: 0; opacity: 1; }
+          100% { stroke-dashoffset: 140; opacity: 0; }
+        }
+        @keyframes s3-lineGrow {
+          0% { opacity: 0; }
+          10% { opacity: 1; }
+          80% { opacity: 1; }
+          100% { opacity: 0; }
+        }
         @keyframes s3-glow { 0%,100% { filter: drop-shadow(0 0 0px #00BCD4);} 50% { filter: drop-shadow(0 0 16px #00BCD4);} }
         @keyframes s3-swatch { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-6px);} }
-        .s3-card1 { animation: s3-scale .5s cubic-bezier(.34,1.56,.64,1) .1s forwards, s3-color 1.2s ease-out .5s forwards; transform-origin: center; }
-        .s3-card2 { animation: s3-scale .5s cubic-bezier(.34,1.56,.64,1) .35s forwards, s3-color 1.2s ease-out .75s forwards; transform-origin: center; }
-        .s3-card3 { animation: s3-scale .5s cubic-bezier(.34,1.56,.64,1) .6s forwards, s3-color 1.2s ease-out 1s forwards; transform-origin: center; }
-        .s3-card4 { animation: s3-scale .5s cubic-bezier(.34,1.56,.64,1) .85s forwards, s3-color 1.2s ease-out 1.25s forwards; transform-origin: center; }
-        .s3-b1 { animation: s3-border .6s ease-out .1s forwards, s3-stroke 1.2s ease-out .5s forwards; stroke-dasharray: 140; }
-        .s3-b2 { animation: s3-border .6s ease-out .35s forwards, s3-stroke 1.2s ease-out .75s forwards; stroke-dasharray: 140; }
-        .s3-b3 { animation: s3-border .6s ease-out .6s forwards, s3-stroke 1.2s ease-out 1s forwards; stroke-dasharray: 140; }
-        .s3-b4 { animation: s3-border .6s ease-out .85s forwards, s3-stroke 1.2s ease-out 1.25s forwards; stroke-dasharray: 140; }
-        .s3-line { animation: s3-lineGrow .5s ease-out forwards; }
+        .s3-card1 { animation: s3-scale 5s ease-in-out .1s infinite, s3-color 5s ease-in-out .5s infinite; transform-origin: center; }
+        .s3-card2 { animation: s3-scale 5s ease-in-out .35s infinite, s3-color 5s ease-in-out .75s infinite; transform-origin: center; }
+        .s3-card3 { animation: s3-scale 5s ease-in-out .6s infinite, s3-color 5s ease-in-out 1s infinite; transform-origin: center; }
+        .s3-card4 { animation: s3-scale 5s ease-in-out .85s infinite, s3-color 5s ease-in-out 1.25s infinite; transform-origin: center; }
+        .s3-b1 { animation: s3-border 5s ease-in-out .1s infinite, s3-stroke 5s ease-in-out .5s infinite; stroke-dasharray: 140; }
+        .s3-b2 { animation: s3-border 5s ease-in-out .35s infinite, s3-stroke 5s ease-in-out .75s infinite; stroke-dasharray: 140; }
+        .s3-b3 { animation: s3-border 5s ease-in-out .6s infinite, s3-stroke 5s ease-in-out 1s infinite; stroke-dasharray: 140; }
+        .s3-b4 { animation: s3-border 5s ease-in-out .85s infinite, s3-stroke 5s ease-in-out 1.25s infinite; stroke-dasharray: 140; }
+        .s3-line { animation: s3-lineGrow 5s ease-in-out infinite; }
         .s3-wrap { animation: s3-glow 3s ease-in-out 1.6s infinite; }
         .s3-sw1 { animation: s3-swatch 3.5s ease-in-out infinite; }
         .s3-sw2 { animation: s3-swatch 4s ease-in-out .3s infinite; }
@@ -173,8 +218,18 @@ const Stage4Animation = () => (
   <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
     <defs>
       <style>{`
-        @keyframes s4-type { from { stroke-dashoffset: 340; } to { stroke-dashoffset: 0; } }
-        @keyframes s4-bar { from { width: 0; } to { width: 170px; } }
+        @keyframes s4-type {
+          0% { stroke-dashoffset: 340; opacity: 1; }
+          25% { stroke-dashoffset: 0; opacity: 1; }
+          80% { stroke-dashoffset: 0; opacity: 1; }
+          100% { stroke-dashoffset: 340; opacity: 0; }
+        }
+        @keyframes s4-bar {
+          0% { width: 0; opacity: 1; }
+          18% { width: 170px; opacity: 1; }
+          80% { width: 170px; opacity: 1; }
+          100% { width: 0; opacity: 1; }
+        }
         @keyframes s4-blink { 0%,49% { opacity: 1;} 50%,100% { opacity: 0;} }
         @keyframes s4-glow { 0%,100% { filter: drop-shadow(0 0 0px #0066CC);} 50% { filter: drop-shadow(0 0 14px #0066CC);} }
         @keyframes s4-pop { 0%,100% { opacity: 0.4; transform: scale(1);} 50% { opacity: 1; transform: scale(1.25);} }
@@ -185,11 +240,11 @@ const Stage4Animation = () => (
           100% { offset-distance: 100%; opacity: 0; }
         }
         .s4-term { animation: s4-glow 3.2s ease-in-out infinite; }
-        .s4-l1 { animation: s4-type .9s ease-out .1s forwards; stroke-dasharray: 340; }
-        .s4-l2 { animation: s4-type .9s ease-out .9s forwards; stroke-dasharray: 340; }
-        .s4-l3 { animation: s4-type .9s ease-out 1.7s forwards; stroke-dasharray: 340; }
+        .s4-l1 { animation: s4-type 6s ease-in-out 0.1s infinite; stroke-dasharray: 340; }
+        .s4-l2 { animation: s4-type 6s ease-in-out 0.9s infinite; stroke-dasharray: 340; }
+        .s4-l3 { animation: s4-type 6s ease-in-out 1.7s infinite; stroke-dasharray: 340; }
         .s4-cursor { animation: s4-blink .8s ease-in-out 2.6s infinite; }
-        .s4-bar { animation: s4-bar 1.1s ease-out 2.7s forwards; }
+        .s4-bar { animation: s4-bar 6s ease-in-out 2.7s infinite; }
         .s4-api1 { animation: s4-pop 2.4s ease-in-out infinite; }
         .s4-api2 { animation: s4-pop 2.4s ease-in-out .5s infinite; }
         .s4-api3 { animation: s4-pop 2.4s ease-in-out 1s infinite; }
@@ -228,9 +283,24 @@ const Stage5Animation = () => (
   <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
     <defs>
       <style>{`
-        @keyframes s5-item { from { opacity: 0; transform: translateX(-16px);} to { opacity: 1; transform: translateX(0);} }
-        @keyframes s5-check { from { stroke-dashoffset: 24; opacity: 0;} to { stroke-dashoffset: 0; opacity: 1;} }
-        @keyframes s5-ring { from { stroke-dashoffset: 251; } to { stroke-dashoffset: 50; } }
+        @keyframes s5-item {
+          0% { opacity: 0; transform: translateX(-16px); }
+          8% { opacity: 1; transform: translateX(0); }
+          85% { opacity: 1; transform: translateX(0); }
+          100% { opacity: 0; transform: translateX(-16px); }
+        }
+        @keyframes s5-check {
+          0% { stroke-dashoffset: 24; opacity: 0; }
+          8% { stroke-dashoffset: 0; opacity: 1; }
+          85% { stroke-dashoffset: 0; opacity: 1; }
+          100% { stroke-dashoffset: 24; opacity: 0; }
+        }
+        @keyframes s5-ring {
+          0% { stroke-dashoffset: 251; }
+          28% { stroke-dashoffset: 50; }
+          85% { stroke-dashoffset: 50; }
+          100% { stroke-dashoffset: 251; }
+        }
         @keyframes s5-pulse { 0%,100% { filter: drop-shadow(0 0 0px #00BCD4);} 50% { filter: drop-shadow(0 0 16px #00BCD4);} }
         @keyframes s5-confetti {
           0% { transform: translateY(0) scale(0); opacity: 0; }
@@ -238,9 +308,9 @@ const Stage5Animation = () => (
           100% { transform: translateY(-34px) scale(0.6); opacity: 0; }
         }
         .s5-wrap { animation: s5-pulse 3s ease-in-out 2.6s infinite; }
-        ${[0,1,2,3,4].map(i => `.s5-item${i} { animation: s5-item .4s ease-out ${0.1 * i + 0.1}s forwards; }`).join('\n')}
-        ${[0,1,2,3,4].map(i => `.s5-chk${i} { animation: s5-check .4s ease-out ${0.1 * i + 0.35}s forwards; stroke-dasharray: 24; }`).join('\n')}
-        .s5-ring-fill { animation: s5-ring 1.4s ease-out 1s forwards; stroke-dasharray: 251; stroke-dashoffset: 251; }
+        ${[0,1,2,3,4].map(i => `.s5-item${i} { animation: s5-item 5s ease-in-out ${0.1 * i + 0.1}s infinite; }`).join('\n')}
+        ${[0,1,2,3,4].map(i => `.s5-chk${i} { animation: s5-check 5s ease-in-out ${0.1 * i + 0.35}s infinite; stroke-dasharray: 24; }`).join('\n')}
+        .s5-ring-fill { animation: s5-ring 5s ease-in-out 1s infinite; stroke-dasharray: 251; stroke-dashoffset: 251; }
         .s5-c1 { animation: s5-confetti 1.8s ease-out 2.9s infinite; }
         .s5-c2 { animation: s5-confetti 1.8s ease-out 3.2s infinite; }
         .s5-c3 { animation: s5-confetti 1.8s ease-out 3.5s infinite; }
@@ -272,26 +342,51 @@ const Stage6Animation = () => (
   <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
     <defs>
       <style>{`
-        @keyframes s6-baseline { from { stroke-dashoffset: 260; opacity: 0;} to { stroke-dashoffset: 0; opacity: 1;} }
-        @keyframes s6-graph { from { stroke-dashoffset: 300; opacity: 0;} to { stroke-dashoffset: 0; opacity: 1;} }
-        @keyframes s6-barGrow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
-        @keyframes s6-rocket { from { transform: translate(0,0); opacity: 0;} to { transform: translate(26px,-110px); opacity: 1;} }
+        @keyframes s6-baseline {
+          0% { stroke-dashoffset: 260; opacity: 0; }
+          9% { stroke-dashoffset: 0; opacity: 1; }
+          85% { stroke-dashoffset: 0; opacity: 1; }
+          100% { stroke-dashoffset: 260; opacity: 0; }
+        }
+        @keyframes s6-graph {
+          0% { stroke-dashoffset: 300; opacity: 0; }
+          25% { stroke-dashoffset: 0; opacity: 1; }
+          85% { stroke-dashoffset: 0; opacity: 1; }
+          100% { stroke-dashoffset: 300; opacity: 0; }
+        }
+        @keyframes s6-barGrow {
+          0% { transform: scaleY(0); }
+          9% { transform: scaleY(1); }
+          85% { transform: scaleY(1); }
+          100% { transform: scaleY(0); }
+        }
+        @keyframes s6-rocket {
+          0% { transform: translate(0,0); opacity: 0; }
+          20% { transform: translate(26px,-110px); opacity: 1; }
+          85% { transform: translate(26px,-110px); opacity: 1; }
+          100% { transform: translate(0,0); opacity: 0; }
+        }
         @keyframes s6-fire { 0% { r: 7; opacity: .9;} 100% { r: 1; opacity: 0;} }
-        @keyframes s6-star { from { r: 0; opacity: 0;} to { opacity: 1;} }
+        @keyframes s6-star {
+          0% { r: 0; opacity: 0; }
+          8% { opacity: 1; }
+          85% { opacity: 1; }
+          100% { r: 0; opacity: 0; }
+        }
         @keyframes s6-glow { 0%,100% { filter: drop-shadow(0 0 0px #00BCD4);} 50% { filter: drop-shadow(0 0 22px #00BCD4);} }
         @keyframes s6-burst { from { stroke-dashoffset: 20; opacity: 0.9; } to { stroke-dashoffset: 20; opacity: 0; } }
         .s6-wrap { animation: s6-glow 2.6s ease-in-out 2.8s infinite; }
-        .s6-base { animation: s6-baseline .6s ease-out .2s forwards; stroke-dasharray: 260; }
-        .s6-line { animation: s6-graph 1.6s ease-out .8s forwards; stroke-dasharray: 300; }
-        .s6-bar1 { animation: s6-barGrow .6s ease-out .3s forwards; transform-origin: 90px 230px; }
-        .s6-bar2 { animation: s6-barGrow .6s ease-out .5s forwards; transform-origin: 130px 230px; }
-        .s6-bar3 { animation: s6-barGrow .6s ease-out .7s forwards; transform-origin: 170px 230px; }
-        .s6-bar4 { animation: s6-barGrow .6s ease-out .9s forwards; transform-origin: 210px 230px; }
-        .s6-rocket { animation: s6-rocket 1.3s cubic-bezier(.34,1.56,.64,1) 1.7s forwards; }
+        .s6-base { animation: s6-baseline 6.5s ease-in-out .2s infinite; stroke-dasharray: 260; }
+        .s6-line { animation: s6-graph 6.5s ease-in-out .8s infinite; stroke-dasharray: 300; }
+        .s6-bar1 { animation: s6-barGrow 6.5s ease-in-out .3s infinite; transform-origin: 90px 230px; }
+        .s6-bar2 { animation: s6-barGrow 6.5s ease-in-out .5s infinite; transform-origin: 130px 230px; }
+        .s6-bar3 { animation: s6-barGrow 6.5s ease-in-out .7s infinite; transform-origin: 170px 230px; }
+        .s6-bar4 { animation: s6-barGrow 6.5s ease-in-out .9s infinite; transform-origin: 210px 230px; }
+        .s6-rocket { animation: s6-rocket 6.5s cubic-bezier(.34,1.56,.64,1) 1.7s infinite; }
         .s6-fire1 { animation: s6-fire .55s ease-out 1.7s infinite; }
         .s6-fire2 { animation: s6-fire .55s ease-out 1.85s infinite; }
         .s6-fire3 { animation: s6-fire .55s ease-out 2s infinite; }
-        ${[0,1,2,3,4,5].map(i => `.s6-star${i} { animation: s6-star .5s ease-out ${2.5 + i * 0.15}s forwards; }`).join('\n')}
+        ${[0,1,2,3,4,5].map(i => `.s6-star${i} { animation: s6-star 6.5s ease-in-out ${2.5 + i * 0.15}s infinite; }`).join('\n')}
         .s6-burst { animation: s6-burst 1.4s ease-out 2.6s infinite; }
       `}</style>
       <filter id="s6glow"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
