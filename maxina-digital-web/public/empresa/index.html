@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maxina Digital — Software a medida · Aguascalientes</title>
+<link rel="icon" type="image/svg+xml" href="maxina-favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:             #0b0f1a;
+  --bg2:            #0f1420;
+  --bg3:            #131927;
+  --surface:        rgba(255,255,255,0.03);
+  --surface2:       rgba(255,255,255,0.055);
+  --border:         rgba(255,255,255,0.07);
+  --border2:        rgba(255,255,255,0.13);
+  --accent:         #4f9cf9;
+  --accent2:        #3b82f6;
+  --accent3:        #8b5cf6;
+  --accent-cyan:    #22d3ee;
+  --accent-bg:      rgba(79,156,249,0.08);
+  --accent-border:  rgba(79,156,249,0.25);
+  --glow:           rgba(79,156,249,0.45);
+  --ink:            #f1f5f9;
+  --ink2:           rgba(241,245,249,0.55);
+  --ink3:           rgba(241,245,249,0.28);
+  --radius:         10px;
+  --radius-lg:      16px;
+  --mono:           'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; background: var(--bg); }
+
+body {
+  background: transparent;
+  color: var(--ink);
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 60px;
+  height: 60px;
+  background: rgba(11,15,26,0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo { text-decoration:none; display:flex; align-items:center; }
+.nav-logo img { display:block; height:36px; width:auto; }
+
+.nav-links { display:flex; gap:32px; list-style:none; }
+.nav-links a {
+  font-size: 13px; font-weight:400;
+  color: var(--ink2); text-decoration:none;
+  letter-spacing: 0.2px; transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--ink); }
+
+.nav-cta {
+  background: var(--accent) !important;
+  color: #fff !important;
+  padding: 8px 20px; border-radius: 7px;
+  font-weight: 500 !important; font-size: 13px !important;
+  transition: background 0.2s !important;
+}
+.nav-cta:hover { background: var(--accent2) !important; }
+
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px; height: 36px;
+  background: none; border: none; cursor: pointer; padding: 4px;
+}
+.nav-hamburger span {
+  display: block; height: 1.5px;
+  background: var(--ink2); border-radius: 2px;
+  transition: all 0.25s ease;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+.mobile-nav {
+  display: none;
+  position: fixed;
+  top: 60px; left: 0; right: 0;
+  background: rgba(11,15,26,0.97);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 20px 24px 28px;
+  z-index: 99;
+  flex-direction: column;
+  gap: 4px;
+}
+.mobile-nav.open { display: flex; }
+.mobile-nav a {
+  font-size: 15px; color: var(--ink2);
+  text-decoration: none; padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  transition: color 0.2s;
+}
+.mobile-nav a:hover { color: var(--ink); }
+.mobile-nav .nav-cta {
+  margin-top: 12px; text-align: center;
+  padding: 13px 20px; border-radius: 8px; border-bottom: none;
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  padding: 120px 60px 80px;
+  position: relative; overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(79,156,249,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79,156,249,0.045) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+
+.hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 110% 70% at 75% 50%, transparent 25%, var(--bg) 75%),
+    radial-gradient(ellipse 50% 50% at 10% 90%, var(--bg) 30%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-inner {
+  position: relative; z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px; align-items: center;
+  max-width: 1200px; margin: 0 auto; width: 100%;
+}
+
+.hero-left { display: flex; flex-direction: column; gap: 22px; }
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 11px; font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 2px; text-transform: uppercase;
+  font-family: var(--mono);
+  opacity: 0; animation: fadeUp 0.5s ease 0.1s forwards;
+}
+.hero-eyebrow-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 2s infinite;
+}
+
+.hero-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(38px, 4.5vw, 62px);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -2px;
+  color: var(--ink);
+  opacity: 0; animation: fadeUp 0.6s ease 0.2s forwards;
+}
+.hero-title .accent { color: var(--accent); }
+
+.hero-sub {
+  font-size: 16px; font-weight: 300;
+  color: var(--ink2); line-height: 1.8;
+  max-width: 460px;
+  opacity: 0; animation: fadeUp 0.6s ease 0.35s forwards;
+}
+
+.hero-actions {
+  display: flex; gap: 14px; align-items: center;
+  opacity: 0; animation: fadeUp 0.6s ease 0.45s forwards;
+}
+
+.btn-primary {
+  background: var(--accent); color: #fff;
+  padding: 12px 28px; border-radius: 8px;
+  font-size: 14px; font-weight: 500;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+  display: inline-block;
+}
+.btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+
+.btn-ghost {
+  font-size: 13px; color: var(--ink2);
+  text-decoration: none;
+  display: flex; align-items: center; gap: 6px;
+  transition: color 0.2s;
+}
+.btn-ghost:hover { color: var(--ink); }
+.btn-ghost .arrow { transition: transform 0.2s; display: inline-block; }
+.btn-ghost:hover .arrow { transform: translateX(4px); }
+
+.hero-stack {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  opacity: 0; animation: fadeUp 0.6s ease 0.55s forwards;
+}
+.stack-tag {
+  font-size: 11px; color: var(--ink3);
+  border: 1px solid var(--border2);
+  padding: 3px 10px; border-radius: 20px;
+  font-family: var(--mono);
+  transition: border-color 0.2s, color 0.2s;
+}
+.stack-tag:hover { border-color: var(--accent-border); color: var(--accent); }
+
+/* Metrics panel */
+.hero-right {
+  opacity: 0; animation: fadeUp 0.7s ease 0.5s forwards;
+}
+
+.metrics-panel {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.metrics-header {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,0.02);
+}
+.m-dot { width: 9px; height: 9px; border-radius: 50%; }
+.m-dot.red   { background: #ff5f57; }
+.m-dot.yellow{ background: #febc2e; }
+.m-dot.green { background: #28c840; }
+.metrics-title {
+  font-family: var(--mono); font-size: 11px; color: var(--ink3); margin-left: 4px;
+}
+
+.metrics-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--border);
+}
+.metric-cell {
+  background: var(--bg); padding: 22px 20px;
+  transition: background 0.2s;
+}
+.metric-cell:hover { background: var(--surface); }
+
+.metric-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 30px; font-weight: 600;
+  color: var(--ink); letter-spacing: -1.5px; line-height: 1;
+}
+.metric-num .unit { font-size: 14px; color: var(--accent); font-weight: 500; margin-left: 2px; }
+.metric-lbl { font-size: 11px; color: var(--ink3); margin-top: 6px; }
+.metric-bar { margin-top: 12px; height: 2px; background: var(--surface2); border-radius: 2px; }
+.metric-bar-fill { height: 2px; background: linear-gradient(90deg, var(--accent), var(--accent-cyan)); border-radius: 2px; opacity: 0.7; transition: width 1.2s cubic-bezier(0.22,1,0.36,1); box-shadow: 0 0 8px var(--glow); }
+
+.status-row {
+  padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-top: 1px solid var(--border);
+}
+.status-pulse { width: 6px; height: 6px; border-radius: 50%; background: #28c840; animation: pulse 2s infinite; }
+.status-text {
+  font-family: var(--mono); font-size: 11px; color: var(--ink3);
+  display: flex; align-items: center; gap: 8px;
+}
+.status-badge {
+  font-size: 10px; color: #28c840;
+  background: rgba(40,200,64,0.1);
+  padding: 2px 8px; border-radius: 20px;
+  border: 1px solid rgba(40,200,64,0.2);
+  font-family: var(--mono);
+}
+
+/* ── MARQUEE STRIP ── */
+.tech-strip {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  overflow: hidden;
+  background: var(--bg2);
+}
+.marquee-track { display: flex; gap: 0; animation: scroll 35s linear infinite; width: max-content; }
+.marquee-item {
+  font-size: 12px; color: var(--ink3);
+  font-family: var(--mono); white-space: nowrap;
+  display: flex; align-items: center; gap: 0;
+  padding: 0 28px;
+}
+.marquee-item::after { content: '·'; color: var(--accent); margin-left: 28px; }
+
+@keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ── SECTION BASE ── */
+.section {
+  padding: 96px 60px;
+  max-width: 1200px; margin: 0 auto;
+}
+
+.section-label {
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 12px;
+  font-family: var(--mono);
+}
+.section-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(28px, 3vw, 44px);
+  font-weight: 600; letter-spacing: -1.2px;
+  line-height: 1.12; color: var(--ink);
+}
+.section-title .accent { color: var(--accent); }
+.section-sub {
+  margin-top: 14px; font-size: 15px; color: var(--ink2);
+  font-weight: 300; line-height: 1.8; max-width: 500px;
+}
+.section-header { margin-bottom: 48px; }
+
+/* ── SERVICIOS ── */
+.svc-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg); overflow: hidden;
+}
+.svc {
+  background: var(--bg); padding: 40px 32px;
+  transition: background 0.25s; position: relative;
+}
+.svc:hover { background: var(--surface); }
+.svc::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: var(--accent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.4s ease;
+}
+.svc:hover::before { transform: scaleX(1); }
+
+.svc-num {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--ink3); letter-spacing: 2px;
+  text-transform: uppercase; margin-bottom: 24px;
+}
+.svc-icon {
+  width: 44px; height: 44px; border-radius: 10px;
+  background: var(--accent-bg); border: 1px solid var(--accent-border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; margin-bottom: 18px;
+}
+.svc-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 20px; font-weight: 600; color: var(--ink);
+  margin-bottom: 10px; letter-spacing: -0.3px;
+}
+.svc-desc { font-size: 13.5px; color: var(--ink2); line-height: 1.75; font-weight: 300; }
+.svc-tags { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 6px; }
+.svc-tag {
+  font-size: 10px; color: var(--ink3);
+  border: 1px solid var(--border2); padding: 3px 10px; border-radius: 20px;
+  font-family: var(--mono); transition: color 0.2s, border-color 0.2s;
+}
+.svc:hover .svc-tag { color: var(--accent); border-color: var(--accent-border); }
+
+/* ── PORTAFOLIO ── */
+.port-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); overflow: hidden;
+  transition: border-color 0.3s;
+}
+.port-card:hover { border-color: var(--border2); }
+
+.port-card-featured {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); overflow: hidden;
+  margin-bottom: 16px; transition: border-color 0.3s;
+}
+.port-card-featured:hover { border-color: var(--accent-border); }
+
+.port-visual-wide { height: 280px; overflow: hidden; position: relative; }
+.port-visual-wide img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  filter: brightness(0.45) saturate(0.6);
+  transition: filter 0.4s, transform 0.5s;
+}
+.port-card-featured:hover .port-visual-wide img {
+  filter: brightness(0.58) saturate(0.75);
+  transform: scale(1.02);
+}
+
+.port-visual-overlay { position: absolute; top: 16px; left: 16px; z-index: 2; }
+.port-badge {
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  background: var(--accent); color: #fff;
+  padding: 5px 12px; border-radius: 20px;
+  font-family: var(--mono);
+}
+
+.port-float-stats {
+  position: absolute; bottom: 16px; right: 16px;
+  display: flex; gap: 8px; z-index: 2;
+}
+.port-float-stat {
+  background: rgba(11,15,26,0.88);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border2);
+  border-radius: 8px; padding: 10px 14px;
+  text-align: center; min-width: 80px;
+}
+.port-float-num {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 20px; font-weight: 600;
+  color: var(--ink); letter-spacing: -0.5px;
+}
+.port-float-lbl { display: block; font-size: 9px; color: var(--ink3); margin-top: 2px; }
+
+.port-erp-header {
+  padding: 32px 40px 0;
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 40px;
+}
+.port-sector {
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 10px; font-family: var(--mono);
+}
+.port-title-lg {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 28px; font-weight: 600;
+  color: var(--ink); letter-spacing: -0.8px; line-height: 1.15;
+}
+.port-erp-tagline {
+  font-size: 13px; color: var(--ink3); font-style: italic; line-height: 1.6;
+  max-width: 300px; text-align: right;
+  border-right: 1px solid var(--accent); padding-right: 20px; flex-shrink: 0;
+}
+
+.port-erp-body { padding: 16px 40px 0; }
+.port-desc-lg { font-size: 14px; color: var(--ink2); line-height: 1.8; font-weight: 300; }
+
+.port-modules { padding: 28px 40px 40px; border-top: 1px solid var(--border); margin-top: 24px; }
+.port-module-title {
+  font-size: 9px; font-weight: 500;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--ink3); margin-bottom: 20px; font-family: var(--mono);
+}
+.port-modules-grid {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
+}
+.port-module {
+  background: var(--bg); padding: 20px 18px 24px;
+  transition: background 0.2s; position: relative;
+}
+.port-module:hover { background: var(--surface); }
+.port-module::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: var(--accent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.3s;
+}
+.port-module:hover::before { transform: scaleX(1); }
+.port-module-icon { font-size: 20px; margin-bottom: 10px; display: block; }
+.port-module-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px; font-weight: 600;
+  color: var(--ink); margin-bottom: 8px; line-height: 1.25;
+}
+.port-module-desc { font-size: 12px; color: var(--ink3); line-height: 1.65; font-weight: 300; }
+.port-module-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 12px; }
+.port-module-tags span {
+  font-size: 9px; color: var(--accent);
+  background: var(--accent-bg); border: 1px solid var(--accent-border);
+  padding: 2px 7px; border-radius: 20px; font-family: var(--mono);
+}
+
+.port-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.port-visual { height: 200px; overflow: hidden; position: relative; }
+.port-visual img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  filter: brightness(0.45) saturate(0.6);
+  transition: filter 0.4s, transform 0.5s;
+}
+.port-card:hover .port-visual img {
+  filter: brightness(0.6) saturate(0.75);
+  transform: scale(1.04);
+}
+
+.port-body { padding: 24px 28px 28px; }
+.port-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 19px; font-weight: 600; color: var(--ink);
+  letter-spacing: -0.3px; margin-bottom: 10px; line-height: 1.2;
+}
+.port-desc { font-size: 13px; color: var(--ink2); line-height: 1.75; font-weight: 300; }
+.port-pills { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 6px; }
+.port-pill {
+  font-size: 10px; color: var(--ink3);
+  border: 1px solid var(--border2); padding: 3px 10px;
+  border-radius: 20px; font-family: var(--mono);
+}
+
+/* ── ALIADOS ── */
+.aliados-wrap { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.aliados-in { max-width: 1200px; margin: 0 auto; padding: 96px 60px; }
+
+.ally-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-top: 48px; }
+.ally-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); overflow: hidden; transition: border-color 0.3s;
+}
+.ally-card:hover { border-color: var(--border2); }
+.ally-card.main { border-color: var(--accent-border); }
+.ally-img { height: 150px; overflow: hidden; position: relative; }
+.ally-img img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  filter: brightness(0.4) saturate(0.5); transition: filter 0.4s;
+}
+.ally-card:hover .ally-img img { filter: brightness(0.52) saturate(0.65); }
+.ally-img::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 40%, var(--bg) 100%);
+}
+.ally-body { padding: 24px 28px 32px; }
+.ally-badge {
+  font-size: 9px; font-weight: 500; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--accent);
+  margin-bottom: 8px; font-family: var(--mono); display: block;
+}
+.ally-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 20px; font-weight: 600; color: var(--ink);
+  margin-bottom: 10px; letter-spacing: -0.3px;
+}
+.ally-desc { font-size: 13px; color: var(--ink2); line-height: 1.75; font-weight: 300; }
+.ally-items { margin-top: 16px; display: flex; flex-direction: column; gap: 7px; }
+.ally-item {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 12px; color: var(--ink2); font-weight: 300;
+}
+.ally-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+
+/* ── PROCESO ── */
+.proc-row {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg); overflow: hidden; margin-top: 48px;
+}
+.proc {
+  background: var(--bg); padding: 36px 24px;
+  transition: background 0.2s; position: relative;
+}
+.proc:hover { background: var(--surface); }
+.proc::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: var(--accent);
+  transform: scaleX(0); transform-origin: left; transition: transform 0.4s;
+}
+.proc:hover::before { transform: scaleX(1); }
+.proc-num {
+  font-family: var(--mono); font-size: 10px; color: var(--accent);
+  letter-spacing: 2px; text-transform: uppercase; margin-bottom: 18px;
+}
+.proc-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 17px; font-weight: 600; color: var(--ink);
+  margin-bottom: 10px; letter-spacing: -0.2px;
+}
+.proc-desc { font-size: 13px; color: var(--ink2); line-height: 1.75; font-weight: 300; }
+
+/* ── CONTACTO ── */
+.contact-wrap { background: var(--bg2); border-top: 1px solid var(--border); }
+.contact-in {
+  max-width: 1200px; margin: 0 auto;
+  padding: 96px 60px;
+  display: grid; grid-template-columns: 1fr 1.1fr;
+  gap: 80px; align-items: start;
+}
+.c-label {
+  font-size: 10px; font-weight: 500; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
+  font-family: var(--mono); display: block;
+}
+.c-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(28px, 3vw, 44px);
+  font-weight: 600; color: var(--ink);
+  line-height: 1.12; letter-spacing: -1.2px; margin-bottom: 16px;
+}
+.c-title .accent { color: var(--accent); }
+.c-sub { font-size: 14px; color: var(--ink2); font-weight: 300; line-height: 1.8; margin-bottom: 40px; }
+
+.c-item { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 18px; }
+.c-icon {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: var(--accent-bg); border: 1px solid var(--accent-border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; flex-shrink: 0; margin-top: 2px;
+}
+.c-item-lbl {
+  font-size: 10px; font-weight: 500; color: var(--ink3);
+  letter-spacing: 1.5px; text-transform: uppercase;
+  margin-bottom: 3px; font-family: var(--mono); display: block;
+}
+.c-item-val { font-size: 14px; color: var(--ink2); font-weight: 300; }
+
+.form { display: flex; flex-direction: column; gap: 12px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.fg { display: flex; flex-direction: column; gap: 6px; }
+.fg label {
+  font-size: 10px; font-weight: 500; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--ink3); font-family: var(--mono);
+}
+.fg input, .fg select, .fg textarea {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 8px; padding: 11px 14px;
+  color: var(--ink);
+  font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 300;
+  outline: none; transition: border-color 0.2s, background 0.2s;
+  -webkit-appearance: none;
+}
+.fg select option { background: #131927; color: var(--ink); }
+.fg input:focus, .fg select:focus, .fg textarea:focus {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+}
+.fg input::placeholder, .fg textarea::placeholder { color: var(--ink3); }
+.fg textarea { resize: vertical; min-height: 90px; }
+
+.form-btn {
+  margin-top: 4px;
+  background: var(--accent); color: #fff;
+  border: none; border-radius: 8px;
+  padding: 13px 32px;
+  font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 500;
+  cursor: pointer; transition: background 0.2s, transform 0.15s;
+  align-self: flex-start;
+}
+.form-btn:hover { background: var(--accent2); transform: translateY(-1px); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding: 28px 60px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.footer-brand { display: flex; align-items: center; gap: 10px; }
+.footer-copy { font-size: 12px; color: var(--ink3); }
+.footer-ally { font-size: 12px; color: var(--ink3); text-align: right; line-height: 1.6; }
+
+hr.divider { border: none; border-top: 1px solid var(--border); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.65s ease, transform 0.65s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.d1 { transition-delay: 0.08s; }
+.d2 { transition-delay: 0.16s; }
+.d3 { transition-delay: 0.24s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 960px) {
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+
+  .hero { padding: 100px 20px 60px; }
+  .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+  .hero-right { display: none; }
+  .hero-title { font-size: clamp(32px, 9vw, 50px); }
+
+  .section { padding: 60px 20px; }
+  .section-sub { max-width: 100%; }
+
+  .svc-grid { grid-template-columns: 1fr; }
+
+  .port-modules-grid { grid-template-columns: repeat(2,1fr); }
+  .port-erp-header { flex-direction: column; gap: 16px; padding: 20px 20px 0; }
+  .port-erp-tagline {
+    text-align: left; border-right: none;
+    border-left: 1px solid var(--accent);
+    padding-right: 0; padding-left: 16px; max-width: 100%;
+  }
+  .port-erp-body { padding: 14px 20px 0; }
+  .port-modules { padding: 20px 20px 28px; }
+  .port-float-stats { display: none; }
+  .port-visual-wide { height: 200px; }
+  .port-grid { grid-template-columns: 1fr; }
+
+  .ally-grid { grid-template-columns: 1fr; }
+  .aliados-in { padding: 60px 20px; }
+
+  .proc-row { grid-template-columns: 1fr; }
+
+  .contact-in { grid-template-columns: 1fr; gap: 44px; padding: 60px 20px; }
+  .form-row { grid-template-columns: 1fr; }
+  .form-btn { width: 100%; text-align: center; }
+
+  footer { flex-direction: column; gap: 12px; text-align: center; padding: 24px 20px; }
+  .footer-ally { text-align: center; }
+}
+
+@media (max-width: 480px) {
+  .hero-title { font-size: 30px; }
+  .section { padding: 48px 16px; }
+  .aliados-in { padding: 48px 16px; }
+  .contact-in { padding: 48px 16px; }
+  nav { padding: 0 16px; }
+  .port-modules-grid { grid-template-columns: 1fr; }
+  footer { padding: 20px 16px; }
+}
+
+/* ════════════════════════════════════════════
+   PREMIUM LAYER — aurora, grano, glow, spotlight
+   ════════════════════════════════════════════ */
+
+/* ── Aurora animada de fondo ── */
+.aurora {
+  position: fixed; inset: 0; z-index: -2;
+  overflow: hidden; pointer-events: none;
+}
+.aurora span {
+  position: absolute; display: block;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.55;
+  will-change: transform;
+}
+.aurora .a1 {
+  width: 60vw; height: 60vw; top: -18vw; right: -12vw;
+  background: radial-gradient(circle at 30% 30%, rgba(79,156,249,0.55), transparent 65%);
+  animation: drift1 22s ease-in-out infinite alternate;
+}
+.aurora .a2 {
+  width: 48vw; height: 48vw; bottom: -16vw; left: -10vw;
+  background: radial-gradient(circle at 40% 40%, rgba(139,92,246,0.42), transparent 65%);
+  animation: drift2 28s ease-in-out infinite alternate;
+}
+.aurora .a3 {
+  width: 40vw; height: 40vw; top: 35%; left: 38%;
+  background: radial-gradient(circle at 50% 50%, rgba(34,211,238,0.28), transparent 65%);
+  animation: drift3 25s ease-in-out infinite alternate;
+}
+@keyframes drift1 {
+  0%   { transform: translate(0,0) scale(1); }
+  100% { transform: translate(-8vw, 6vw) scale(1.18); }
+}
+@keyframes drift2 {
+  0%   { transform: translate(0,0) scale(1); }
+  100% { transform: translate(10vw, -5vw) scale(1.22); }
+}
+@keyframes drift3 {
+  0%   { transform: translate(0,0) scale(1); opacity: 0.18; }
+  100% { transform: translate(-12vw, -8vw) scale(0.85); opacity: 0.4; }
+}
+
+/* ── Grano cinematográfico ── */
+.grain {
+  position: fixed; inset: 0; z-index: -1;
+  pointer-events: none; opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── Barra de progreso de scroll ── */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 2px; width: 0%;
+  z-index: 200;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent), var(--accent3));
+  box-shadow: 0 0 12px var(--glow);
+  transition: width 0.1s linear;
+}
+
+/* ── Spotlight que sigue el cursor ── */
+.spotlight {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 30%),
+              rgba(79,156,249,0.08), transparent 70%);
+  opacity: 0; transition: opacity 0.4s ease;
+}
+body:hover .spotlight { opacity: 1; }
+
+/* asegura que el contenido quede por encima de las capas */
+nav, .hero, .tech-strip, section, .aliados-wrap, .contact-wrap, footer { position: relative; z-index: 1; }
+
+/* ── Título con gradiente animado + glow ── */
+.hero-title .accent {
+  background: linear-gradient(110deg, var(--accent-cyan), var(--accent), var(--accent3), var(--accent));
+  background-size: 300% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  animation: hue 8s ease infinite;
+  text-shadow: 0 0 60px var(--glow);
+}
+@keyframes hue {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+.section-title .accent, .c-title .accent {
+  background: linear-gradient(110deg, var(--accent), var(--accent3));
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+}
+
+/* ── Glassmorphism reforzado en paneles ── */
+.metrics-panel {
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  box-shadow: 0 24px 60px -24px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04) inset;
+  transition: transform 0.18s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+}
+.metrics-panel:hover {
+  box-shadow: 0 30px 80px -20px rgba(0,0,0,0.7), 0 0 40px -8px var(--glow), 0 0 0 1px var(--accent-border) inset;
+}
+
+/* ── Botón primario: glow + brillo deslizante ── */
+.btn-primary, .nav-cta, .form-btn {
+  position: relative; overflow: hidden;
+  box-shadow: 0 8px 24px -8px var(--glow);
+}
+.btn-primary::after, .form-btn::after {
+  content: ''; position: absolute; top: 0; left: -120%;
+  width: 60%; height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,0.35), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+}
+.btn-primary:hover::after, .form-btn:hover::after { left: 140%; }
+.btn-primary:hover, .form-btn:hover { box-shadow: 0 10px 30px -6px var(--glow); }
+
+/* ── Glow interactivo en tarjetas (spotlight local) ── */
+.svc, .port-card, .port-card-featured, .ally-card, .proc {
+  --cx: 50%; --cy: 50%;
+}
+.svc::after, .proc::after, .port-card::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(260px circle at var(--cx) var(--cy), rgba(79,156,249,0.10), transparent 60%);
+  opacity: 0; transition: opacity 0.35s ease; z-index: 0;
+}
+.svc:hover::after, .proc:hover::after, .port-card:hover::after { opacity: 1; }
+.svc > *, .proc > *, .port-card > * { position: relative; z-index: 1; }
+
+/* ── Bordes con glow al hover ── */
+.port-card:hover, .ally-card:hover { box-shadow: 0 0 0 1px var(--accent-border), 0 24px 50px -28px var(--glow); }
+
+/* ── Reveal mejorado con blur + stagger ── */
+.reveal { filter: blur(6px); }
+.reveal.visible { filter: blur(0); }
+
+/* ── Marquee con desvanecido en los bordes ── */
+.tech-strip {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+.marquee-item:hover { color: var(--accent); }
+
+/* ── Pulso del status badge ── */
+.status-badge { box-shadow: 0 0 12px -2px rgba(40,200,64,0.4); }
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora span, .hero-title .accent { animation: none !important; }
+  .reveal { filter: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- CAPAS PREMIUM -->
+<div class="scroll-progress" id="scroll-progress"></div>
+<div class="aurora" aria-hidden="true">
+  <span class="a1"></span>
+  <span class="a2"></span>
+  <span class="a3"></span>
+</div>
+<div class="grain" aria-hidden="true"></div>
+<div class="spotlight" aria-hidden="true"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="maxina-digital-logo-dark.svg" alt="Maxina Digital" height="36">
+  </a>
+  <ul class="nav-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#portafolio">Portafolio</a></li>
+    <li><a href="#aliados">Aliados</a></li>
+    <li><a href="#proceso">Proceso</a></li>
+    <li><a href="#contacto" class="nav-cta">Hablemos</a></li>
+  </ul>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobile-nav">
+  <a href="#servicios" onclick="closeMobileNav()">Servicios</a>
+  <a href="#portafolio" onclick="closeMobileNav()">Portafolio</a>
+  <a href="#aliados" onclick="closeMobileNav()">Aliados</a>
+  <a href="#proceso" onclick="closeMobileNav()">Proceso</a>
+  <a href="#contacto" class="nav-cta" onclick="closeMobileNav()">Hablemos</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <span class="hero-eyebrow-dot"></span>
+        Aguascalientes · Centro de México
+      </div>
+      <h1 class="hero-title">
+        Software que<br>
+        <span class="accent">escala.</span><br>
+        Equipos que<br>entregan.
+      </h1>
+      <p class="hero-sub">
+        Construimos sistemas a medida para hospitales, manufactura automotriz y PyMEs. Código real, arquitecturas sólidas, resultados medibles.
+      </p>
+      <div class="hero-actions">
+        <a href="#contacto" class="btn-primary">Iniciar proyecto</a>
+        <a href="#portafolio" class="btn-ghost">Ver portafolio <span class="arrow">→</span></a>
+      </div>
+      <div class="hero-stack">
+        <span class="stack-tag">React</span>
+        <span class="stack-tag">Next.js</span>
+        <span class="stack-tag">Node.js</span>
+        <span class="stack-tag">.NET / C#</span>
+        <span class="stack-tag">Prisma</span>
+        <span class="stack-tag">SQL Server</span>
+        <span class="stack-tag">PostgreSQL</span>
+        <span class="stack-tag">Vercel</span>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="metrics-panel">
+        <div class="metrics-header">
+          <span class="m-dot red"></span>
+          <span class="m-dot yellow"></span>
+          <span class="m-dot green"></span>
+          <span class="metrics-title">sistemas-produccion / overview</span>
+        </div>
+        <div class="metrics-grid">
+          <div class="metric-cell">
+            <div class="metric-num"><span class="metric-count" data-count="100">0</span><span class="unit">k+</span></div>
+            <div class="metric-lbl">Registros procesados / día</div>
+            <div class="metric-bar"><div class="metric-bar-fill" data-w="90" style="width:0%"></div></div>
+          </div>
+          <div class="metric-cell">
+            <div class="metric-num"><span class="metric-count" data-count="4">0</span><span class="unit">+</span></div>
+            <div class="metric-lbl">Sectores atendidos</div>
+            <div class="metric-bar"><div class="metric-bar-fill" data-w="65" style="width:0%"></div></div>
+          </div>
+          <div class="metric-cell">
+            <div class="metric-num">&lt;<span class="metric-count" data-count="24">0</span><span class="unit">h</span></div>
+            <div class="metric-lbl">Respuesta inicial</div>
+            <div class="metric-bar"><div class="metric-bar-fill" data-w="55" style="width:0%"></div></div>
+          </div>
+          <div class="metric-cell">
+            <div class="metric-num"><span class="metric-count" data-count="3">0</span><span class="unit">+</span></div>
+            <div class="metric-lbl">Sistemas en producción</div>
+            <div class="metric-bar"><div class="metric-bar-fill" data-w="45" style="width:0%"></div></div>
+          </div>
+        </div>
+        <div class="status-row">
+          <div class="status-text">
+            <span class="status-pulse"></span>
+            todos los sistemas operando
+          </div>
+          <span class="status-badge">online</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TECH MARQUEE -->
+<div class="tech-strip">
+  <div class="marquee-track">
+    <span class="marquee-item">React &amp; Next.js</span>
+    <span class="marquee-item">Node.js &amp; Express</span>
+    <span class="marquee-item">ASP.NET Core</span>
+    <span class="marquee-item">PostgreSQL</span>
+    <span class="marquee-item">SQL Server</span>
+    <span class="marquee-item">Prisma ORM</span>
+    <span class="marquee-item">Socket.io</span>
+    <span class="marquee-item">JWT Auth</span>
+    <span class="marquee-item">WhatsApp API</span>
+    <span class="marquee-item">Vercel &amp; GitHub</span>
+    <span class="marquee-item">Claude AI</span>
+    <span class="marquee-item">Cloudflare R2</span>
+    <span class="marquee-item">React Native</span>
+    <span class="marquee-item">BullMQ &amp; Redis</span>
+    <span class="marquee-item">React &amp; Next.js</span>
+    <span class="marquee-item">Node.js &amp; Express</span>
+    <span class="marquee-item">ASP.NET Core</span>
+    <span class="marquee-item">PostgreSQL</span>
+    <span class="marquee-item">SQL Server</span>
+    <span class="marquee-item">Prisma ORM</span>
+    <span class="marquee-item">Socket.io</span>
+    <span class="marquee-item">JWT Auth</span>
+    <span class="marquee-item">WhatsApp API</span>
+    <span class="marquee-item">Vercel &amp; GitHub</span>
+    <span class="marquee-item">Claude AI</span>
+    <span class="marquee-item">Cloudflare R2</span>
+    <span class="marquee-item">React Native</span>
+    <span class="marquee-item">BullMQ &amp; Redis</span>
+  </div>
+</div>
+
+<!-- SERVICIOS -->
+<section id="servicios">
+  <div class="section">
+    <div class="section-header">
+      <p class="section-label reveal">// servicios</p>
+      <h2 class="section-title reveal">Qué <span class="accent">construimos</span></h2>
+      <p class="section-sub reveal">Desde una landing page hasta un sistema empresarial completo — construimos exactamente lo que tu negocio necesita.</p>
+    </div>
+
+    <div class="svc-grid reveal">
+      <div class="svc">
+        <div class="svc-num">01 — web</div>
+        <div class="svc-icon">🌐</div>
+        <div class="svc-name">Desarrollo Web</div>
+        <p class="svc-desc">Sitios institucionales, portales empresariales y plataformas interactivas con tecnología moderna. Optimizados para buscadores y enfocados en conversión de clientes.</p>
+        <div class="svc-tags">
+          <span class="svc-tag">React</span><span class="svc-tag">Next.js</span>
+          <span class="svc-tag">Node.js</span><span class="svc-tag">WordPress</span>
+          <span class="svc-tag">SEO</span>
+        </div>
+      </div>
+      <div class="svc">
+        <div class="svc-num">02 — mobile</div>
+        <div class="svc-icon">📱</div>
+        <div class="svc-name">Aplicaciones Móviles</div>
+        <p class="svc-desc">Apps nativas y multiplataforma para iOS y Android. Desde sistemas de citas médicas hasta gestión de talleres automotrices y portales financieros.</p>
+        <div class="svc-tags">
+          <span class="svc-tag">React Native</span><span class="svc-tag">Flutter</span>
+          <span class="svc-tag">iOS</span><span class="svc-tag">Android</span>
+          <span class="svc-tag">APIs</span>
+        </div>
+      </div>
+      <div class="svc">
+        <div class="svc-num">03 — sistemas</div>
+        <div class="svc-icon">⚙️</div>
+        <div class="svc-name">Sistemas a Medida</div>
+        <p class="svc-desc">ERP, CRM, control de inventario, facturación CFDI y automatización de procesos internos. Integraciones con SAT, bancos y sistemas existentes.</p>
+        <div class="svc-tags">
+          <span class="svc-tag">Bases de datos</span><span class="svc-tag">Cloud</span>
+          <span class="svc-tag">Integraciones</span><span class="svc-tag">Reportes</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PORTAFOLIO -->
+<section id="portafolio">
+  <div class="section">
+    <div class="section-header">
+      <p class="section-label reveal">// portafolio</p>
+      <h2 class="section-title reveal">Sistemas que <span class="accent">mueven industrias</span></h2>
+      <p class="section-sub reveal">No construimos páginas — construimos plataformas que transforman la operación de empresas reales en resultados medibles.</p>
+    </div>
+
+    <!-- CARD 1 — ERP FEATURED -->
+    <div class="port-card-featured reveal">
+      <div class="port-visual-wide">
+        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1400&q=85&auto=format&fit=crop" alt="ERP Hospitality & Healthcare">
+        <div class="port-visual-overlay">
+          <span class="port-badge">ERP · Hospitalidad &amp; Salud</span>
+        </div>
+        <div class="port-float-stats">
+          <div class="port-float-stat">
+            <span class="port-float-num">100%</span>
+            <span class="port-float-lbl">Operación centralizada</span>
+          </div>
+          <div class="port-float-stat">
+            <span class="port-float-num">24/7</span>
+            <span class="port-float-lbl">Disponible en la nube</span>
+          </div>
+          <div class="port-float-stat">
+            <span class="port-float-num">∞</span>
+            <span class="port-float-lbl">Escalable</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="port-erp-header">
+        <div>
+          <p class="port-sector">Hoteles · Hospitales &amp; Clínicas · Gestión Empresarial</p>
+          <h3 class="port-title-lg">ERP Hospitality &amp; Healthcare Suite</h3>
+        </div>
+        <p class="port-erp-tagline">"Una misma arquitectura de clase mundial para dos industrias que comparten un mismo estándar: la excelencia."</p>
+      </div>
+
+      <div class="port-erp-body">
+        <p class="port-desc-lg">Cuando un hotel o un hospital opera sin visibilidad total, pierde eficiencia operativa — y eso tiene un costo real cada día. Desarrollamos un ERP de alto rendimiento que unifica en una sola plataforma inteligente toda la operación: desde la reservación de una habitación o la admisión de un paciente, hasta el cierre contable del mes. En tiempo real. Desde cualquier dispositivo. Sin fricciones.</p>
+        <p class="port-desc-lg" style="margin-top:12px">Porque la gestión de un hotel de lujo y la de un hospital privado comparten algo fundamental: la excelencia operativa determina la experiencia — y esa experiencia se construye con tecnología bien diseñada.</p>
+      </div>
+
+      <div class="port-modules">
+        <div class="port-module-title">// módulos del sistema</div>
+        <div class="port-modules-grid">
+          <div class="port-module">
+            <div class="port-module-icon">👥</div>
+            <div class="port-module-name">Gestión de Personal</div>
+            <div class="port-module-desc">Control de nómina, expedientes, turnos, asistencia y evaluaciones de desempeño. RRHH sin papeleo.</div>
+            <div class="port-module-tags"><span>RRHH</span><span>Nómina</span><span>Turnos</span></div>
+          </div>
+          <div class="port-module">
+            <div class="port-module-icon">🏨</div>
+            <div class="port-module-name">Gestión de Recursos</div>
+            <div class="port-module-desc">Control en tiempo real de habitaciones, camas y mesas. Ocupación, estado y disponibilidad al instante.</div>
+            <div class="port-module-tags"><span>Habitaciones</span><span>Camas</span><span>Mesas</span></div>
+          </div>
+          <div class="port-module">
+            <div class="port-module-icon">📦</div>
+            <div class="port-module-name">Gestión de Materiales</div>
+            <div class="port-module-desc">Inventario inteligente por lote, caducidades, puntos de reorden automáticos y trazabilidad.</div>
+            <div class="port-module-tags"><span>Inventarios</span><span>Lotes</span><span>Trazabilidad</span></div>
+          </div>
+          <div class="port-module">
+            <div class="port-module-icon">🛒</div>
+            <div class="port-module-name">Gestión de Compras</div>
+            <div class="port-module-desc">Flujo completo: solicitud, autorización por niveles, órdenes de compra y conciliación.</div>
+            <div class="port-module-tags"><span>Solicitudes</span><span>Autorización</span><span>POs</span></div>
+          </div>
+          <div class="port-module">
+            <div class="port-module-icon">💳</div>
+            <div class="port-module-name">Gestión de Cuentas</div>
+            <div class="port-module-desc">Facturación CFDI 4.0, CxC, CxP, descuentos y conciliación bancaria automatizada.</div>
+            <div class="port-module-tags"><span>CFDI 4.0</span><span>CxC / CxP</span><span>Conciliación</span></div>
+          </div>
+          <div class="port-module">
+            <div class="port-module-icon">📊</div>
+            <div class="port-module-name">Business Intelligence</div>
+            <div class="port-module-desc">Dashboards ejecutivos en tiempo real, KPIs operativos y reportes de ocupación.</div>
+            <div class="port-module-tags"><span>Dashboards</span><span>KPIs</span><span>RevPAR</span></div>
+          </div>
+          <div class="port-module">
+            <div class="port-module-icon">📅</div>
+            <div class="port-module-name">Reservaciones &amp; Admisiones</div>
+            <div class="port-module-desc">Motor de reservaciones multicanal y admisión hospitalaria con expediente clínico digital.</div>
+            <div class="port-module-tags"><span>Reservaciones</span><span>Expediente</span><span>Citas</span></div>
+          </div>
+          <div class="port-module">
+            <div class="port-module-icon">🍽️</div>
+            <div class="port-module-name">Alimentos &amp; Bebidas</div>
+            <div class="port-module-desc">Gestión de restaurantes: menús, comandas, costos, mermas y punto de venta integrado.</div>
+            <div class="port-module-tags"><span>Comandas</span><span>Costos F&amp;B</span><span>POS</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARDS 2 y 3 -->
+    <div class="port-grid">
+      <div class="port-card reveal d1">
+        <div class="port-visual">
+          <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=85&auto=format&fit=crop" alt="Sistema POS">
+          <div class="port-visual-overlay">
+            <span class="port-badge">POS · PyME</span>
+          </div>
+        </div>
+        <div class="port-body">
+          <p class="port-sector">PyME · Comercio &amp; Servicios</p>
+          <h3 class="port-title">Sistema de Punto de Venta</h3>
+          <p class="port-desc">Las pequeñas y medianas empresas merecen tecnología de nivel enterprise. Venta rápida con lector de código de barras, control de inventario en tiempo real, facturación CFDI 4.0, corte de caja automatizado y dashboard de ventas con los indicadores que realmente importan.</p>
+          <p class="port-desc" style="margin-top:8px;font-style:italic;color:var(--accent)">Porque crecer no debería ser complicado.</p>
+          <div class="port-pills">
+            <span class="port-pill">Venta rápida</span>
+            <span class="port-pill">CFDI 4.0</span>
+            <span class="port-pill">Inventario real-time</span>
+            <span class="port-pill">Múltiples cajas</span>
+            <span class="port-pill">Corte de caja</span>
+            <span class="port-pill">App móvil</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="port-card reveal d2">
+        <div class="port-visual">
+          <img src="https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=800&q=85&auto=format&fit=crop" alt="Control de Calidad Automotriz">
+          <div class="port-visual-overlay">
+            <span class="port-badge">Manufactura · Automotriz</span>
+          </div>
+        </div>
+        <div class="port-body">
+          <p class="port-sector">Manufactura · Industria Automotriz</p>
+          <h3 class="port-title">Sistema de Control de Calidad</h3>
+          <p class="port-desc">Plataforma de alta performance capaz de capturar y analizar más de 100,000 registros por día directamente desde la línea de producción. Trazabilidad total por número de pieza, alertas instantáneas y cumplimiento IATF.</p>
+          <p class="port-desc" style="margin-top:8px;font-style:italic;color:var(--accent)">Cero defectos comienza con datos perfectos.</p>
+          <div class="port-pills">
+            <span class="port-pill">+100k registros/día</span>
+            <span class="port-pill">Tiempo real</span>
+            <span class="port-pill">Trazabilidad</span>
+            <span class="port-pill">IATF</span>
+            <span class="port-pill">SPC &amp; Cpk</span>
+            <span class="port-pill">Alta disponibilidad</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ALIADOS -->
+<div id="aliados" class="aliados-wrap">
+  <div class="aliados-in">
+    <p class="section-label reveal">// aliados</p>
+    <h2 class="section-title reveal">Colaboramos con <span class="accent">los mejores</span></h2>
+    <p class="section-sub reveal">Trabajamos junto a líderes del sector para ofrecer soluciones digitales integrales.</p>
+
+    <div class="ally-grid">
+      <div class="ally-card main reveal d1">
+        <div class="ally-img">
+          <img src="https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=900&q=80&auto=format&fit=crop" alt="Canal 16 TV">
+        </div>
+        <div class="ally-body">
+          <span class="ally-badge">Aliado estratégico · Medios</span>
+          <h3 class="ally-name">Canal 16 Aguascalientes</h3>
+          <p class="ally-desc">Alianza exclusiva con el canal de mayor alcance en Aguascalientes. Ofrecemos paquetes integrados de presencia digital más difusión televisiva para que tu marca llegue a toda la ciudad.</p>
+          <div class="ally-items">
+            <div class="ally-item"><span class="ally-dot"></span>Semblanzas y Publi Reportajes</div>
+            <div class="ally-item"><span class="ally-dot"></span>Comerciales Tribuna 360</div>
+            <div class="ally-item"><span class="ally-dot"></span>Programas Especiales y Podcast TV</div>
+            <div class="ally-item"><span class="ally-dot"></span>Difusión en TV + Redes Sociales</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ally-card reveal d2">
+        <div class="ally-img">
+          <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&q=80&auto=format&fit=crop" alt="Cloud infrastructure">
+        </div>
+        <div class="ally-body">
+          <span class="ally-badge">Infraestructura · Cloud</span>
+          <h3 class="ally-name">Vercel &amp; GitHub</h3>
+          <p class="ally-desc">Infraestructura de clase mundial para cada proyecto que desarrollamos. CDN global, HTTPS automático y 99.99% uptime garantizado.</p>
+          <div class="ally-items">
+            <div class="ally-item"><span class="ally-dot"></span>Deploy automático desde GitHub</div>
+            <div class="ally-item"><span class="ally-dot"></span>CDN global ultrarrápido</div>
+            <div class="ally-item"><span class="ally-dot"></span>SSL y seguridad incluidos</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROCESO -->
+<section id="proceso">
+  <div class="section">
+    <p class="section-label reveal">// proceso</p>
+    <h2 class="section-title reveal">Un proceso <span class="accent">claro,</span> sin sorpresas</h2>
+
+    <div class="proc-row reveal d1">
+      <div class="proc">
+        <div class="proc-num">01 — diagnóstico</div>
+        <div class="proc-name">Entendemos tu negocio</div>
+        <p class="proc-desc">Reunión inicial para definir objetivos, usuarios, alcance y presupuesto. Sin tecnicismos — hablamos tu idioma.</p>
+      </div>
+      <div class="proc">
+        <div class="proc-num">02 — diseño</div>
+        <div class="proc-name">Prototipamos primero</div>
+        <p class="proc-desc">Diseñamos la experiencia visual y funcional. Tú apruebas antes de que escribamos una línea de código.</p>
+      </div>
+      <div class="proc">
+        <div class="proc-num">03 — desarrollo</div>
+        <div class="proc-name">Código de calidad</div>
+        <p class="proc-desc">Construimos con código limpio y escalable. Avances semanales para que siempre sepas cómo va tu proyecto.</p>
+      </div>
+      <div class="proc">
+        <div class="proc-num">04 — lanzamiento</div>
+        <div class="proc-name">Publicamos y acompañamos</div>
+        <p class="proc-desc">Lanzamos, probamos y capacitamos a tu equipo. Soporte post-entrega incluido en todos los planes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<div id="contacto" class="contact-wrap">
+  <div class="contact-in">
+    <div>
+      <span class="c-label">// contacto</span>
+      <h2 class="c-title">¿Tienes un proyecto<br>en <span class="accent">mente?</span></h2>
+      <p class="c-sub">Cuéntanos qué necesitas. Respondemos en menos de 24 horas con una propuesta inicial sin costo.</p>
+      <div class="c-item">
+        <div class="c-icon">✉️</div>
+        <div>
+          <span class="c-item-lbl">Correo</span>
+          <div class="c-item-val">contacto@maxinadigital.com</div>
+        </div>
+      </div>
+      <div class="c-item">
+        <div class="c-icon">📍</div>
+        <div>
+          <span class="c-item-lbl">Ubicación</span>
+          <div class="c-item-val">Aguascalientes, México<br>
+            <span style="font-size:12px;color:var(--ink3)">Centro de México · Todo el país</span>
+          </div>
+        </div>
+      </div>
+      <div class="c-item">
+        <div class="c-icon">⏱️</div>
+        <div>
+          <span class="c-item-lbl">Horario</span>
+          <div class="c-item-val">Lun – Vie · 9:00 am – 7:00 pm</div>
+        </div>
+      </div>
+    </div>
+
+    <form class="form" id="contact-form">
+      <div class="form-row">
+        <div class="fg"><label>Nombre *</label><input type="text" name="nombre" placeholder="Tu nombre" required></div>
+        <div class="fg"><label>Empresa</label><input type="text" name="empresa" placeholder="Tu empresa"></div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>Correo *</label><input type="email" name="email" placeholder="correo@empresa.com" required></div>
+        <div class="fg"><label>WhatsApp</label><input type="tel" name="whatsapp" placeholder="+52 449 000 0000"></div>
+      </div>
+      <div class="fg">
+        <label>Sector</label>
+        <select name="sector">
+          <option value="">¿En qué sector está tu empresa?</option>
+          <option>Médico / Salud</option>
+          <option>Automotriz</option>
+          <option>Financiero</option>
+          <option>PyME / Comercio</option>
+          <option>Otro</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>¿Qué necesitas?</label>
+        <select name="servicio">
+          <option value="">Selecciona un servicio</option>
+          <option>Sitio web profesional</option>
+          <option>Aplicación móvil</option>
+          <option>Sistema a medida</option>
+          <option>ERP Hospitality &amp; Healthcare</option>
+          <option>Sistema de Control de Calidad</option>
+          <option>Paquete Web + Canal 16</option>
+          <option>Asesoría — aún no lo sé</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Cuéntanos más</label>
+        <textarea name="mensaje" placeholder="Describe brevemente tu proyecto..."></textarea>
+      </div>
+      <div id="form-status" style="display:none;font-size:13px;padding:11px 14px;border-radius:8px;margin-bottom:4px;"></div>
+      <button type="submit" class="form-btn" id="form-btn">Enviar mensaje →</button>
+    </form>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <img src="maxina-digital-logo-dark.svg" alt="Maxina Digital" height="28">
+  </div>
+  <p class="footer-copy">© 2026 Maxina Digital · Aguascalientes, México</p>
+  <div class="footer-ally">
+    En alianza con Canal 16 Aguascalientes<br>
+    <span style="font-size:11px;">Fernando Ortega · Gestión de medios TV</span>
+  </div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+  });
+}, { threshold: 0.07 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ── Barra de progreso de scroll ── */
+const progressBar = document.getElementById('scroll-progress');
+const onScroll = () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  progressBar.style.width = pct + '%';
+};
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+/* ── Spotlight global que sigue el cursor + glow local en tarjetas ──
+   Estos son resaltados estáticos (no animaciones continuas), así que se
+   mantienen activos aunque el sistema tenga "reducir movimiento" activado;
+   solo requieren un mouse real (pointer: fine). */
+if (window.matchMedia('(pointer: fine)').matches) {
+  const spot = document.querySelector('.spotlight');
+  window.addEventListener('pointermove', (e) => {
+    spot.style.setProperty('--mx', e.clientX + 'px');
+    spot.style.setProperty('--my', e.clientY + 'px');
+  });
+
+  /* ── Glow local en tarjetas ── */
+  document.querySelectorAll('.svc, .proc, .port-card').forEach(card => {
+    card.addEventListener('pointermove', (e) => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--cx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--cy', (e.clientY - r.top) + 'px');
+    });
+  });
+}
+
+/* ── Tilt 3D + botones magnéticos ──
+   Estos sí involucran movimiento continuo (rotación/traslación), así que
+   respetan "reducir movimiento". */
+if (!reduceMotion && window.matchMedia('(pointer: fine)').matches) {
+  /* ── Tilt 3D en el panel de métricas ── */
+  const panel = document.querySelector('.metrics-panel');
+  const tiltHost = document.querySelector('.hero-right');
+  if (panel && tiltHost) {
+    tiltHost.style.perspective = '1000px';
+    tiltHost.addEventListener('pointermove', (e) => {
+      const r = panel.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      panel.style.transform = `rotateY(${px * 7}deg) rotateX(${-py * 7}deg) translateZ(0)`;
+    });
+    tiltHost.addEventListener('pointerleave', () => { panel.style.transform = ''; });
+  }
+
+  /* ── Botones magnéticos ── */
+  document.querySelectorAll('.btn-primary, .nav-cta').forEach(btn => {
+    btn.addEventListener('pointermove', (e) => {
+      const r = btn.getBoundingClientRect();
+      const x = (e.clientX - r.left - r.width / 2) * 0.25;
+      const y = (e.clientY - r.top - r.height / 2) * 0.25;
+      btn.style.transform = `translate(${x}px, ${y}px)`;
+    });
+    btn.addEventListener('pointerleave', () => { btn.style.transform = ''; });
+  });
+}
+
+/* ── Count-up de métricas + llenado de barras ── */
+const countTargets = document.querySelectorAll('.metric-count');
+const animateCount = (el) => {
+  const target = parseInt(el.dataset.count, 10);
+  const dur = 1400; const start = performance.now();
+  const step = (now) => {
+    const p = Math.min((now - start) / dur, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(target * eased);
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+};
+const metricsPanel = document.querySelector('.metrics-panel');
+if (metricsPanel) {
+  const mObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      if (reduceMotion) {
+        countTargets.forEach(el => el.textContent = el.dataset.count);
+      } else {
+        countTargets.forEach(animateCount);
+      }
+      document.querySelectorAll('.metric-bar-fill').forEach(b => { b.style.width = b.dataset.w + '%'; });
+      mObs.disconnect();
+    });
+  }, { threshold: 0.4 });
+  mObs.observe(metricsPanel);
+}
+
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xgoqgedo';
+const contactForm = document.getElementById('contact-form');
+const formBtn     = document.getElementById('form-btn');
+const formStatus  = document.getElementById('form-status');
+
+contactForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  formBtn.textContent = 'Enviando...';
+  formBtn.disabled = true;
+  formBtn.style.opacity = '0.7';
+  formStatus.style.display = 'none';
+  try {
+    const res = await fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      body: new FormData(contactForm),
+      headers: { 'Accept': 'application/json' }
+    });
+    if (res.ok) {
+      formStatus.style.display = 'block';
+      formStatus.style.background = 'rgba(40,200,64,0.08)';
+      formStatus.style.border = '1px solid rgba(40,200,64,0.2)';
+      formStatus.style.color = '#4ade80';
+      formStatus.textContent = '✓ Mensaje enviado. Te contactaremos en menos de 24 horas.';
+      formBtn.textContent = '✓ Enviado';
+      formBtn.style.background = 'rgba(40,200,64,0.8)';
+      formBtn.style.opacity = '1';
+      contactForm.reset();
+      setTimeout(() => {
+        formBtn.textContent = 'Enviar mensaje →';
+        formBtn.style.background = '';
+        formBtn.disabled = false;
+        formStatus.style.display = 'none';
+      }, 5000);
+    } else { throw new Error(); }
+  } catch {
+    formStatus.style.display = 'block';
+    formStatus.style.background = 'rgba(239,68,68,0.08)';
+    formStatus.style.border = '1px solid rgba(239,68,68,0.2)';
+    formStatus.style.color = '#f87171';
+    formStatus.textContent = '✗ Ocurrió un error. Escríbenos a contacto@maxinadigital.com';
+    formBtn.textContent = 'Enviar mensaje →';
+    formBtn.style.opacity = '1';
+    formBtn.disabled = false;
+  }
+});
+
+const hamburger = document.getElementById('hamburger');
+const mobileNav = document.getElementById('mobile-nav');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  mobileNav.classList.toggle('open');
+});
+function closeMobileNav() {
+  hamburger.classList.remove('open');
+  mobileNav.classList.remove('open');
+}
+document.addEventListener('click', (e) => {
+  if (!hamburger.contains(e.target) && !mobileNav.contains(e.target)) closeMobileNav();
+});
+</script>
+</body>
+</html>

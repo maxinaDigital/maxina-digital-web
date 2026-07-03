@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="320" height="80">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;700&amp;display=swap');
+    </style>
+  </defs>
+
+  <!-- Hexágono -->
+  <polygon points="40,10 68,10 82,34 68,58 40,58 26,34" fill="#1a3a6b"/>
+
+  <!-- M centrada -->
+  <text x="54" y="34"
+    font-family="Outfit, Arial, sans-serif"
+    font-size="30"
+    font-weight="700"
+    fill="white"
+    text-anchor="middle"
+    dominant-baseline="central">M</text>
+
+  <!-- Línea separadora -->
+  <line x1="96" y1="16" x2="96" y2="52" stroke="#d4d2cc" stroke-width="1"/>
+
+  <!-- MAXINA -->
+  <text x="108" y="30"
+    font-family="Outfit, Arial, sans-serif"
+    font-size="22"
+    font-weight="700"
+    fill="#16161a"
+    letter-spacing="-0.5">MAXINA</text>
+
+  <!-- DIGITAL -->
+  <text x="109" y="50"
+    font-family="Outfit, Arial, sans-serif"
+    font-size="10"
+    font-weight="300"
+    fill="#1a3a6b"
+    letter-spacing="5">DIGITAL</text>
+</svg>
