@@ -91,12 +91,12 @@ export default function Home() {
               Cada proyecto sigue un método probado de 6 etapas que asegura excelencia
               desde la concepción hasta el lanzamiento.
             </p>
-            <div className="flex flex-col items-center">
-              <div className="font-mono text-xs text-cyan-accent uppercase tracking-widest mb-3">
-                Scroll para recorrer el proceso
-              </div>
-              <div className="text-2xl animate-bounce">↓</div>
-            </div>
+            <a
+              href="#etapa-1"
+              className="font-outfit font-semibold transition-all duration-300 rounded bg-blue-600 hover:bg-transparent text-white hover:text-cyan-400 border-2 border-blue-600 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(0,188,212,0.4)] px-10 py-4 text-sm uppercase tracking-widest inline-block"
+            >
+              Ver etapa 1
+            </a>
           </div>
         </ScrollReveal>
       </section>
