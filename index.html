@@ -1430,8 +1430,11 @@ const onScroll = () => {
 window.addEventListener('scroll', onScroll, { passive: true });
 onScroll();
 
-/* ── Spotlight global que sigue el cursor ── */
-if (!reduceMotion && window.matchMedia('(pointer: fine)').matches) {
+/* ── Spotlight global que sigue el cursor + glow local en tarjetas ──
+   Estos son resaltados estáticos (no animaciones continuas), así que se
+   mantienen activos aunque el sistema tenga "reducir movimiento" activado;
+   solo requieren un mouse real (pointer: fine). */
+if (window.matchMedia('(pointer: fine)').matches) {
   const spot = document.querySelector('.spotlight');
   window.addEventListener('pointermove', (e) => {
     spot.style.setProperty('--mx', e.clientX + 'px');
@@ -1446,7 +1449,12 @@ if (!reduceMotion && window.matchMedia('(pointer: fine)').matches) {
       card.style.setProperty('--cy', (e.clientY - r.top) + 'px');
     });
   });
+}
 
+/* ── Tilt 3D + botones magnéticos ──
+   Estos sí involucran movimiento continuo (rotación/traslación), así que
+   respetan "reducir movimiento". */
+if (!reduceMotion && window.matchMedia('(pointer: fine)').matches) {
   /* ── Tilt 3D en el panel de métricas ── */
   const panel = document.querySelector('.metrics-panel');
   const tiltHost = document.querySelector('.hero-right');
