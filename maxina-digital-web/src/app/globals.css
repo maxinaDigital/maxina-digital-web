@@ -1,0 +1,268 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+}
+
+:root {
+  --navy: #0F1419;
+  --primary-blue: #0066CC;
+  --cyan: #00BCD4;
+  --white: #FFFFFF;
+  --gray: #8A92A6;
+  --dark-gray: #1a2a3a;
+  /* Ported from the existing maxina-digital site so both properties read as
+     one brand: legacy blue + purple accent used in its gradient headline text. */
+  --legacy-blue: #4f9cf9;
+  --legacy-purple: #8b5cf6;
+  --legacy-glow: rgba(79, 156, 249, 0.45);
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  /* Native scroll-snap drives the one-scroll-per-stage feel — the browser's
+     own snapping engine, not custom wheel/touch-hijacking JavaScript.
+     "proximity" (not "mandatory") so scroll is never trapped — it gently
+     aligns to a section when you're already close to it, but never fights
+     you or blocks scrolling past the last one. */
+  scroll-snap-type: y proximity;
+}
+
+/* Applied to each full-height section that should snap (Hero, Intro, every
+   process stage, and the closing CTA so scroll can always reach it). */
+.snap-section {
+  scroll-snap-align: start;
+}
+
+body {
+  /* background-attachment: fixed keeps this gradient sized to the viewport
+     instead of the full (8000px+) scrollable page. A gradient painted across
+     an element that tall gets tiled internally by the renderer, and a faint
+     seam shows at the tile boundary while scrolling — fixed attachment avoids
+     that entirely and also gives a perfectly consistent look while scrolling. */
+  background: linear-gradient(135deg, var(--navy) 0%, var(--dark-gray) 100%);
+  background-attachment: fixed;
+  color: var(--white);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Must live in @layer base — unlayered rules always beat Tailwind's
+   @layer utilities regardless of source order, which was silently
+   zeroing out every padding/margin utility (p-*, m-*, py-*, etc.) site-wide. */
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--navy);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--cyan);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-blue);
+}
+
+/* Selection */
+::selection {
+  background: var(--cyan);
+  color: var(--navy);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px rgba(0, 188, 212, 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 0 15px rgba(0, 188, 212, 0.8));
+  }
+}
+
+@keyframes slideDown {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+}
+
+/* ════════════════════════════════════════════
+   Ported from the existing maxina-digital site:
+   gradient+glow headline text, aurora blobs, 3D glass tilt panel
+   ════════════════════════════════════════════ */
+
+/* Animated hue-shifting gradient text with a soft glow, matching the
+   legacy site's .hero-title .accent treatment. */
+@keyframes hue-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.gradient-glow-text {
+  background: linear-gradient(110deg, var(--cyan), var(--legacy-blue), var(--legacy-purple), var(--legacy-blue));
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: hue-shift 8s ease infinite;
+  text-shadow: 0 0 60px var(--legacy-glow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gradient-glow-text {
+    animation: none;
+  }
+}
+
+/* Aurora — large, slowly-drifting blurred color blobs for atmospheric depth. */
+@keyframes aurora-drift-1 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-8vw, 6vw) scale(1.18); }
+}
+@keyframes aurora-drift-2 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(10vw, -5vw) scale(1.22); }
+}
+@keyframes aurora-drift-3 {
+  0% { transform: translate(0, 0) scale(1); opacity: 0.18; }
+  100% { transform: translate(-12vw, -8vw) scale(0.85); opacity: 0.4; }
+}
+
+.aurora {
+  position: fixed;
+  inset: 0;
+  z-index: -20;
+  overflow: hidden;
+  pointer-events: none;
+}
+.aurora span {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.4;
+  will-change: transform;
+}
+.aurora .a1 {
+  width: 60vw;
+  height: 60vw;
+  top: -18vw;
+  right: -12vw;
+  background: radial-gradient(circle at 30% 30%, rgba(79, 156, 249, 0.5), transparent 65%);
+  animation: aurora-drift-1 22s ease-in-out infinite alternate;
+}
+.aurora .a2 {
+  width: 48vw;
+  height: 48vw;
+  bottom: -16vw;
+  left: -10vw;
+  background: radial-gradient(circle at 40% 40%, rgba(139, 92, 246, 0.4), transparent 65%);
+  animation: aurora-drift-2 28s ease-in-out infinite alternate;
+}
+.aurora .a3 {
+  width: 40vw;
+  height: 40vw;
+  top: 35%;
+  left: 38%;
+  background: radial-gradient(circle at 50% 50%, rgba(0, 188, 212, 0.3), transparent 65%);
+  animation: aurora-drift-3 25s ease-in-out infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora span {
+    animation: none;
+  }
+}
+
+/* 3D glass tilt panel — glassmorphism + cursor-driven perspective tilt,
+   matching the legacy site's .metrics-panel treatment ("transparencia 3D"). */
+.glass-tilt-panel {
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  transform-style: preserve-3d;
+  transition: transform 0.18s ease, box-shadow 0.3s ease;
+  box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  will-change: transform;
+}
+.glass-tilt-panel:hover {
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.7), 0 0 40px -8px var(--legacy-glow),
+    0 0 0 1px rgba(0, 188, 212, 0.3) inset;
+}
+
+/* Spotlight — cursor-follow glow that illuminates the background, ported
+   from the legacy site's .spotlight. A static positional highlight, not
+   continuous motion, so it's intentionally NOT gated by reduced-motion. */
+.spotlight {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 30%),
+    rgba(0, 188, 212, 0.1),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+body:hover .spotlight {
+  opacity: 1;
+}
+
+/* Local card glow — a soft cyan highlight that follows the cursor within
+   a card, ported from the legacy site's .svc/.proc/.port-card hover glow. */
+.card-glow {
+  position: relative;
+}
+.card-glow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: radial-gradient(260px circle at var(--cx, 50%) var(--cy, 50%), rgba(0, 188, 212, 0.12), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.card-glow:hover::after {
+  opacity: 1;
+}
