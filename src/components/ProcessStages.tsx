@@ -126,7 +126,7 @@ export const ProcessStages = () => (
                     <div
                       key={i}
                       className={`h-1.5 rounded-full transition-all duration-500 ${
-                        i === index ? 'w-10 bg-cyan-accent' : 'w-1.5 bg-blue-primary/40'
+                        i === index ? 'w-10 bg-cyan-accent' : 'w-1.5 bg-[var(--primary-blue)]/40'
                       }`}
                     />
                   ))}
@@ -134,7 +134,7 @@ export const ProcessStages = () => (
 
                 <a
                   href={nextHref}
-                  className="mt-8 inline-flex items-center gap-2 font-outfit font-semibold text-sm uppercase tracking-wider text-cyan-accent border-2 border-cyan-accent rounded px-8 py-3 transition-all duration-300 hover:bg-cyan-accent hover:text-navy hover:shadow-glow"
+                  className="mt-8 inline-flex items-center gap-2 font-inter font-semibold text-sm uppercase tracking-wider text-[var(--cyan)] border-2 border-[var(--cyan)] rounded px-8 py-3 transition-all duration-300 hover:bg-[var(--cyan)] hover:text-navy hover:shadow-glow"
                 >
                   {index < stages.length - 1 ? 'Siguiente etapa' : 'Conocer más'}
                   <span aria-hidden="true">↓</span>

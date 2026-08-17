@@ -32,9 +32,7 @@ export default function Home() {
           {/* Logo */}
           <ScrollReveal delay={0.2}>
             <div className="mb-8 flex justify-center">
-              <div className="w-32 h-32 rounded-full border-2 border-cyan-accent flex items-center justify-center shadow-glow">
-                <BrandMark className="w-16 h-16" />
-              </div>
+              <BrandMark className="w-20 h-20" />
             </div>
             <h1 className="font-display gradient-glow-text text-6xl md:text-7xl font-bold mb-4 tracking-tight">
               Maxina Digital
@@ -64,7 +62,7 @@ export default function Home() {
           <ScrollReveal delay={1.4}>
             <a
               href="#proceso"
-              className="font-outfit font-semibold transition-all duration-300 rounded bg-blue-600 hover:bg-transparent text-white hover:text-cyan-400 border-2 border-blue-600 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(0,188,212,0.4)] px-12 py-5 text-base uppercase tracking-widest inline-block"
+              className="font-inter font-semibold transition-all duration-300 rounded bg-[var(--primary-blue)] hover:bg-transparent text-white hover:text-[var(--cyan)] border-2 border-[var(--primary-blue)] hover:border-[var(--cyan)] hover:shadow-[0_0_20px_var(--glow)] px-12 py-5 text-base uppercase tracking-widest inline-block"
             >
               Conocer Nuestro Proceso
             </a>
@@ -93,7 +91,7 @@ export default function Home() {
             </p>
             <a
               href="#etapa-1"
-              className="font-outfit font-semibold transition-all duration-300 rounded bg-blue-600 hover:bg-transparent text-white hover:text-cyan-400 border-2 border-blue-600 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(0,188,212,0.4)] px-10 py-4 text-sm uppercase tracking-widest inline-block"
+              className="font-inter font-semibold transition-all duration-300 rounded bg-[var(--primary-blue)] hover:bg-transparent text-white hover:text-[var(--cyan)] border-2 border-[var(--primary-blue)] hover:border-[var(--cyan)] hover:shadow-[0_0_20px_var(--glow)] px-10 py-4 text-sm uppercase tracking-widest inline-block"
             >
               Ver etapa 1
             </a>
@@ -107,7 +105,7 @@ export default function Home() {
       {/* CTA Section */}
       <section id="cta" className="snap-section relative z-10 py-20 px-4 md:px-8 max-w-6xl mx-auto mt-20 min-h-screen flex items-center justify-center">
         <ScrollReveal>
-          <GlassTiltPanel className="bg-gradient-to-r from-blue-600/5 to-cyan-400/5 border border-blue-600 rounded-lg p-12 text-center">
+          <GlassTiltPanel className="bg-gradient-to-r from-blue-primary/5 to-cyan-accent/5 border border-[var(--primary-blue)] rounded-lg p-12 text-center">
             <h4 className="font-display text-3xl font-bold mb-6">
               ¿Listo para transformar tu proyecto?
             </h4>
@@ -117,7 +115,7 @@ export default function Home() {
             </p>
             <a
               href="/empresa/index.html"
-              className="font-outfit font-semibold transition-all duration-300 rounded bg-transparent text-cyan-400 border-2 border-cyan-400 hover:shadow-[0_0_20px_rgba(0,188,212,0.6)] px-10 py-4 text-sm uppercase tracking-wider inline-block"
+              className="font-inter font-semibold transition-all duration-300 rounded bg-transparent text-[var(--cyan)] border-2 border-[var(--cyan)] hover:shadow-[0_0_20px_var(--glow)] px-10 py-4 text-sm uppercase tracking-wider inline-block"
             >
               Conocer más
             </a>
@@ -126,8 +124,11 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-blue-600/20 py-12 px-4 md:px-8 mt-20">
+      <footer className="relative z-10 border-t border-neutral-700/40 py-12 px-4 md:px-8 mt-20">
         <div className="max-w-6xl mx-auto text-center text-gray-primary text-sm">
+          <div className="flex justify-center mb-4">
+            <img src="/maxina-digital-logo-dark.svg" alt="Maxina Digital" className="h-10" />
+          </div>
           <p>© 2026 Maxina Digital. Todos los derechos reservados.</p>
           <p className="mt-2">Innovación futurista con confianza médica.</p>
         </div>

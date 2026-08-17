@@ -1,23 +1,9 @@
 import type { Metadata, Viewport } from 'next';
-import { Outfit, Inter, Space_Grotesk, JetBrains_Mono } from 'next/font/google';
+import { Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
-
-const outfit = Outfit({
-  variable: '--font-outfit',
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-});
 
 const inter = Inter({
   variable: '--font-inter',
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-});
-
-// Matches the existing maxina-digital site's font pairing: Space Grotesk for
-// display/headline text, JetBrains Mono for eyebrow labels and tags.
-const spaceGrotesk = Space_Grotesk({
-  variable: '--font-space-grotesk',
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
 });
@@ -48,7 +34,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${outfit.variable} ${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} h-full antialiased scroll-smooth`}
+      className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased scroll-smooth`}
     >
       <body className="min-h-full flex flex-col bg-navy text-white">
         {children}

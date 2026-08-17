@@ -22,7 +22,7 @@ export const Background3D = () => {
 
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setClearColor(0x0f1419, 0);
+    renderer.setClearColor(0x161826, 0);
     containerRef.current.appendChild(renderer.domElement);
 
     camera.position.z = 50;
@@ -47,7 +47,7 @@ export const Background3D = () => {
 
     // Particle material
     const particlesMaterial = new THREE.PointsMaterial({
-      color: 0x00bcd4,
+      color: 0x9184d9,
       size: 2,
       sizeAttenuation: true,
       transparent: true,
@@ -77,7 +77,7 @@ export const Background3D = () => {
       geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
 
       const material = new THREE.LineBasicMaterial({
-        color: Math.random() > 0.5 ? 0x0066cc : 0x00bcd4,
+        color: Math.random() > 0.5 ? 0x796cbf : 0xb5abfc,
         transparent: true,
         opacity: 0.4,
       });

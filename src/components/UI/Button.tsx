@@ -8,12 +8,15 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ variant = 'primary', size = 'md', className = '', ...props }, ref) => {
-    const baseStyles = 'font-outfit font-semibold transition-all duration-300 rounded';
+    const baseStyles = 'font-inter font-semibold transition-all duration-300 rounded';
 
     const variantStyles = {
-      primary: 'bg-blue-600 hover:bg-transparent text-white hover:text-cyan-400 border-2 border-blue-600 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(0,188,212,0.4)]',
-      secondary: 'bg-transparent text-cyan-400 border-2 border-cyan-400 hover:shadow-[0_0_20px_rgba(0,188,212,0.6)]',
-      outline: 'border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white',
+      primary:
+        'bg-[var(--primary-blue)] hover:bg-transparent text-white hover:text-[var(--cyan)] border-2 border-[var(--primary-blue)] hover:border-[var(--cyan)] hover:shadow-[0_0_20px_var(--glow)]',
+      secondary:
+        'bg-transparent text-[var(--cyan)] border-2 border-[var(--cyan)] hover:shadow-[0_0_20px_var(--glow)]',
+      outline:
+        'border-2 border-[var(--primary-blue)] text-[var(--primary-blue)] hover:bg-[var(--primary-blue)] hover:text-white',
     };
 
     const sizeStyles = {
