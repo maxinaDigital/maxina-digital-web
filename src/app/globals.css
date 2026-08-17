@@ -1,6 +1,12 @@
 @import "tailwindcss";
 
 :root {
+  /* H-EPM teal palette */
+  --hepm-teal:      #0d9488;
+  --hepm-teal-lt:   #2dd4bf;
+  --hepm-teal-glow: rgba(13,148,136,0.4);
+  --hepm-emerald:   #059669;
+
   /* Nocturne design system tokens */
   --color-bg: #161826;
   --color-surface: #232532;
@@ -217,3 +223,15 @@ body:hover .spotlight { opacity: 1; }
   transition: opacity 0.35s ease;
 }
 .card-glow:hover::after { opacity: 1; }
+
+/* Marquee */
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.tech-strip {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+.marquee-track { animation: marquee-scroll 35s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
