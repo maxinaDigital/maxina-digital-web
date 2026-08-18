@@ -38,7 +38,7 @@ const HEPM_CONFIG = {
 };
 
 interface ContactFormProps {
-  source: 'maxina' | 'hepm';
+  source: 'maxina' | 'hepm' | 'dpos';
 }
 
 export const ContactForm = ({ source }: ContactFormProps) => {
