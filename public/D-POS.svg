@@ -1,0 +1,52 @@
+<svg viewBox="0 0 200 200" width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="lg" x1="10%" y1="0%" x2="90%" y2="100%">
+      <stop offset="0%" stop-color="#f2d07c"></stop>
+      <stop offset="100%" stop-color="#9a6820"></stop>
+    </linearGradient>
+    <linearGradient id="sv" gradientUnits="userSpaceOnUse" x1="100" y1="70" x2="100" y2="134">
+      <stop offset="0%" stop-color="#f4d070"></stop>
+      <stop offset="100%" stop-color="#a87028"></stop>
+    </linearGradient>
+    <linearGradient id="sc" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#d4a843" stop-opacity="0"></stop>
+      <stop offset="18%" stop-color="#d4a843" stop-opacity="0.72"></stop>
+      <stop offset="50%" stop-color="#d4a843" stop-opacity="1"></stop>
+      <stop offset="82%" stop-color="#d4a843" stop-opacity="0.72"></stop>
+      <stop offset="100%" stop-color="#d4a843" stop-opacity="0"></stop>
+    </linearGradient>
+    <radialGradient id="rg" cx="38%" cy="28%" r="65%">
+      <stop offset="0%" stop-color="#2a2412"></stop>
+      <stop offset="28%" stop-color="#181408"></stop>
+      <stop offset="60%" stop-color="#0e0d07"></stop>
+      <stop offset="100%" stop-color="#07070a"></stop>
+    </radialGradient>
+    <linearGradient id="sh" x1="15%" y1="0%" x2="85%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.07"></stop>
+      <stop offset="32%" stop-color="#ffffff" stop-opacity="0.02"></stop>
+      <stop offset="62%" stop-color="#000000" stop-opacity="0.01"></stop>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.09"></stop>
+    </linearGradient>
+    <filter id="sf" x="-120%" y="-120%" width="340%" height="340%">
+      <feGaussianBlur stdDeviation="11"></feGaussianBlur>
+    </filter>
+    <filter id="bf" x="-120%" y="-120%" width="340%" height="340%">
+      <feGaussianBlur stdDeviation="10"></feGaussianBlur>
+    </filter>
+  </defs>
+  <polygon points="100,14 175,57 175,143 100,186 25,143 25,57" fill="url(#rg)"></polygon>
+  <polygon points="100,14 175,57 175,143 100,186 25,143 25,57" fill="url(#sh)"></polygon>
+  <ellipse cx="80" cy="44" rx="34" ry="19" fill="white" opacity="0.06" transform="rotate(-22 80 44)" filter="url(#sf)"></ellipse>
+  <ellipse cx="100" cy="178" rx="24" ry="11" fill="#d4a843" opacity="0.18" filter="url(#bf)"></ellipse>
+  <path d="M 45,70 L 97,134 L 103,134 L 155,70" fill="none" stroke="url(#sv)" stroke-width="11" stroke-linejoin="miter" stroke-linecap="square" stroke-miterlimit="3"></path>
+  <line x1="58" y1="102" x2="142" y2="102" stroke="url(#sc)" stroke-width="1.8"></line>
+  <circle cx="45" cy="70" r="5.5" fill="none" stroke="#d4a843" stroke-width="1.5" opacity="0.6"></circle>
+  <circle cx="45" cy="70" r="2" fill="#d4a843" opacity="0.6"></circle>
+  <circle cx="155" cy="70" r="5.5" fill="none" stroke="#d4a843" stroke-width="1.5" opacity="0.6"></circle>
+  <circle cx="155" cy="70" r="2" fill="#d4a843" opacity="0.6"></circle>
+  <line x1="91" y1="138" x2="109" y2="138" stroke="#d4a843" stroke-width="2.5" stroke-linecap="square" opacity="0.9"></line>
+  <polygon points="100,14 175,57 175,143 100,186 25,143 25,57" fill="none" stroke="url(#lg)" stroke-width="2.2"></polygon>
+  <circle cx="100" cy="186" r="3" fill="#d4a843"></circle>
+  <circle cx="175" cy="143" r="3" fill="#d4a843"></circle>
+  <circle cx="25" cy="143" r="3" fill="#d4a843"></circle>
+</svg>

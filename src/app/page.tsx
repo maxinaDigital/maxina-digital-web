@@ -1,6 +1,7 @@
 import { Nav } from '@/components/Nav';
 import { BrandMark } from '@/components/BrandMark';
 import { HBrandMark } from '@/components/HBrandMark';
+import { DPosBrandMark } from '@/components/DPosBrandMark';
 import { TechMarquee } from '@/components/TechMarquee';
 import { ContactForm } from '@/components/ContactForm';
 import { Background3D } from '@/components/Background3D';
@@ -287,7 +288,7 @@ export default function Home() {
 
           {/* D-POS card */}
           <ScrollReveal>
-            <div className="rounded-2xl border border-[var(--color-neutral-800)] hover:border-[var(--color-neutral-700)] bg-[var(--color-surface)] overflow-hidden transition-all duration-300 hover:shadow-[0_24px_50px_-28px_var(--glow)]">
+            <div className="rounded-2xl border border-[var(--color-neutral-800)] hover:border-[rgba(212,168,67,0.35)] bg-[var(--color-surface)] overflow-hidden transition-all duration-300 hover:shadow-[0_24px_50px_-28px_rgba(212,168,67,0.25)]">
               <div className="grid grid-cols-1 md:grid-cols-2">
                 <div className="relative h-56 md:h-auto overflow-hidden">
                   <img
@@ -296,14 +297,17 @@ export default function Home() {
                     className="w-full h-full object-cover brightness-40 saturate-50 hover:brightness-50 hover:scale-[1.03] transition-all duration-500"
                   />
                   <div className="absolute top-4 left-4 z-10">
-                    <span className="font-mono text-[10px] font-medium tracking-[1.5px] uppercase bg-[var(--color-accent)] text-white px-3 py-1.5 rounded-full">
+                    <span className="font-mono text-[10px] font-medium tracking-[1.5px] uppercase bg-[#9a6820] text-[#f4d070] px-3 py-1.5 rounded-full border border-[rgba(212,168,67,0.35)]">
                       POS · PyME
                     </span>
                   </div>
                 </div>
                 <div className="p-8 md:p-10">
-                  <p className="font-mono text-[10px] font-medium tracking-[2px] uppercase text-[var(--color-accent-400)] mb-2">PyME · Comercio & Servicios</p>
-                  <h3 className="font-display text-[22px] font-semibold text-[var(--color-text)] tracking-[-0.5px] mb-3">D-POS — Punto de Venta</h3>
+                  <p className="font-mono text-[10px] font-medium tracking-[2px] uppercase text-[#d4a843] mb-2.5">PyME · Comercio & Servicios</p>
+                  <div className="flex items-center gap-4 mb-3">
+                    <DPosBrandMark className="w-12 h-12 flex-shrink-0" />
+                    <h3 className="font-display text-[22px] font-semibold text-[var(--color-text)] tracking-[-0.5px] leading-[1.2]">D-POS — Punto de Venta</h3>
+                  </div>
                   <p className="text-[13px] text-[var(--color-neutral-400)] leading-[1.75] font-light mb-2">
                     Las pequeñas y medianas empresas merecen tecnología de nivel enterprise. Venta rápida con lector de código de barras, control de inventario en tiempo real, facturación CFDI 4.0, corte de caja automatizado y dashboard con los indicadores que importan.
                   </p>
@@ -384,7 +388,8 @@ export default function Home() {
       {/* ── FOOTER ── */}
       <footer className="relative z-10 border-t border-[var(--color-neutral-800)] py-7 px-5 md:px-15 flex flex-col md:flex-row items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
-          <img src="/maxina-digital-logo-dark.svg" alt="Maxina Digital" className="h-7" />
+          <BrandMark className="w-7 h-7" />
+          <span className="font-display font-semibold text-sm text-[var(--color-text)] tracking-tight">Maxina Digital</span>
         </div>
         <p className="font-mono text-[12px] text-[var(--color-neutral-700)]">© 2026 Maxina Digital · Aguascalientes, México</p>
         <p className="font-mono text-[12px] text-[var(--color-neutral-700)]">contacto@maxinadigital.com</p>
