@@ -311,11 +311,14 @@ export default function Home() {
                   <p className="text-[13px] text-[var(--color-neutral-400)] leading-[1.75] font-light mb-2">
                     Las pequeñas y medianas empresas merecen tecnología de nivel enterprise. Venta rápida con lector de código de barras, control de inventario en tiempo real, facturación CFDI 4.0, corte de caja automatizado y dashboard con los indicadores que importan.
                   </p>
-                  <p className="text-[13px] text-[var(--color-accent-400)] italic mb-6">Porque crecer no debería ser complicado.</p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {['Venta rápida', 'CFDI 4.0', 'Inventario real-time', 'Múltiples cajas', 'Corte de caja', 'App móvil'].map(t => (
-                      <span key={t} className="font-mono text-[10px] text-[var(--color-neutral-700)] border border-[var(--color-neutral-800)] px-2.5 py-1 rounded-full">{t}</span>
+                  <p className="text-[13px] text-[#d4a843] italic mb-6">Porque crecer no debería ser complicado.</p>
+                  <div className="flex flex-wrap gap-2 items-center">
+                    {['Venta rápida', 'CFDI 4.0', 'Inventario real-time', 'MercadoLibre', 'Multi-sucursal'].map(t => (
+                      <span key={t} className="font-mono text-[10px] text-[#d4a843] bg-[rgba(212,168,67,0.08)] border border-[rgba(212,168,67,0.2)] px-2.5 py-1 rounded-full">{t}</span>
                     ))}
+                    <Link href="/dpos" className="ml-auto font-inter font-semibold text-[13px] text-[#f2d07c] border border-[rgba(212,168,67,0.35)] px-5 py-2 rounded-lg hover:bg-[rgba(212,168,67,0.08)] transition-all no-underline">
+                      Conocer D-POS →
+                    </Link>
                   </div>
                 </div>
               </div>

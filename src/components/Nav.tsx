@@ -54,13 +54,19 @@ export const Nav = () => {
           ))}
         </ul>
 
-        {/* H-EPM CTA */}
-        <div className="hidden md:flex items-center gap-3">
+        {/* Product CTAs */}
+        <div className="hidden md:flex items-center gap-2">
           <Link
             href="/hepm"
             className="font-inter font-semibold text-[13px] px-4 py-2 rounded bg-[var(--color-accent-900)] text-[var(--color-accent-300)] border border-[var(--color-accent-700)] hover:bg-[var(--color-accent-700)] hover:text-[var(--color-text)] transition-all no-underline"
           >
             H-EPM
+          </Link>
+          <Link
+            href="/dpos"
+            className="font-inter font-semibold text-[13px] px-4 py-2 rounded bg-[rgba(42,36,18,0.6)] text-[#f2d07c] border border-[rgba(212,168,67,0.35)] hover:bg-[rgba(212,168,67,0.12)] hover:text-[#f9e7a8] transition-all no-underline"
+          >
+            D-POS
           </Link>
         </div>
 
@@ -95,6 +101,13 @@ export const Nav = () => {
             className="mt-3 font-inter font-semibold text-[14px] px-4 py-3 rounded bg-[var(--color-accent-900)] text-[var(--color-accent-300)] border border-[var(--color-accent-700)] text-center no-underline"
           >
             H-EPM →
+          </Link>
+          <Link
+            href="/dpos"
+            onClick={close}
+            className="mt-2 font-inter font-semibold text-[14px] px-4 py-3 rounded bg-[rgba(42,36,18,0.8)] text-[#f2d07c] border border-[rgba(212,168,67,0.35)] text-center no-underline"
+          >
+            D-POS →
           </Link>
         </div>
       )}

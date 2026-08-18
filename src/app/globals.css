@@ -7,6 +7,12 @@
   --hepm-teal-glow: rgba(13,148,136,0.4);
   --hepm-emerald:   #059669;
 
+  /* D-POS gold palette */
+  --dpos-gold:      #c49a28;
+  --dpos-gold-lt:   #f2d07c;
+  --dpos-gold-dk:   #9a6820;
+  --dpos-gold-glow: rgba(212,168,67,0.4);
+
   /* Nocturne design system tokens */
   --color-bg: #161826;
   --color-surface: #232532;
@@ -223,6 +229,17 @@ body:hover .spotlight { opacity: 1; }
   transition: opacity 0.35s ease;
 }
 .card-glow:hover::after { opacity: 1; }
+
+/* D-POS aurora — warm gold blobs override the violet ones */
+.dpos-aurora .a1 {
+  background: radial-gradient(circle at 30% 30%, rgba(212,168,67,0.35), transparent 65%);
+}
+.dpos-aurora .a2 {
+  background: radial-gradient(circle at 40% 40%, rgba(154,104,32,0.32), transparent 65%);
+}
+.dpos-aurora .a3 {
+  background: radial-gradient(circle at 50% 50%, rgba(242,208,124,0.18), transparent 65%);
+}
 
 /* Marquee */
 @keyframes marquee-scroll {
